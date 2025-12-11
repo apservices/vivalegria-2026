@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Calendar, Users, LogOut, Home } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, LogOut, Home, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
@@ -16,6 +16,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/reservas", label: "Reservas", icon: Calendar },
+    { href: "/admin/casting", label: "Casting", icon: UserCheck },
     { href: "/admin/candidaturas", label: "Candidaturas", icon: Users },
   ];
 

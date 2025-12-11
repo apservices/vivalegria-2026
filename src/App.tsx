@@ -24,6 +24,7 @@ import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminReservas from "./pages/admin/Reservas";
 import AdminCandidaturas from "./pages/admin/Candidaturas";
+import AdminCasting from "./pages/admin/Casting";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/reservas" element={<AdminReservas />} />
+              <Route path="/admin/casting" element={<AdminCasting />} />
               <Route path="/admin/candidaturas" element={<AdminCandidaturas />} />
               
               {/* Public routes with layout */}
