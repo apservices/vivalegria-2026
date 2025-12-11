@@ -86,8 +86,9 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="Vivalegria Recreação | Festas Infantis Premium"
-        description="Recreação infantil premium com profissionalismo, segurança e alto impacto emocional. Mais de 500 eventos realizados com excelência em São Paulo."
+        title="Recreação Infantil SP | Pacotes a Partir de R$589 | Vivalegria"
+        description="Recreação infantil para festas em São Paulo. Pacotes Select (4h + 2 recreadores) e Clássico (3h). Pintura facial, caça ao tesouro e muito mais! Orçamento grátis."
+        keywords="recreação infantil São Paulo, festa infantil SP, animação festa infantil preço, pacote recreação 20 crianças SP, pintura facial festa infantil"
         canonical="/"
       />
       <JsonLd type="organization" />
@@ -140,22 +141,25 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {[
               {
-                name: "Classic",
-                desc: "Festas de aniversário e reuniões familiares",
-                features: ["2 monitores especializados", "4 horas de duração", "Brincadeiras temáticas", "Kit de segurança"],
+                name: "Clássico",
+                desc: "Diversão garantida com o essencial",
+                price: "A partir de R$ 589,90",
+                features: ["1 recreador", "3 horas de recreação", "Escultura de balão", "Caça ao tesouro", "Toalha de piquenique + kit desenho"],
                 color: "border-[#FFD836]",
               },
               {
                 name: "Select",
-                desc: "Eventos premium com produção completa",
-                features: ["4 monitores especializados", "6 horas de duração", "Decoração personalizada", "3 oficinas criativas"],
+                desc: "Experiência completa e inesquecível",
+                price: "A partir de R$ 789,90",
+                features: ["2 recreadores profissionais", "4 horas de recreação", "Pintura facial básica", "Caça ao tesouro personalizada", "Escultura de balão + tatuagem"],
                 featured: true,
                 color: "border-[#FF731D]",
               },
               {
                 name: "Corporativo",
                 desc: "Shoppings, hotéis, escolas e empresas",
-                features: ["6+ monitores", "8+ horas", "Recreação temática", "Personagem Solo"],
+                price: "Sob consulta",
+                features: ["Equipe sob demanda", "Duração customizada", "Recreação temática", "Suporte completo"],
                 color: "border-[#73B6F0]",
               },
             ].map((pkg, index) => (
@@ -172,8 +176,9 @@ const Home = () => {
                 )}
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-3xl font-bold mb-3 text-[#FF731D]">{pkg.name}</h3>
-                    <p className="text-muted-foreground">{pkg.desc}</p>
+                    <h3 className="text-3xl font-bold mb-2 text-[#FF731D]">{pkg.name}</h3>
+                    <p className="text-muted-foreground mb-2">{pkg.desc}</p>
+                    <p className="font-bold text-lg text-primary">{pkg.price}</p>
                   </div>
                   <ul className="space-y-3">
                     {pkg.features.map((feature, i) => (

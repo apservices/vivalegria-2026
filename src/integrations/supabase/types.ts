@@ -53,6 +53,135 @@ export type Database = {
         }
         Relationships: []
       }
+      evento_casting: {
+        Row: {
+          cache: number | null
+          confirmado: boolean | null
+          created_at: string | null
+          funcao: string | null
+          id: string
+          observacoes: string | null
+          profissional_id: string | null
+          profissional_nome_manual: string | null
+          reserva_id: string | null
+        }
+        Insert: {
+          cache?: number | null
+          confirmado?: boolean | null
+          created_at?: string | null
+          funcao?: string | null
+          id?: string
+          observacoes?: string | null
+          profissional_id?: string | null
+          profissional_nome_manual?: string | null
+          reserva_id?: string | null
+        }
+        Update: {
+          cache?: number | null
+          confirmado?: boolean | null
+          created_at?: string | null
+          funcao?: string | null
+          id?: string
+          observacoes?: string | null
+          profissional_id?: string | null
+          profissional_nome_manual?: string | null
+          reserva_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evento_casting_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "evento_casting_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "reservas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profissionais: {
+        Row: {
+          apelido: string | null
+          cpf: string | null
+          created_at: string | null
+          cursos: string | null
+          data_nascimento: string | null
+          email: string | null
+          endereco: string | null
+          experiencia_tempo: string | null
+          faixa_etaria_experiencia: string | null
+          formacao: string | null
+          frequencia_desejada: string | null
+          habilidades: Json | null
+          id: string
+          interesse_pacotes: boolean | null
+          nome_completo: string
+          pix_chave: string | null
+          registro: string | null
+          status: string | null
+          telefone: string | null
+          tem_cnpj: boolean | null
+          transporte: string | null
+          uniformes: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          apelido?: string | null
+          cpf?: string | null
+          created_at?: string | null
+          cursos?: string | null
+          data_nascimento?: string | null
+          email?: string | null
+          endereco?: string | null
+          experiencia_tempo?: string | null
+          faixa_etaria_experiencia?: string | null
+          formacao?: string | null
+          frequencia_desejada?: string | null
+          habilidades?: Json | null
+          id?: string
+          interesse_pacotes?: boolean | null
+          nome_completo: string
+          pix_chave?: string | null
+          registro?: string | null
+          status?: string | null
+          telefone?: string | null
+          tem_cnpj?: boolean | null
+          transporte?: string | null
+          uniformes?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          apelido?: string | null
+          cpf?: string | null
+          created_at?: string | null
+          cursos?: string | null
+          data_nascimento?: string | null
+          email?: string | null
+          endereco?: string | null
+          experiencia_tempo?: string | null
+          faixa_etaria_experiencia?: string | null
+          formacao?: string | null
+          frequencia_desejada?: string | null
+          habilidades?: Json | null
+          id?: string
+          interesse_pacotes?: boolean | null
+          nome_completo?: string
+          pix_chave?: string | null
+          registro?: string | null
+          status?: string | null
+          telefone?: string | null
+          tem_cnpj?: boolean | null
+          transporte?: string | null
+          uniformes?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       reservas: {
         Row: {
           cep: string | null

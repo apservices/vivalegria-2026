@@ -5,7 +5,7 @@ interface VideoHeroProps {
   videoUrl?: string;
 }
 
-const VideoHero = ({ videoUrl = "https://videos.pexels.com/video-files/3252545/3252545-uhd_2560_1440_30fps.mp4" }: VideoHeroProps) => {
+const VideoHero = ({ videoUrl = "/videos/hero-vivalegria.mp4" }: VideoHeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
@@ -19,8 +19,8 @@ const VideoHero = ({ videoUrl = "https://videos.pexels.com/video-files/3252545/3
         <source src={videoUrl} type="video/mp4" />
       </video>
       
-      {/* Dark Overlay for readability */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Dark Overlay - more transparent for better video visibility */}
+      <div className="absolute inset-0 bg-black/40" />
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 text-center">
