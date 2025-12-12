@@ -9,9 +9,9 @@ interface SEOProps {
 }
 
 const SEO = ({
-  title = "Vivalegria Recreação | Festas Infantis Premium",
-  description = "Recreação infantil premium com profissionalismo, segurança e alto impacto emocional. Mais de 500 eventos realizados com excelência em São Paulo.",
-  keywords = "recreação infantil, festas infantis, animação de festas, oficinas criativas, eventos corporativos infantis, recreação SP, ABC Paulista",
+  title = "Recreação Infantil SP | Pacotes a partir de R$589 | Vivalegria 2026",
+  description = "Recreação infantil premium em São Paulo para festas, casamentos e eventos. Pacotes Select (4h + 2 recreadores) e Clássico. Vila Mariana, Moema, ABC. ☎️ (11) 96598-2251",
+  keywords = "recreação infantil São Paulo, festas infantis SP, animação de festas preço, oficinas criativas, eventos corporativos infantis, recreação Vila Mariana, recreação Moema, recreação ABC Paulista",
   ogImage = "/logo-vivalegria.jpg",
   canonical,
 }: SEOProps) => {
@@ -48,6 +48,8 @@ const SEO = ({
       <meta name="robots" content="index, follow" />
       <meta name="language" content="Portuguese" />
       <meta name="author" content="Vivalegria Recreação" />
+      <meta name="geo.region" content="BR-SP" />
+      <meta name="geo.placename" content="São Paulo" />
     </Helmet>
   );
 };
