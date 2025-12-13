@@ -1,4 +1,4 @@
-﻿{/* Premium Packages */}
+{/* Premium Packages */}
 <section className="py-24 bg-gradient-subtle">
   <div className="container mx-auto px-4">
     <div className="text-center mb-12">
@@ -10,7 +10,7 @@
 
     {/* Wrapper relativo com o mascote flutuando à direita */}
     <div className="relative max-w-5xl mx-auto">
-      {/* Mascote apontando pros cards premium – aparece só em telas grandes */}
+      {/* Mascote apontando pros cards premium – aparece só em telas grandes (XL+) */}
       <Mascote
         pose="banner"
         animation="balanco"
