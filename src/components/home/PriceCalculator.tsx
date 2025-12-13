@@ -33,9 +33,9 @@ const PriceCalculator = () => {
   const currentPrice = prices[selectedPackage];
 
   const whatsappMessage = encodeURIComponent(
-    `OlÃƒÂ¡! Ã°Å¸Å½â€° Gostaria de reservar o *Pacote ${
-      selectedPackage === "select" ? "SELECT" : "CLÃƒÂSSICO"
-    }* para *${children} crianÃƒÂ§as*.\n\nValor: R$ ${currentPrice
+    `Olá! 🎉 Gostaria de reservar o *Pacote ${
+      selectedPackage === "select" ? "SELECT" : "CLÁSSICO"
+    }* para *${children} crianças*.\n\nValor: R$ ${currentPrice
       .toFixed(2)
       .replace(".", ",")}\n\nPode me ajudar com o agendamento?`
   );
@@ -47,16 +47,16 @@ const PriceCalculator = () => {
           <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 mb-4">
             <Calculator className="w-5 h-5 text-primary" />
             <span className="text-sm font-semibold text-primary">
-              Calculadora de PreÃƒÂ§os
+              Calculadora de Preços
             </span>
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Monte seu OrÃƒÂ§amento em Segundos
+            Monte seu Orçamento em Segundos
           </h2>
 
           <p className="text-xl text-muted-foreground">
-            Selecione o nÃƒÂºmero de crianÃƒÂ§as e veja o valor na hora!
+            Selecione o número de crianças e veja o valor na hora!
           </p>
         </div>
 
@@ -65,7 +65,7 @@ const PriceCalculator = () => {
             {/* Children Slider */}
             <div className="mb-10">
               <label className="block text-lg font-semibold mb-4">
-                Quantas crianÃƒÂ§as terÃƒÂ¡ na festa?
+                Quantas crianças terá na festa?
               </label>
 
               <div className="flex items-center gap-6">
@@ -86,7 +86,7 @@ const PriceCalculator = () => {
               </div>
 
               <p className="text-sm text-muted-foreground mt-2">
-                Arraste para ajustar (15Ã¢â‚¬â€œ50 crianÃƒÂ§as)
+                Arraste para ajustar (15–50 crianças)
               </p>
             </div>
 
@@ -106,9 +106,9 @@ const PriceCalculator = () => {
                   }`}
                   type="button"
                 >
-                  <h4 className="text-xl font-bold mb-2">Pacote CLÃƒÂSSICO</h4>
+                  <h4 className="text-xl font-bold mb-2">Pacote CLÁSSICO</h4>
                   <p className="text-sm text-muted-foreground mb-3">
-                    3 horas Ã¢â‚¬Â¢ 1 recreador
+                    3 horas • 1 recreador
                   </p>
                   <p className="text-2xl font-bold text-primary">
                     R$ {prices.classico.toFixed(2).replace(".", ",")}
@@ -133,7 +133,7 @@ const PriceCalculator = () => {
 
                   <h4 className="text-xl font-bold mb-2">Pacote SELECT</h4>
                   <p className="text-sm text-muted-foreground mb-3">
-                    4 horas Ã¢â‚¬Â¢ 2 recreadores
+                    4 horas • 2 recreadores
                   </p>
                   <p className="text-2xl font-bold text-primary">
                     R$ {prices.select.toFixed(2).replace(".", ",")}
@@ -178,7 +178,7 @@ const PriceCalculator = () => {
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
-              Ã°Å¸â€œÂ Valores para SÃƒÂ£o Paulo e regiÃƒÂ£o. Taxa de deslocamento pode ser
+              📍 Valores para São Paulo e região. Taxa de deslocamento pode ser
               aplicada.
               <br />
               50% de sinal via PIX para reservar sua data.
