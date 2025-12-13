@@ -17,7 +17,7 @@ import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
 
-const STEP_LABELS = ["IdentificaÃƒÂ§ÃƒÂ£o", "Dados Pessoais", "Dados do Evento"];
+const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
 
 const initialFormData: ContratacaoFormData = {
   tipoCliente: "novo",
@@ -38,10 +38,8 @@ const initialFormData: ContratacaoFormData = {
 
 export const ContratacaoForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] =
-    useState<ContratacaoFormData>(initialFormData);
-  const [errors, setErrors] =
-    useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
+  const [formData, setFormData] = useState<ContratacaoFormData>(initialFormData);
+  const [errors, setErrors] = useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -69,18 +67,18 @@ export const ContratacaoForm = () => {
     if (!formData.cpfCnpj) {
       newErrors.cpfCnpj =
         formData.tipoCadastro === "pf"
-          ? "CPF ÃƒÂ© obrigatÃƒÂ³rio"
-          : "CNPJ ÃƒÂ© obrigatÃƒÂ³rio";
+          ? "CPF é obrigatório"
+          : "CNPJ é obrigatório";
     } else if (
       formData.tipoCadastro === "pf" &&
       !validateCPF(formData.cpfCnpj)
     ) {
-      newErrors.cpfCnpj = "CPF invÃƒÂ¡lido";
+      newErrors.cpfCnpj = "CPF inválido";
     } else if (
       formData.tipoCadastro === "pj" &&
       !validateCNPJ(formData.cpfCnpj)
     ) {
-      newErrors.cpfCnpj = "CNPJ invÃƒÂ¡lido";
+      newErrors.cpfCnpj = "CNPJ inválido";
     }
 
     setErrors(newErrors);
@@ -91,24 +89,23 @@ export const ContratacaoForm = () => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
 
     if (!formData.nomeCompleto.trim()) {
-      newErrors.nomeCompleto = "Nome completo ÃƒÂ© obrigatÃƒÂ³rio";
+      newErrors.nomeCompleto = "Nome completo é obrigatório";
     }
 
     if (!formData.telefone || unmask(formData.telefone).length < 10) {
-      newErrors.telefone = "Telefone invÃƒÂ¡lido";
+      newErrors.telefone = "Telefone inválido";
     }
 
     if (!formData.email) {
-      newErrors.email = "E-mail ÃƒÂ© obrigatÃƒÂ³rio";
+      newErrors.email = "E-mail é obrigatório";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "E-mail invÃƒÂ¡lido";
+      newErrors.email = "E-mail inválido";
     }
 
     if (!formData.emailConfirmacao) {
-      newErrors.emailConfirmacao =
-        "ConfirmaÃƒÂ§ÃƒÂ£o de e-mail ÃƒÂ© obrigatÃƒÂ³ria";
+      newErrors.emailConfirmacao = "Confirmação de e-mail é obrigatória";
     } else if (formData.email !== formData.emailConfirmacao) {
-      newErrors.emailConfirmacao = "Os e-mails nÃƒÂ£o coincidem";
+      newErrors.emailConfirmacao = "Os e-mails não coincidem";
     }
 
     setErrors(newErrors);
@@ -119,15 +116,15 @@ export const ContratacaoForm = () => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
 
     if (!formData.dataEvento) {
-      newErrors.dataEvento = "Data do evento ÃƒÂ© obrigatÃƒÂ³ria";
+      newErrors.dataEvento = "Data do evento é obrigatória";
     }
 
     if (!formData.horaInicio) {
-      newErrors.horaInicio = "Hora de inÃƒÂ­cio ÃƒÂ© obrigatÃƒÂ³ria";
+      newErrors.horaInicio = "Hora de início é obrigatória";
     }
 
     if (!formData.localEvento.trim()) {
-      newErrors.localEvento = "Local do evento ÃƒÂ© obrigatÃƒÂ³rio";
+      newErrors.localEvento = "Local do evento é obrigatório";
     }
 
     if (!packageType) {
@@ -258,7 +255,7 @@ export const ContratacaoForm = () => {
               onClick={handleNext}
               className="gap-2 bg-viva-orange hover:bg-viva-orange/90"
             >
-              PrÃƒÂ³ximo
+              Próximo
               <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
