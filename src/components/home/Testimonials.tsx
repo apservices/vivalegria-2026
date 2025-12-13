@@ -4,10 +4,10 @@ import { Quote } from "lucide-react";
 const testimonials = [
   {
     name: "Mariana Silva",
-    role: "MÃƒÂ£e do Lucas, 6 anos",
+    role: "Mãe do Lucas, 6 anos",
     location: "Vila Mariana, SP",
     content:
-      "A Vivalegria transformou o aniversÃƒÂ¡rio do meu filho em um dia mÃƒÂ¡gico. Profissionais incrÃƒÂ­veis e as crianÃƒÂ§as nÃƒÂ£o pararam de brincar!",
+      "A Vivalegria transformou o aniversário do meu filho em um dia mágico. Profissionais incríveis e as crianças não pararam de brincar!",
     rating: 5,
   },
   {
@@ -15,15 +15,15 @@ const testimonials = [
     role: "Gerente de Shopping",
     location: "Moema, SP",
     content:
-      "Contratamos para eventos mensais. OrganizaÃƒÂ§ÃƒÂ£o impecÃƒÂ¡vel e as famÃƒÂ­lias sempre elogiam muito. Recomendo!",
+      "Contratamos para eventos mensais. Organização impecável e as famílias sempre elogiam muito. Recomendo!",
     rating: 5,
   },
   {
     name: "Ana Paula Ferreira",
-    role: "Coordenadora PedagÃƒÂ³gica",
-    location: "Santo AndrÃƒÂ©, SP",
+    role: "Coordenadora Pedagógica",
+    location: "Santo André, SP",
     content:
-      "As oficinas criativas sÃƒÂ£o um sucesso! As crianÃƒÂ§as aprendem brincando e os pais adoram.",
+      "As oficinas criativas são um sucesso! As crianças aprendem brincando e os pais adoram.",
     rating: 5,
   },
   {
@@ -31,15 +31,15 @@ const testimonials = [
     role: "Noiva - Casamento 2024",
     location: "Brooklin, SP",
     content:
-      "Contratamos para o nosso casamento e foi perfeito! Os convidados curtiram a festa tranquilos sabendo que as crianÃƒÂ§as estavam se divertindo muito.",
+      "Contratamos para o nosso casamento e foi perfeito! Os convidados curtiram a festa tranquilos sabendo que as crianças estavam se divertindo muito.",
     rating: 5,
   },
   {
     name: "Carlos Eduardo",
     role: "Pai da Maria, 4 anos",
-    location: "TatuapÃƒÂ©, SP",
+    location: "Tatuapé, SP",
     content:
-      "JÃƒÂ¡ ÃƒÂ© a terceira festa que fazemos com a Vivalegria. Equipe pontual, organizada e as crianÃƒÂ§as amam. NÃƒÂ£o troco por nada!",
+      "Já é a terceira festa que fazemos com a Vivalegria. Equipe pontual, organizada e as crianças amam. Não troco por nada!",
     rating: 5,
   },
   {
@@ -61,7 +61,7 @@ const Testimonials = () => {
             Pais e Noivos que Confiaram na Gente
           </h2>
           <p className="text-xl text-muted-foreground">
-            Mais de 500 famÃƒÂ­lias felizes em SÃƒÂ£o Paulo e regiÃƒÂ£o
+            Mais de 500 famílias felizes em São Paulo e região
           </p>
         </div>
 
@@ -76,7 +76,7 @@ const Testimonials = () => {
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <span key={i} className="text-secondary text-xl">
-                    Ã¢Ëœâ€¦
+                    ★
                   </span>
                 ))}
               </div>
@@ -91,7 +91,7 @@ const Testimonials = () => {
                   {testimonial.role}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Ã°Å¸â€œÂ {testimonial.location}
+                  📍 {testimonial.location}
                 </p>
               </div>
             </Card>
