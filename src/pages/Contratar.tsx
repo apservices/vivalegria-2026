@@ -21,4 +21,4 @@
       </div>
     </div>
   </section>
-)} {/* <--- Esse ) fecha o {packageType && ( ... )} corretamente */}
+)} {/* <--- ESSE ) É OBRIGATÓRIO! Fecha o {packageType && ( ... } */}
