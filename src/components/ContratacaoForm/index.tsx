@@ -1,14 +1,14 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { 
-  validateCPF, 
-  validateCNPJ, 
-  validateEmail, 
-  unmask 
+import {
+  validateCPF,
+  validateCNPJ,
+  validateEmail,
+  unmask,
 } from "@/utils/inputMasks";
 import { ContratacaoFormData } from "./types";
 import { StepIdentificacao } from "./StepIdentificacao";
@@ -16,110 +16,156 @@ import { StepDadosContratante } from "./StepDadosContratante";
 import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
-const STEP_LABELS = ["IdentificaÃ§Ã£o", "Dados Pessoais", "Dados do Evento"];
+
+const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
+
 const initialFormData: ContratacaoFormData = {
-  tipoCliente: 'novo',
-  tipoCadastro: 'pf',
-  cpfCnpj: '',
-  nomeCompleto: '',
-  telefone: '',
-  email: '',
-  emailConfirmacao: '',
-  cep: '',
-  endereco: '',
-  complemento: '',
-  cidade: '',
-  dataEvento: '',
-  horaInicio: '',
-  localEvento: '',
+  tipoCliente: "novo",
+  tipoCadastro: "pf",
+  cpfCnpj: "",
+  nomeCompleto: "",
+  telefone: "",
+  email: "",
+  emailConfirmacao: "",
+  cep: "",
+  endereco: "",
+  complemento: "",
+  cidade: "",
+  dataEvento: "",
+  horaInicio: "",
+  localEvento: "",
 };
+
 export const ContratacaoForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<ContratacaoFormData>(initialFormData);
-  const [errors, setErrors] = useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
+  const [formData, setFormData] =
+    useState<ContratacaoFormData>(initialFormData);
+  const [errors, setErrors] =
+    useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { packageType, numChildren, selectedWorkshops, selectedExtras, calculateTotal } = useConfigurator();
+
+  const {
+    packageType,
+    numChildren,
+    selectedWorkshops,
+    selectedExtras,
+    calculateTotal,
+  } = useConfigurator();
+
   const updateFormData = (data: Partial<ContratacaoFormData>) => {
-    setFormData(prev => ({ ...prev, ...data }));
-    // Clear errors for updated fields
+    setFormData((prev) => ({ ...prev, ...data }));
+
     const updatedKeys = Object.keys(data) as (keyof ContratacaoFormData)[];
-    setErrors(prev => {
+    setErrors((prev) => {
       const newErrors = { ...prev };
-      updatedKeys.forEach(key => delete newErrors[key]);
+      updatedKeys.forEach((key) => delete newErrors[key]);
       return newErrors;
     });
   };
+
   const validateStep1 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
+
     if (!formData.cpfCnpj) {
-      newErrors.cpfCnpj = formData.tipoCadastro === 'pf' ? 'CPF Ã© obrigatÃ³rio' : 'CNPJ Ã© obrigatÃ³rio';
-    } else if (formData.tipoCadastro === 'pf' && !validateCPF(formData.cpfCnpj)) {
-      newErrors.cpfCnpj = 'CPF invÃ¡lido';
-    } else if (formData.tipoCadastro === 'pj' && !validateCNPJ(formData.cpfCnpj)) {
-      newErrors.cpfCnpj = 'CNPJ invÃ¡lido';
+      newErrors.cpfCnpj =
+        formData.tipoCadastro === "pf"
+          ? "CPF é obrigatório"
+          : "CNPJ é obrigatório";
+    } else if (
+      formData.tipoCadastro === "pf" &&
+      !validateCPF(formData.cpfCnpj)
+    ) {
+      newErrors.cpfCnpj = "CPF inválido";
+    } else if (
+      formData.tipoCadastro === "pj" &&
+      !validateCNPJ(formData.cpfCnpj)
+    ) {
+      newErrors.cpfCnpj = "CNPJ inválido";
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const validateStep2 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
+
     if (!formData.nomeCompleto.trim()) {
-      newErrors.nomeCompleto = 'Nome completo Ã© obrigatÃ³rio';
+      newErrors.nomeCompleto = "Nome completo é obrigatório";
     }
+
     if (!formData.telefone || unmask(formData.telefone).length < 10) {
-      newErrors.telefone = 'Telefone invÃ¡lido';
+      newErrors.telefone = "Telefone inválido";
     }
+
     if (!formData.email) {
-      newErrors.email = 'E-mail Ã© obrigatÃ³rio';
+      newErrors.email = "E-mail é obrigatório";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'E-mail invÃ¡lido';
+      newErrors.email = "E-mail inválido";
     }
+
     if (!formData.emailConfirmacao) {
-      newErrors.emailConfirmacao = 'ConfirmaÃ§Ã£o de e-mail Ã© obrigatÃ³ria';
+      newErrors.emailConfirmacao =
+        "Confirmação de e-mail é obrigatória";
     } else if (formData.email !== formData.emailConfirmacao) {
-      newErrors.emailConfirmacao = 'Os e-mails nÃ£o coincidem';
+      newErrors.emailConfirmacao = "Os e-mails não coincidem";
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const validateStep3 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
+
     if (!formData.dataEvento) {
-      newErrors.dataEvento = 'Data do evento Ã© obrigatÃ³ria';
+      newErrors.dataEvento = "Data do evento é obrigatória";
     }
+
     if (!formData.horaInicio) {
-      newErrors.horaInicio = 'Hora de inÃ­cio Ã© obrigatÃ³ria';
+      newErrors.horaInicio = "Hora de início é obrigatória";
     }
+
     if (!formData.localEvento.trim()) {
-      newErrors.localEvento = 'Local do evento Ã© obrigatÃ³rio';
+      newErrors.localEvento = "Local do evento é obrigatório";
     }
+
     if (!packageType) {
-      toast.error('Selecione um pacote antes de continuar');
+      toast.error("Selecione um pacote antes de continuar");
       return false;
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleNext = () => {
     let isValid = false;
+
     if (currentStep === 1) isValid = validateStep1();
     else if (currentStep === 2) isValid = validateStep2();
+
     if (isValid && currentStep < 3) {
-      setCurrentStep(prev => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setCurrentStep((prev) => prev + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setCurrentStep((prev) => prev - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
   const handleSubmit = async () => {
     if (!validateStep3()) return;
+
     setIsSubmitting(true);
+
     try {
       const total = calculateTotal();
+
       const reservaData = {
         tipo_cliente: formData.tipoCliente,
         tipo_cadastro: formData.tipoCadastro,
@@ -134,56 +180,68 @@ export const ContratacaoForm = () => {
         data_evento: formData.dataEvento,
         hora_inicio: formData.horaInicio,
         local_evento: formData.localEvento.trim(),
-        pacote_tipo: packageType || 'classic',
+        pacote_tipo: packageType ?? "classic",
         numero_criancas: numChildren,
         oficinas_selecionadas: selectedWorkshops,
         extras_selecionados: selectedExtras,
         total_calculado: total,
       };
-      const { error } = await supabase.from('reservas').insert(reservaData);
+
+      const { error } = await supabase
+        .from("reservas")
+        .insert(reservaData);
+
       if (error) throw error;
-      toast.success('Reserva enviada com sucesso! Entraremos em contato em breve.');
-      // Reset form
+
+      toast.success(
+        "Reserva enviada com sucesso! Entraremos em contato em breve."
+      );
+
       setFormData(initialFormData);
       setCurrentStep(1);
     } catch (error) {
-      console.error('Error submitting reservation:', error);
-      toast.error('Erro ao enviar reserva. Tente novamente.');
+      console.error("Erro ao enviar reserva:", error);
+      toast.error("Erro ao enviar reserva. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg border-viva-yellow/20">
       <CardContent className="p-6 md:p-8">
-        <ProgressIndicator 
-          currentStep={currentStep} 
-          totalSteps={3} 
+        <ProgressIndicator
+          currentStep={currentStep}
+          totalSteps={3}
           stepLabels={STEP_LABELS}
         />
+
         <div className="min-h-[400px]">
           {currentStep === 1 && (
-            <StepIdentificacao 
-              formData={formData} 
-              updateFormData={updateFormData} 
+            <StepIdentificacao
+              formData={formData}
+              updateFormData={updateFormData}
               errors={errors}
             />
           )}
+
           {currentStep === 2 && (
-            <StepDadosContratante 
-              formData={formData} 
-              updateFormData={updateFormData} 
+            <StepDadosContratante
+              formData={formData}
+              updateFormData={updateFormData}
               errors={errors}
             />
           )}
+
           {currentStep === 3 && (
-            <StepDadosEvento 
-              formData={formData} 
-              updateFormData={updateFormData} 
+            <StepDadosEvento
+              formData={formData}
+              updateFormData={updateFormData}
               errors={errors}
             />
           )}
         </div>
+
         <div className="flex justify-between mt-8 pt-6 border-t">
           <Button
             variant="outline"
@@ -194,14 +252,18 @@ export const ContratacaoForm = () => {
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Button>
+
           {currentStep < 3 ? (
-            <Button onClick={handleNext} className="gap-2 bg-viva-orange hover:bg-viva-orange/90">
-              PrÃ³ximo
+            <Button
+              onClick={handleNext}
+              className="gap-2 bg-viva-orange hover:bg-viva-orange/90"
+            >
+              Próximo
               <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
-            <Button 
-              onClick={handleSubmit} 
+            <Button
+              onClick={handleSubmit}
               disabled={isSubmitting}
               className="gap-2 bg-viva-orange hover:bg-viva-orange/90"
             >
