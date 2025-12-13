@@ -63,4 +63,4 @@
   );
 };
 
-export default Pacotes;  // <--- ESSA LINHA É OBRIGATÓRIA!
+export default Pacotes;
