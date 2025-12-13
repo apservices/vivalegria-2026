@@ -4,19 +4,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { StepProps } from "./types";
 import { Calendar, Clock, MapPin, Package } from "lucide-react";
+
 export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps) => {
   const { packageType, numChildren, selectedWorkshops, selectedExtras, calculateTotal } = useConfigurator();
   const total = calculateTotal();
+
   const packageNames: Record<string, string> = {
     classic: 'Classic',
     select: 'Select',
   };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-semibold text-foreground mb-2">Dados do Evento</h2>
         <p className="text-muted-foreground">Informe os detalhes do seu evento</p>
       </div>
+
       {/* Resumo do Pacote Selecionado */}
       <div className="bg-viva-yellow/10 border border-viva-yellow/30 rounded-xl p-4 space-y-3">
         <div className="flex items-center gap-2 text-viva-orange font-semibold">
@@ -26,10 +30,10 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
             <span className="text-muted-foreground">Pacote:</span>
-            <span className="ml-2 font-medium">{packageType ? packageNames[packageType] : 'NÃƒÂ£o selecionado'}</span>
+            <span className="ml-2 font-medium">{packageType ? packageNames[packageType] : 'Não selecionado'}</span>
           </div>
           <div>
-            <span className="text-muted-foreground">CrianÃƒÂ§as:</span>
+            <span className="text-muted-foreground">Crianças:</span>
             <span className="ml-2 font-medium">{numChildren}</span>
           </div>
         </div>
@@ -51,6 +55,7 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
           </span>
         </div>
       </div>
+
       {/* Data do Evento */}
       <div className="space-y-2">
         <Label htmlFor="dataEvento" className="text-base font-medium flex items-center gap-2">
@@ -69,11 +74,12 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
           <p className="text-sm text-destructive">{errors.dataEvento}</p>
         )}
       </div>
-      {/* Hora de InÃƒÂ­cio */}
+
+      {/* Hora de Início */}
       <div className="space-y-2">
         <Label htmlFor="horaInicio" className="text-base font-medium flex items-center gap-2">
           <Clock className="h-4 w-4 text-viva-orange" />
-          Hora de InÃƒÂ­cio *
+          Hora de Início *
         </Label>
         <Input
           id="horaInicio"
@@ -86,6 +92,7 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
           <p className="text-sm text-destructive">{errors.horaInicio}</p>
         )}
       </div>
+
       {/* Local do Evento */}
       <div className="space-y-2">
         <Label htmlFor="localEvento" className="text-base font-medium flex items-center gap-2">
@@ -96,7 +103,7 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
           id="localEvento"
           value={formData.localEvento}
           onChange={(e) => updateFormData({ localEvento: e.target.value })}
-          placeholder="EndereÃƒÂ§o completo onde serÃƒÂ¡ realizado o evento"
+          placeholder="Endereço completo onde será realizado o evento"
           rows={3}
           className={errors.localEvento ? 'border-destructive' : ''}
         />
