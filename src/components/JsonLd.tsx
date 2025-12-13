@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 
 interface JsonLdProps {
-  type?: "organization" | "local-business" | "faq" | "product";
+  type?: "organization" | "local-business" | "faq" | "product" | "all-products";
   productData?: {
     name: string;
     description: string;
@@ -16,7 +16,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Vivalegria Recreação",
+    "name": "Vivalegria Recreação Infantil",
     "url": "https://vivalegria.com.br",
     "logo": "https://vivalegria.com.br/logo-vivalegria.jpg",
     "description": "Recreação infantil premium em São Paulo com profissionalismo, segurança e alto impacto emocional. Mais de 500 eventos realizados com excelência.",
@@ -36,8 +36,8 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "availableLanguage": "Portuguese"
     },
     "sameAs": [
-      "https://instagram.com/vivalegria",
-      "https://facebook.com/vivalegria"
+      "https://instagram.com/vivalegriareceacao",
+      "https://facebook.com/vivalegriareceacao"
     ]
   };
 
@@ -49,7 +49,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
     "priceRange": "R$ 589 - R$ 1.769",
     "telephone": "+55-11-96598-2251",
     "email": "contato@vivalegria.com.br",
-    "description": "Recreação infantil para festas em São Paulo. Pacotes a partir de R$589,90 com monitores profissionais, pintura facial, caça ao tesouro e muito mais!",
+    "description": "Recreação infantil para festas em São Paulo. Pacotes a partir de R$589,90 com recreadores profissionais, pintura facial, caça ao tesouro e muito mais! Atendemos Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "São Paulo e região metropolitana",
@@ -74,7 +74,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": "Saturday",
         "opens": "09:00",
-        "closes": "17:00"
+        "closes": "12:00"
       }
     ],
     "aggregateRating": {
@@ -82,10 +82,16 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "ratingValue": "4.9",
       "reviewCount": "127"
     },
-    "areaServed": {
-      "@type": "City",
-      "name": "São Paulo"
-    },
+    "areaServed": [
+      { "@type": "City", "name": "São Paulo" },
+      { "@type": "AdministrativeArea", "name": "Vila Mariana" },
+      { "@type": "AdministrativeArea", "name": "Moema" },
+      { "@type": "AdministrativeArea", "name": "Santo Amaro" },
+      { "@type": "AdministrativeArea", "name": "Morumbi" },
+      { "@type": "AdministrativeArea", "name": "Pinheiros" },
+      { "@type": "AdministrativeArea", "name": "Jardins" },
+      { "@type": "AdministrativeArea", "name": "ABC Paulista" }
+    ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Pacotes de Recreação Infantil",
@@ -105,13 +111,34 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
           "itemOffered": {
             "@type": "Service",
             "name": "Pacote CLÁSSICO",
-            "description": "3 horas de recreação com 1 recreador"
+            "description": "4 horas de recreação com 1 recreador"
           },
           "price": "589.90",
           "priceCurrency": "BRL"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Baladinha Kids",
+            "description": "2 horas de festa com pista iluminada, luzes LED, máquina de fumaça e playlist personalizada"
+          },
+          "price": "989.00",
+          "priceCurrency": "BRL"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Área Baby",
+            "description": "2 horas com espaço dedicado, atividades sensoriais e profissionais especializados para bebês"
+          },
+          "price": "679.90",
+          "priceCurrency": "BRL"
         }
       ]
-    }
+    },
+    "paymentAccepted": "PIX, Cartão de Crédito"
   };
 
   const faqSchema = {
@@ -131,7 +158,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         "name": "O que está incluso na recreação clássica?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O Pacote Clássico inclui 3 horas de recreação com 1 recreador, escultura de balão, tatuagem infantil, caça ao tesouro, toalha de piquenique com kit desenho, e brincadeiras com cordas, bolas e cones. A partir de R$ 589,90 para até 15 crianças."
+          "text": "O Pacote Clássico inclui 4 horas de recreação com 1 recreador, escultura de balão, tatuagem infantil, caça ao tesouro, toalha de piquenique com kit desenho, e brincadeiras com cordas, bolas e cones. A partir de R$ 589,90 para até 15 crianças."
         }
       },
       {
@@ -139,7 +166,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         "name": "Vocês atendem em toda São Paulo?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! Atendemos São Paulo capital e região metropolitana. Para locais mais distantes, pode ser aplicada uma taxa de deslocamento. Consulte-nos para mais detalhes."
+          "text": "Sim! Atendemos São Paulo capital e região metropolitana, incluindo Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC. Para locais mais distantes, pode ser aplicada uma taxa de deslocamento."
         }
       },
       {
@@ -147,7 +174,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         "name": "Como funciona o pagamento?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Trabalhamos com 50% de sinal via PIX para reserva da data, e o restante pode ser pago no dia do evento. Aceitamos PIX, cartão e boleto. Emitimos contrato digital e nota fiscal."
+          "text": "PIX: à vista ou 60% de sinal + 40% até 7 dias antes do evento. Cartão: 3x sem juros acima de R$600 ou até 10x com juros. Emitimos contrato digital e nota fiscal."
         }
       },
       {
@@ -168,18 +195,18 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       },
       {
         "@type": "Question",
-        "name": "Qual a diferença entre pintura artística profissional e básica?",
+        "name": "O que é a Baladinha Kids?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A pintura profissional inclui desenhos mais elaborados e detalhados (a partir de R$ 249,90), enquanto a básica oferece motivos mais simples mas igualmente divertidos (a partir de R$ 149,90). O pacote Select já inclui a pintura básica."
+          "text": "A Baladinha Kids é uma experiência premium com estrutura 3x3m, pista iluminada, luzes LED, caixa de som, máquina de fumaça e playlist personalizada. Custa R$989 para até 20 crianças por 2 horas. Pode ser contratada com ou sem recreação."
         }
       },
       {
         "@type": "Question",
-        "name": "Vocês fornecem todos os materiais?",
+        "name": "Vocês têm serviço especial para bebês?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! Todos os materiais necessários para as atividades estão inclusos nos pacotes. Você só precisa se preocupar com a festa!"
+          "text": "Sim! A Área Baby oferece espaço dedicado com atividades sensoriais, brinquedos adequados e profissionais especializados para os menores. Custa R$679,90 para até 10 bebês por 2 horas."
         }
       }
     ]
@@ -199,11 +226,11 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "@type": "Offer",
       "priceCurrency": "BRL",
       "price": productData.price,
-      "priceValidUntil": "2025-12-31",
+      "priceValidUntil": "2026-12-31",
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "Vivalegria Recreação"
+        "name": "Vivalegria Recreação Infantil"
       }
     },
     "aggregateRating": {
@@ -213,6 +240,64 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
     }
   } : null;
 
+  const allProductsSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "name": "Pacote SELECT - Recreação Infantil",
+        "description": "4 horas de recreação com 2 recreadores profissionais, pintura facial, caça ao tesouro, escultura de balão e muito mais",
+        "brand": { "@type": "Brand", "name": "Vivalegria" },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "price": "789.90",
+          "priceValidUntil": "2026-12-31",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "name": "Pacote CLÁSSICO - Recreação Infantil",
+        "description": "4 horas de recreação com 1 recreador, escultura de balão, tatuagem infantil, caça ao tesouro",
+        "brand": { "@type": "Brand", "name": "Vivalegria" },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "price": "589.90",
+          "priceValidUntil": "2026-12-31",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "name": "Baladinha Kids",
+        "description": "Estrutura 3x3m com pista iluminada, luzes LED, máquina de fumaça e playlist personalizada para até 20 crianças",
+        "brand": { "@type": "Brand", "name": "Vivalegria" },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "price": "989.00",
+          "priceValidUntil": "2026-12-31",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "Product",
+        "name": "Área Baby",
+        "description": "Espaço dedicado com atividades sensoriais e profissionais especializados para até 10 bebês",
+        "brand": { "@type": "Brand", "name": "Vivalegria" },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "BRL",
+          "price": "679.90",
+          "priceValidUntil": "2026-12-31",
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    ]
+  };
+
   const getSchema = () => {
     switch (type) {
       case "local-business":
@@ -221,6 +306,8 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         return faqSchema;
       case "product":
         return productSchema;
+      case "all-products":
+        return allProductsSchema;
       default:
         return organizationSchema;
     }
