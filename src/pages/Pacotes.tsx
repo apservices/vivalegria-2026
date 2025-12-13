@@ -3,21 +3,13 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import SEO from "@/components/SEO";
-import { priceTableData, formatPrice } from "@/utils/pricing";
+import { formatPrice, getMinimumPrice } from "@/utils/pricing";
 
 const Pacotes = () => {
   const packages = [
@@ -42,7 +34,7 @@ const Pacotes = () => {
       ],
       color: "viva-orange",
       featured: true,
-      startPrice: "R$ 789,90",
+      startPrice: `R$ ${formatPrice(getMinimumPrice("package", "select"))}`,
     },
     {
       name: "Pacote CLÁSSICO",
@@ -60,7 +52,7 @@ const Pacotes = () => {
         "Brincadeiras com cordas, bolas e cones",
       ],
       color: "viva-sun",
-      startPrice: "R$ 589,90",
+      startPrice: `R$ ${formatPrice(getMinimumPrice("package", "classic"))}`,
     },
   ];
 
@@ -267,65 +259,9 @@ const Pacotes = () => {
           </div>
         </section>
 
-        {/* Price Table */}
+        {/* Payment Rules */}
         <section className="py-24">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="mb-4">Valores por Quantidade de Crianças</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Confira nossa tabela de preços completa para 2025/2026
-              </p>
-            </div>
-
-            <div className="max-w-6xl mx-auto overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">Crianças</TableHead>
-                    <TableHead className="text-center">
-                      <div>Pintura Artística</div>
-                      <div className="text-xs font-normal">Profissional</div>
-                    </TableHead>
-                    <TableHead className="text-center">
-                      <div>Pintura Artística</div>
-                      <div className="text-xs font-normal">Básica</div>
-                    </TableHead>
-                    <TableHead className="text-center">
-                      <div>Oficina Pintura em Tela</div>
-                      <div className="text-xs font-normal">ou Cupcake</div>
-                    </TableHead>
-                    <TableHead className="text-center">
-                      <div>Oficinas Criativas</div>
-                      <div className="text-xs font-normal">Slime / Miçangas / Jardinagem</div>
-                    </TableHead>
-                    <TableHead className="text-center">
-                      <div>Recreação</div>
-                      <div className="text-xs font-normal">Clássica (4h)</div>
-                    </TableHead>
-                    <TableHead className="text-center bg-primary/10">
-                      <div className="font-bold">Pacote SELECT</div>
-                      <div className="text-xs font-normal">4h + 2 recreadores</div>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {priceTableData.map((row) => (
-                    <TableRow key={row.children}>
-                      <TableCell className="font-medium">{row.children}</TableCell>
-                      <TableCell className="text-center">R$ {formatPrice(row.pinturaPro)}</TableCell>
-                      <TableCell className="text-center">R$ {formatPrice(row.pinturaBasica)}</TableCell>
-                      <TableCell className="text-center">R$ {formatPrice(row.oficinaTela)}</TableCell>
-                      <TableCell className="text-center">R$ {formatPrice(row.oficinasCriativas)}</TableCell>
-                      <TableCell className="text-center">R$ {formatPrice(row.classic)}</TableCell>
-                      <TableCell className="text-center bg-primary/5 font-bold text-primary">
-                        R$ {formatPrice(row.select)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-
             {/* Payment Rules */}
             <div className="max-w-4xl mx-auto mt-12 p-6 bg-background rounded-xl border">
               <div className="flex items-start gap-3">

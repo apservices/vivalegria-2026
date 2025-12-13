@@ -34,8 +34,8 @@ const Home = () => {
       image: vivaEquipe,
     },
     {
-      title: "+500 Eventos Realizados",
-      description: "Experiência comprovada em festas inesquecíveis",
+      title: "+300 Profissionais Cadastrados",
+      description: "Equipe experiente e apaixonada pelo que faz",
       image: vivaRecreacao,
     },
     {
