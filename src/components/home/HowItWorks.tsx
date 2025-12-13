@@ -5,7 +5,7 @@ const steps = [
     icon: PhoneCall,
     title: "1. Fale Conosco",
     description:
-      "Entre em contato pelo WhatsApp ou formulÃƒÂ¡rio. Vamos entender seu evento e suas necessidades.",
+      "Entre em contato pelo WhatsApp ou formulário. Vamos entender seu evento e suas necessidades.",
   },
   {
     icon: Calendar,
@@ -17,13 +17,13 @@ const steps = [
     icon: PartyPopper,
     title: "3. Curtam a Festa",
     description:
-      "Nossa equipe chega 30 minutos antes, preparada com tudo para encantar as crianÃƒÂ§as!",
+      "Nossa equipe chega 30 minutos antes, preparada com tudo para encantar as crianças!",
   },
   {
     icon: Heart,
-    title: "4. MemÃƒÂ³rias Eternas",
+    title: "4. Memórias Eternas",
     description:
-      "Receba fotos do evento e veja sorrisos que vÃƒÂ£o durar para sempre.",
+      "Receba fotos do evento e veja sorrisos que vão durar para sempre.",
   },
 ];
 
@@ -36,7 +36,7 @@ const HowItWorks = () => {
             Como Funciona a Vivalegria na sua Festa
           </h2>
           <p className="text-xl text-muted-foreground">
-            4 passos simples para uma festa inesquecÃƒÂ­vel
+            4 passos simples para uma festa inesquecível
           </p>
         </div>
 
