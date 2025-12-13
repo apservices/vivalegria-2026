@@ -9,26 +9,26 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Logo & Description */}
           <div className="space-y-5">
-            <img src={logoVivalegria} alt="Vivalegria" className="h-12 w-auto" />
+            <img src={logoVivalegria} alt="Vivalegria Recreação Infantil" className="h-12 w-auto" />
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Transformando festas em experiências inesquecíveis desde 2015.
+              Transformando festas em experiências inesquecíveis desde 2015. Recreação infantil premium em São Paulo.
             </p>
             <div className="flex space-x-3">
               <a
-                href="https://instagram.com/vivalegria"
+                href="https://instagram.com/vivalegriareceacao"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-full bg-[#FFD836] hover:bg-[#FF731D] hover:text-white transition-all duration-300"
-                aria-label="Instagram"
+                aria-label="Instagram Vivalegria"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="https://facebook.com/vivalegria"
+                href="https://facebook.com/vivalegriareceacao"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-full bg-[#FFD836] hover:bg-[#FF731D] hover:text-white transition-all duration-300"
-                aria-label="Facebook"
+                aria-label="Facebook Vivalegria"
               >
                 <Facebook size={20} />
               </a>
@@ -72,29 +72,36 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Areas Served */}
           <div>
-            <h3 className="font-semibold mb-5 text-foreground">Serviços</h3>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li>Festas de Aniversário</li>
-              <li>Oficinas Criativas</li>
-              <li>Eventos Corporativos</li>
-              <li>Recreação em Hotéis</li>
-              <li>Shoppings e Escolas</li>
+            <h3 className="font-semibold mb-5 text-foreground">Onde Atendemos</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>Vila Mariana</li>
+              <li>Moema</li>
+              <li>Santo Amaro</li>
+              <li>Morumbi</li>
+              <li>Pinheiros</li>
+              <li>Jardins</li>
+              <li>ABC Paulista</li>
+              <li className="text-primary font-medium">+ toda São Paulo e região</li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact - NAP */}
           <div>
             <h3 className="font-semibold mb-5 text-foreground">Contato</h3>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3 text-sm">
                 <MapPin size={18} className="mt-1 flex-shrink-0 text-[#FFD836]" />
-                <span className="text-muted-foreground">São Paulo - SP</span>
+                <div className="text-muted-foreground">
+                  <span className="font-medium text-foreground">Vivalegria Recreação Infantil</span><br />
+                  São Paulo - SP<br />
+                  Atendemos toda região metropolitana
+                </div>
               </li>
               <li className="flex items-center space-x-3 text-sm">
                 <Phone size={18} className="flex-shrink-0 text-[#FFD836]" />
-                <a href="https://wa.me/5511965982251" className="text-muted-foreground hover:text-[#FF731D] transition-colors duration-300">
+                <a href="https://wa.me/5511965982251" className="text-muted-foreground hover:text-[#FF731D] transition-colors duration-300 font-medium">
                   (11) 96598-2251
                 </a>
               </li>
@@ -114,7 +121,10 @@ const Footer = () => {
 
         <div className="border-t border-[#FFD836]/30 mt-12 pt-10 text-center">
           <p className="text-sm text-muted-foreground font-medium">
-            © {new Date().getFullYear()} Vivalegria Recreação. Todos os direitos reservados.
+            © 2026 Vivalegria Recreação Infantil. Todos os direitos reservados.
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Recreação infantil em São Paulo • Vila Mariana • Moema • ABC
           </p>
           <div className="flex justify-center space-x-6 mt-4">
             <Link to="/privacidade" className="text-xs text-muted-foreground hover:text-[#FF731D] transition-colors duration-300">
