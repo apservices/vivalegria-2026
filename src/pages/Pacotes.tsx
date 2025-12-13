@@ -10,140 +10,152 @@ import {
 } from "@/components/ui/accordion";
 import SEO from "@/components/SEO";
 import { formatPrice, getMinimumPrice } from "@/utils/pricing";
+
 const Pacotes = () => {
   const packages = [
     {
       name: "Pacote SELECT",
       badge: "RECOMENDADO",
       badgeIcon: Star,
-      audience: "ExperiÃªncia completa e inesquecÃ­vel",
-      description: "4 horas de recreaÃ§Ã£o com 2 recreadores profissionais",
+      audience: "Experiência completa e inesquecível",
+      description: "4 horas de recreação com 2 recreadores profissionais",
       features: [
         "2 recreadores profissionais",
-        "4 horas de recreaÃ§Ã£o",
-        "Pintura facial bÃ¡sica",
-        "CaÃ§a ao tesouro personalizada",
-        "Escultura de balÃ£o",
+        "4 horas de recreação",
+        "Pintura facial básica",
+        "Caça ao tesouro personalizada",
+        "Escultura de balão",
         "Tatuagem infantil",
         "Massinha + paraquedas",
-        "Jogos e brincadeiras clÃ¡ssicas",
+        "Jogos e brincadeiras clássicas",
         "Presente especial para o aniversariante",
         "Toalha de piquenique xadrez + kit desenho",
-        "Brincadeiras com cordas, bolas e cones"],
+        "Brincadeiras com cordas, bolas e cones",
+      ],
       color: "viva-orange",
       featured: true,
       startPrice: `R$ ${formatPrice(getMinimumPrice("package", "select"))}`,
     },
     {
-      name: "Pacote CLÃSSICO",
+      name: "Pacote CLÁSSICO",
       badge: null,
       badgeIcon: null,
-      audience: "DiversÃ£o garantida com o essencial",
-      description: "4 horas de recreaÃ§Ã£o com 1 recreador",
+      audience: "Diversão garantida com o essencial",
+      description: "4 horas de recreação com 1 recreador",
       features: [
         "1 recreador",
-        "4 horas de recreaÃ§Ã£o",
-        "Escultura de balÃ£o",
+        "4 horas de recreação",
+        "Escultura de balão",
         "Tatuagem infantil",
-        "CaÃ§a ao tesouro",
+        "Caça ao tesouro",
         "Toalha de piquenique + kit desenho",
-        "Brincadeiras com cordas, bolas e cones"],
+        "Brincadeiras com cordas, bolas e cones",
+      ],
       color: "viva-sun",
       startPrice: `R$ ${formatPrice(getMinimumPrice("package", "classic"))}`,
-    }];
+    },
+  ];
+
   const premiumPackages = [
     {
       name: "Baladinha Kids",
       badge: "PREMIUM",
       badgeIcon: Sparkles,
       badgeColor: "bg-gradient-to-r from-purple-500 to-pink-500",
-      audience: "ExperiÃªncia danÃ§ante mÃ¡gica!",
+      audience: "Experiência dançante mágica!",
       description: "2 horas de festa com estrutura profissional",
       features: [
         "Estrutura 3x3m com pista iluminada",
         "Luzes LED profissionais",
         "Caixa de som potente",
-        "MÃ¡quina de fumaÃ§a",
+        "Máquina de fumaça",
         "Playlist personalizada",
-        "AtÃ© 20 crianÃ§as inclusas",
-        "+R$30 por crianÃ§a extra",
-        "+R$200 por hora extra"],
+        "Até 20 crianças inclusas",
+        "+R$30 por criança extra",
+        "+R$200 por hora extra",
+      ],
       startPrice: "R$ 989,00",
-      note: "Pode ser contratada com ou sem recreaÃ§Ã£o â€” consulte no WhatsApp!",
+      note: "Pode ser contratada com ou sem recreação — consulte no WhatsApp!",
     },
     {
-      name: "Ãrea Baby",
-      badge: "BEBÃŠS",
+      name: "Área Baby",
+      badge: "BEBÊS",
       badgeIcon: Baby,
       badgeColor: "bg-gradient-to-r from-sky-400 to-teal-400",
-      audience: "EspaÃ§o especial para os menores",
+      audience: "Espaço especial para os menores",
       description: "2 horas com profissionais especializados",
       features: [
-        "EspaÃ§o dedicado e seguro",
+        "Espaço dedicado e seguro",
         "Atividades sensoriais",
-        "Brinquedos adequados para bebÃªs",
+        "Brinquedos adequados para bebês",
         "Profissionais especializados",
-        "AtÃ© 10 bebÃªs inclusos",
-        "+R$25 por bebÃª extra"],
+        "Até 10 bebês inclusos",
+        "+R$25 por bebê extra",
+      ],
       startPrice: "R$ 679,90",
-      note: "Pode ser contratada com ou sem recreaÃ§Ã£o â€” consulte no WhatsApp!",
-    }];
+      note: "Pode ser contratada com ou sem recreação — consulte no WhatsApp!",
+    },
+  ];
+
   const faqs = [
     {
-      question: "Quanto custa o pacote Select para 25 crianÃ§as?",
-      answer: "O pacote Select para 25 crianÃ§as custa R$ 1.119,90. Este valor inclui 4 horas de recreaÃ§Ã£o, 2 recreadores profissionais, pintura facial, caÃ§a ao tesouro personalizada, escultura de balÃ£o, e muito mais!"
+      question: "Quanto custa o pacote Select para 25 crianças?",
+      answer: "O pacote Select para 25 crianças custa R$ 1.119,90. Este valor inclui 4 horas de recreação, 2 recreadores profissionais, pintura facial, caça ao tesouro personalizada, escultura de balão, e muito mais!",
     },
     {
-      question: "O que estÃ¡ incluso na recreaÃ§Ã£o clÃ¡ssica?",
-      answer: "O Pacote ClÃ¡ssico inclui 4 horas de recreaÃ§Ã£o com 1 recreador, escultura de balÃ£o, tatuagem infantil, caÃ§a ao tesouro, toalha de piquenique com kit desenho, e brincadeiras com cordas, bolas e cones."
+      question: "O que está incluso na recreação clássica?",
+      answer: "O Pacote Clássico inclui 4 horas de recreação com 1 recreador, escultura de balão, tatuagem infantil, caça ao tesouro, toalha de piquenique com kit desenho, e brincadeiras com cordas, bolas e cones.",
     },
     {
-      question: "VocÃªs atendem em toda SÃ£o Paulo?",
-      answer: "Sim! Atendemos SÃ£o Paulo capital e regiÃ£o metropolitana, incluindo Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC. Para locais mais distantes, pode ser aplicada uma taxa de deslocamento."
+      question: "Vocês atendem em toda São Paulo?",
+      answer: "Sim! Atendemos São Paulo capital e região metropolitana, incluindo Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC. Para locais mais distantes, pode ser aplicada uma taxa de deslocamento.",
     },
     {
       question: "Como funciona o pagamento?",
-      answer: "PIX: Ã  vista ou 60% de sinal + 40% atÃ© 7 dias antes do evento. CartÃ£o: 3x sem juros acima de R$600 ou atÃ© 10x com juros. Emitimos contrato digital e nota fiscal."
+      answer: "PIX: à vista ou 60% de sinal + 40% até 7 dias antes do evento. Cartão: 3x sem juros acima de R$600 ou até 10x com juros. Emitimos contrato digital e nota fiscal.",
     },
     {
-      question: "Posso adicionar mais crianÃ§as depois de fechar o pacote?",
-      answer: "Sim! VocÃª pode ajustar o nÃºmero de crianÃ§as atÃ© 3 dias antes do evento. Valores para mais de 50 crianÃ§as sÃ£o calculados sob consulta."
+      question: "Posso adicionar mais crianças depois de fechar o pacote?",
+      answer: "Sim! Você pode ajustar o número de crianças até 3 dias antes do evento. Valores para mais de 50 crianças são calculados sob consulta.",
     },
     {
-      question: "Os recreadores sÃ£o profissionais treinados?",
-      answer: "Todos os nossos recreadores passam por treinamento especÃ­fico da Vivalegria, com foco em seguranÃ§a infantil, primeiros socorros, e tÃ©cnicas de animaÃ§Ã£o. SÃ£o profissionais experientes e apaixonados pelo que fazem!"
+      question: "Os recreadores são profissionais treinados?",
+      answer: "Todos os nossos recreadores passam por treinamento específico da Vivalegria, com foco em segurança infantil, primeiros socorros, e técnicas de animação. São profissionais experientes e apaixonados pelo que fazem!",
     },
     {
-      question: "Qual a diferenÃ§a entre pintura artÃ­stica profissional e bÃ¡sica?",
-      answer: "A pintura profissional inclui desenhos mais elaborados e detalhados, enquanto a bÃ¡sica oferece motivos mais simples mas igualmente divertidos. O pacote Select jÃ¡ inclui a pintura bÃ¡sica."
+      question: "Qual a diferença entre pintura artística profissional e básica?",
+      answer: "A pintura profissional inclui desenhos mais elaborados e detalhados, enquanto a básica oferece motivos mais simples mas igualmente divertidos. O pacote Select já inclui a pintura básica.",
     },
     {
-      question: "VocÃªs fornecem todos os materiais?",
-      answer: "Sim! Todos os materiais necessÃ¡rios para as atividades estÃ£o inclusos nos pacotes. VocÃª sÃ³ precisa se preocupar com a festa!"
-    }];
+      question: "Vocês fornecem todos os materiais?",
+      answer: "Sim! Todos os materiais necessários para as atividades estão inclusos nos pacotes. Você só precisa se preocupar com a festa!",
+    },
+  ];
+
   return (
     <>
       <SEO
-        title="RecreaÃ§Ã£o Infantil SP | Pacotes a Partir de R$589 | Vivalegria"
-        description="Pacotes de recreaÃ§Ã£o infantil para festas em SÃ£o Paulo. Pacote Select com 4h e 2 recreadores a partir de R$789,90. Pacote ClÃ¡ssico 4h a partir de R$589,90. Baladinha Kids e Ãrea Baby disponÃ­veis!"
-        keywords="recreaÃ§Ã£o infantil SÃ£o Paulo, pacote festa infantil preÃ§o, recreaÃ§Ã£o para festa infantil SP, animaÃ§Ã£o infantil preÃ§o, baladinha kids, Ã¡rea baby festa"
+        title="Recreação Infantil SP | Pacotes a Partir de R$589 | Vivalegria"
+        description="Pacotes de recreação infantil para festas em São Paulo. Pacote Select com 4h e 2 recreadores a partir de R$789,90. Pacote Clássico 4h a partir de R$589,90. Baladinha Kids e Área Baby disponíveis!"
+        keywords="recreação infantil São Paulo, pacote festa infantil preço, recreação para festa infantil SP, animação infantil preço, baladinha kids, área baby festa"
         canonical="/pacotes"
       />
       <div className="min-h-screen pt-20">
         {/* Hero */}
         <section className="py-24 bg-gradient-subtle">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="mb-6 text-balance">Tabela de PreÃ§os 2025/2026 â€“ Vivalegria Festas</h1>
+            <h1 className="mb-6 text-balance">Tabela de Preços 2025/2026 – Vivalegria Festas</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
-              Valores vÃ¡lidos para festas em SÃ£o Paulo e regiÃ£o (consulte taxa de deslocamento)
+              Valores válidos para festas em São Paulo e região (consulte taxa de deslocamento)
             </p>
           </div>
         </section>
+
         {/* Main Packages Grid */}
         <section className="py-24">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="mb-4">Pacotes de RecreaÃ§Ã£o</h2>
+              <h2 className="mb-4">Pacotes de Recreação</h2>
               <p className="text-lg text-muted-foreground">
                 Escolha o pacote ideal para a sua festa
               </p>
@@ -166,12 +178,12 @@ const Pacotes = () => {
                   <div className="p-4 bg-gradient-subtle rounded-lg mb-6">
                     <p className="text-2xl font-bold text-primary">A partir de {pkg.startPrice}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Para atÃ© 15 crianÃ§as â€¢ Valores variam conforme quantidade
+                      Para até 15 crianças • Valores variam conforme quantidade
                     </p>
                   </div>
                   <div className="space-y-3 mb-8">
                     <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                      O que estÃ¡ incluso:
+                      O que está incluso:
                     </h3>
                     {pkg.features.map((feature, i) => (
                       <div key={i} className="flex items-start">
@@ -182,7 +194,7 @@ const Pacotes = () => {
                   </div>
                   <Button asChild className="w-full rounded-full" variant={pkg.featured ? "default" : "outline"}>
                     <Link to="/contratar">
-                      Solicitar orÃ§amento
+                      Solicitar orçamento
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Link>
                   </Button>
@@ -191,13 +203,14 @@ const Pacotes = () => {
             </div>
           </div>
         </section>
+
         {/* Premium Packages */}
         <section className="py-24 bg-gradient-subtle">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="mb-4">ExperiÃªncias Especiais</h2>
+              <h2 className="mb-4">Experiências Especiais</h2>
               <p className="text-lg text-muted-foreground">
-                ServiÃ§os premium para tornar sua festa ainda mais incrÃ­vel
+                Serviços premium para tornar sua festa ainda mais incrível
               </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -215,7 +228,7 @@ const Pacotes = () => {
                   </div>
                   <div className="space-y-3 mb-6">
                     <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                      O que estÃ¡ incluso:
+                      O que está incluso:
                     </h3>
                     {pkg.features.map((feature, i) => (
                       <div key={i} className="flex items-start">
@@ -226,12 +239,12 @@ const Pacotes = () => {
                   </div>
                   {pkg.note && (
                     <p className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg mb-6 italic">
-                      ðŸ’¡ {pkg.note}
+                      💡 {pkg.note}
                     </p>
                   )}
                   <Button asChild className="w-full rounded-full" variant="outline">
                     <a href="https://wa.me/5511965982251" target="_blank" rel="noopener noreferrer">
-                      ðŸ’¬ Consultar no WhatsApp
+                      💬 Consultar no WhatsApp
                     </a>
                   </Button>
                 </Card>
@@ -239,6 +252,7 @@ const Pacotes = () => {
             </div>
           </div>
         </section>
+
         {/* Payment Rules */}
         <section className="py-24">
           <div className="container mx-auto px-4">
@@ -249,17 +263,17 @@ const Pacotes = () => {
                 <div>
                   <h3 className="font-semibold mb-3">Formas de Pagamento:</h3>
                   <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>ðŸ’³ <strong>PIX:</strong> Ã  vista ou 60% de sinal + 40% atÃ© 7 dias antes do evento</li>
-                    <li>ðŸ’³ <strong>CartÃ£o de crÃ©dito:</strong> 3x sem juros para compras acima de R$600</li>
-                    <li>ðŸ’³ <strong>Parcelamento estendido:</strong> atÃ© 10x com juros repassados ao cliente</li>
-                    <li>ðŸ“„ Contrato digital + nota fiscal em todos os pacotes</li>
+                    <li>💳 <strong>PIX:</strong> à vista ou 60% de sinal + 40% até 7 dias antes do evento</li>
+                    <li>💳 <strong>Cartão de crédito:</strong> 3x sem juros para compras acima de R$600</li>
+                    <li>💳 <strong>Parcelamento estendido:</strong> até 10x com juros repassados ao cliente</li>
+                    <li>📄 Contrato digital + nota fiscal em todos os pacotes</li>
                   </ul>
                   <div className="mt-4 pt-4 border-t">
-                    <h3 className="font-semibold mb-3">ObservaÃ§Ãµes:</h3>
+                    <h3 className="font-semibold mb-3">Observações:</h3>
                     <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li>â€¢ Valores para atÃ© 50 crianÃ§as. Acima disso, consulte orÃ§amento personalizado.</li>
-                      <li>â€¢ Taxa de deslocamento poderÃ¡ ser aplicada conforme regiÃ£o.</li>
-                      <li>â€¢ Atendemos Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC.</li>
+                      <li>• Valores para até 50 crianças. Acima disso, consulte orçamento personalizado.</li>
+                      <li>• Taxa de deslocamento poderá ser aplicada conforme região.</li>
+                      <li>• Atendemos Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC.</li>
                     </ul>
                   </div>
                 </div>
@@ -267,13 +281,14 @@ const Pacotes = () => {
             </div>
           </div>
         </section>
+
         {/* FAQ Section */}
         <section className="py-24 bg-gradient-subtle">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="mb-4">Perguntas Frequentes</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Tire suas dÃºvidas sobre nossos pacotes de recreaÃ§Ã£o infantil
+                Tire suas dúvidas sobre nossos pacotes de recreação infantil
               </p>
             </div>
             <div className="max-w-3xl mx-auto">
@@ -292,23 +307,24 @@ const Pacotes = () => {
             </div>
           </div>
         </section>
+
         {/* CTA Section */}
         <section className="py-24">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8">
-              <h2 className="text-balance">Pronto para fazer seu orÃ§amento?</h2>
+              <h2 className="text-balance">Pronto para fazer seu orçamento?</h2>
               <p className="text-xl text-muted-foreground">
-                Entre em contato e vamos criar o evento perfeito para sua famÃ­lia!
+                Entre em contato e vamos criar o evento perfeito para sua família!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="rounded-full px-10 shadow-premium">
                   <Link to="/contratar">
-                    Fazer orÃ§amento online
+                    Fazer orçamento online
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full px-10">
                   <a href="https://wa.me/5511965982251" target="_blank" rel="noopener noreferrer">
-                    ðŸ’¬ WhatsApp
+                    💬 WhatsApp
                   </a>
                 </Button>
               </div>
@@ -319,4 +335,5 @@ const Pacotes = () => {
     </>
   );
 };
+
 export default Pacotes;
