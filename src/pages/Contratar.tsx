@@ -12,6 +12,7 @@ import oficinaMicangas from "@/assets/oficina-micangas.jpg";
 import oficinaPintura from "@/assets/oficina-pintura.jpg";
 import oficinaSlime from "@/assets/oficina-slime.jpg";
 import oficinaJardinagem from "@/assets/oficina-jardinagem.jpg";
+
 const Contratar = () => {
   const {
     packageType,
@@ -25,43 +26,51 @@ const Contratar = () => {
     calculateTotal,
     getWhatsAppMessage,
   } = useConfigurator();
+
   const packages = [
     {
       id: "classic" as const,
       name: "Classic",
-      description: "DiversÃ£o garantida com brincadeiras clÃ¡ssicas",
+      description: "Diversão garantida com brincadeiras clássicas",
       features: [
         "Recreadores especializados",
-        "Brincadeiras clÃ¡ssicas",
-        "DuraÃ§Ã£o: 4 horas",
-        "Material de qualidade"],
+        "Brincadeiras clássicas",
+        "Duração: 4 horas",
+        "Material de qualidade",
+      ],
     },
     {
       id: "select" as const,
       name: "Select",
-      description: "ExperiÃªncia premium com atividades exclusivas",
+      description: "Experiência premium com atividades exclusivas",
       features: [
         "Tudo do Classic",
-        "Atividades temÃ¡ticas",
-        "        ],
-    }];
+        "Atividades temáticas",
+        "Pintura facial básica",
+        "Massinha + paraquedas",
+        "Presente para aniversariante",
+        "Kit piquenique completo",
+      ],
+    },
+  ];
+
   const workshops = [
     {
       id: "slime" as WorkshopType,
       name: "Slime",
-      description: "CriaÃ§Ã£o de slimes coloridos e divertidos",
+      description: "Criação de slimes coloridos e divertidos",
       image: oficinaSlime,
     },
     {
       id: "micangas" as WorkshopType,
-      name: "MiÃ§angas",
-      description: "CriaÃ§Ã£o de bijuterias e acessÃ³rios",
+      name: "Miçangas",
+      description: "Criação de bijuterias e acessórios",
       image: oficinaMicangas,
     },
     {
       id: "cupcake" as WorkshopType,
       name: "Cupcake",
-      description: "DecoraÃ§Ã£o de cupcakes deliciosos",
+      description: "Decoração de cupcakes deliciosos",
       image: oficinaCupcake,
     },
     {
@@ -75,19 +84,24 @@ const Contratar = () => {
       name: "Jardinagem",
       description: "Plantio e cuidados com plantas",
       image: oficinaJardinagem,
-    }];
+    },
+  ];
+
   const extras = [
     { id: "recreador" as const, name: "Recreador adicional", price: 180 },
     { id: "apoio" as const, name: "Apoio adicional", price: 140 },
-    { id: "hora_extra" as const, name: "Hora extra", price: 200 }];
+    { id: "hora_extra" as const, name: "Hora extra", price: 200 },
+  ];
+
   const scrollToForm = () => {
     const formElement = document.getElementById("contratacao-form");
     formElement?.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <>
       <SEO
-        title="Contratar ServiÃ§os | Vivalegria"
+        title="Contratar Serviços | Vivalegria"
         description="Configure seu pacote ideal para festas infantis. Escolha entre pacotes Classic e Select, adicione oficinas criativas e reserve agora!"
         canonical="/contratar"
       />
@@ -103,6 +117,7 @@ const Contratar = () => {
             </div>
           </div>
         </section>
+
         {/* Configurator */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -141,12 +156,13 @@ const Contratar = () => {
                       ))}
                     </div>
                   </div>
+
                   {/* Step 2: Children Count */}
                   {packageType && (
                     <div className="space-y-6 animate-fade-in">
                       <div>
                         <Badge className="mb-2">Passo 2</Badge>
-                        <h2 className="text-3xl font-bold">NÃºmero de CrianÃ§as</h2>
+                        <h2 className="text-3xl font-bold">Número de Crianças</h2>
                       </div>
                       <div className="flex flex-wrap gap-3">
                         {childrenRanges.map((range) => (
@@ -162,6 +178,7 @@ const Contratar = () => {
                       </div>
                     </div>
                   )}
+
                   {/* Step 3: Workshops */}
                   {packageType && (
                     <div className="space-y-6 animate-fade-in">
@@ -197,7 +214,7 @@ const Contratar = () => {
                               <h3 className="font-bold text-lg mb-1">{workshop.name}</h3>
                               <p className="text-sm text-muted-foreground mb-2">{workshop.description}</p>
                               <p className="text-[#FF731D] font-semibold">
-                                + R$ {formatPrice(calculateWorkshopPrice(workshop.id, numChildren))}
+                                + R$ {formatPrice(calculateWorkshopPrice(workshop.id, numChildren || 15))}
                               </p>
                             </div>
                           </Card>
@@ -205,6 +222,7 @@ const Contratar = () => {
                       </div>
                     </div>
                   )}
+
                   {/* Step 4: Extras */}
                   {packageType && (
                     <div className="space-y-6 animate-fade-in">
@@ -239,13 +257,14 @@ const Contratar = () => {
                     </div>
                   )}
                 </div>
+
                 {/* Summary Column */}
                 <div className="lg:col-span-1">
                   <Card className="p-6 sticky top-24 space-y-6 border-[#FFD836] border-2">
                     <h3 className="text-2xl font-bold">Resumo</h3>
                     {!packageType ? (
                       <p className="text-muted-foreground text-center py-8">
-                        Selecione um pacote para comeÃ§ar
+                        Selecione um pacote para começar
                       </p>
                     ) : (
                       <>
@@ -255,8 +274,8 @@ const Contratar = () => {
                             <p className="font-semibold">{packageType === "classic" ? "Classic" : "Select"}</p>
                           </div>
                           <div className="pb-3 border-b">
-                            <p className="text-sm text-muted-foreground">CrianÃ§as</p>
-                            <p className="font-semibold">{numChildren} crianÃ§as</p>
+                            <p className="text-sm text-muted-foreground">Crianças</p>
+                            <p className="font-semibold">{numChildren} crianças</p>
                           </div>
                           {selectedWorkshops.length > 0 && (
                             <div className="pb-3 border-b">
@@ -264,7 +283,7 @@ const Contratar = () => {
                               <ul className="space-y-1">
                                 {selectedWorkshops.map((w) => (
                                   <li key={w} className="text-sm">
-                                    â€¢ {workshops.find(ws => ws.id === w)?.name}
+                                    • {workshops.find(ws => ws.id === w)?.name}
                                   </li>
                                 ))}
                               </ul>
@@ -276,7 +295,7 @@ const Contratar = () => {
                               <ul className="space-y-1">
                                 {selectedExtras.map((e) => (
                                   <li key={e} className="text-sm">
-                                    â€¢ {extras.find(ex => ex.id === e)?.name}
+                                    • {extras.find(ex => ex.id === e)?.name}
                                   </li>
                                 ))}
                               </ul>
@@ -289,26 +308,13 @@ const Contratar = () => {
                             R$ {formatPrice(calculateTotal())}
                           </p>
                         </div>
-                        <Button
-                          onClick={scrollToForm}
-                          className="w-full"
-                          size="lg"
-                        >
+                        <Button onClick={scrollToForm} className="w-full" size="lg">
                           Reservar Agora
                           <ArrowRight className="ml-2" />
                         </Button>
-                        <a
-                          href={getWhatsAppMessage()}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block"
-                        >
-                          <Button
-                            variant="outline"
-                            className="w-full"
-                            size="lg"
-                          >
-                            ðŸ“± Falar no WhatsApp
+                        <a href={getWhatsAppMessage()} target="_blank" rel="noopener noreferrer" className="block">
+                          <Button variant="outline" className="w-full" size="lg">
+                            📱 Falar no WhatsApp
                           </Button>
                         </a>
                       </>
@@ -319,7 +325,8 @@ const Contratar = () => {
             </div>
           </div>
         </section>
-        {/* FormulÃ¡rio de ContrataÃ§Ã£o */}
+
+        {/* Formulário de Contratação */}
         {packageType && (
           <section id="contratacao-form" className="py-16 bg-viva-offwhite">
             <div className="container mx-auto px-4">
@@ -327,7 +334,7 @@ const Contratar = () => {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold mb-4">Complete Sua Reserva</h2>
                   <p className="text-muted-foreground">
-                    Preencha o formulÃ¡rio abaixo para finalizar sua reserva
+                    Preencha o formulário abaixo para finalizar sua reserva
                   </p>
                 </div>
                 <ContratacaoForm />
@@ -339,4 +346,5 @@ const Contratar = () => {
     </>
   );
 };
+
 export default Contratar;
