@@ -1,19 +1,23 @@
-﻿import { Instagram } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// Usando imagens do projeto existente
+
+// Assets
 import vivaSlime from "@/assets/viva-slime.png";
 import vivaRecreacao from "@/assets/viva-recreacao.png";
 import vivaPintura from "@/assets/viva-pintura.png";
 import vivaEquipe from "@/assets/viva-equipe.png";
 import oficinaPintura from "@/assets/oficina-pintura.jpg";
 import oficinaSlime from "@/assets/oficina-slime.jpg";
+
 const images = [
   { src: vivaSlime, alt: "Oficina de Slime Vivalegria SP" },
-  { src: vivaRecreacao, alt: "RecreaÃ§Ã£o infantil festa aniversÃ¡rio" },
-  { src: vivaPintura, alt: "Pintura em tela festa infantil" },
-  { src: vivaEquipe, alt: "Equipe Vivalegria recreadores" },
-  { src: oficinaPintura, alt: "Oficina pintura artÃ­stica crianÃ§as" },
-  { src: oficinaSlime, alt: "Slime colorido festa" }];
+  { src: vivaRecreacao, alt: "Recreação infantil em festa de aniversário" },
+  { src: vivaPintura, alt: "Pintura em tela para festa infantil" },
+  { src: vivaEquipe, alt: "Equipe Vivalegria de recreadores" },
+  { src: oficinaPintura, alt: "Oficina de pintura artística para crianças" },
+  { src: oficinaSlime, alt: "Slime colorido em festa infantil" },
+];
+
 const InstagramGallery = () => {
   return (
     <section className="py-20 bg-muted">
@@ -23,13 +27,16 @@ const InstagramGallery = () => {
             <Instagram className="w-5 h-5" />
             <span className="text-sm font-semibold">@vivalegria_</span>
           </div>
+
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Destaques no Instagram
           </h2>
+
           <p className="text-xl text-muted-foreground">
-            Veja a alegria dos nossos eventos! ðŸ“¸
+            Veja a alegria dos nossos eventos! 📸
           </p>
         </div>
+
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
           {images.map((image, index) => (
             <a
@@ -51,6 +58,7 @@ const InstagramGallery = () => {
             </a>
           ))}
         </div>
+
         <div className="text-center">
           <Button
             asChild
@@ -72,4 +80,5 @@ const InstagramGallery = () => {
     </section>
   );
 };
+
 export default InstagramGallery;
