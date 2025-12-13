@@ -1,4 +1,4 @@
-import { Toaster } from "@/components/ui/toaster";
+﻿import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -26,9 +26,7 @@ import AdminReservas from "./pages/admin/Reservas";
 import AdminCandidaturas from "./pages/admin/Candidaturas";
 import AdminCasting from "./pages/admin/Casting";
 import NotFound from "./pages/NotFound";
-
 const queryClient = new QueryClient();
-
 // Layout component for public pages
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col min-h-screen">
@@ -41,7 +39,6 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
     <CookieConsent />
   </div>
 );
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -57,7 +54,6 @@ const App = () => (
               <Route path="/admin/reservas" element={<AdminReservas />} />
               <Route path="/admin/casting" element={<AdminCasting />} />
               <Route path="/admin/candidaturas" element={<AdminCandidaturas />} />
-              
               {/* Public routes with layout */}
               <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
               <Route path="/pacotes" element={<PublicLayout><Pacotes /></PublicLayout>} />
@@ -78,5 +74,4 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
-
 export default App;

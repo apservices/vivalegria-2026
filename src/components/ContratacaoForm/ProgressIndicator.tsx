@@ -1,12 +1,10 @@
-import { cn } from "@/lib/utils";
+﻿import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
-
 interface ProgressIndicatorProps {
   currentStep: number;
   totalSteps: number;
   stepLabels: string[];
 }
-
 export const ProgressIndicator = ({ currentStep, totalSteps, stepLabels }: ProgressIndicatorProps) => {
   return (
     <div className="w-full mb-8">
@@ -15,7 +13,6 @@ export const ProgressIndicator = ({ currentStep, totalSteps, stepLabels }: Progr
           const stepNumber = index + 1;
           const isCompleted = stepNumber < currentStep;
           const isCurrent = stepNumber === currentStep;
-
           return (
             <div key={index} className="flex-1 flex items-center">
               <div className="flex flex-col items-center">

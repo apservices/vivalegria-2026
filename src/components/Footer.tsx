@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Instagram, Facebook } from "lucide-react";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
-
 const Footer = () => {
   return (
     <footer className="bg-[#FFF8E6] border-t border-[#FFD836]/30">
@@ -9,13 +8,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Logo & Description */}
           <div className="space-y-5">
-            <img src={logoVivalegria} alt="Vivalegria Recreação Infantil" className="h-12 w-auto" />
+            <img src={logoVivalegria} alt="Vivalegria RecreaÃ§Ã£o Infantil" className="h-12 w-auto" />
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Transformando festas em experiências inesquecíveis desde 2015. Recreação infantil premium em São Paulo.
+              Transformando festas em experiÃªncias inesquecÃ­veis desde 2015. RecreaÃ§Ã£o infantil premium em SÃ£o Paulo.
             </p>
             <div className="flex space-x-3">
               <a
-                href="https://instagram.com/vivalegriareceacao"
+                href="https://www.instagram.com/vivalegria_/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-full bg-[#FFD836] hover:bg-[#FF731D] hover:text-white transition-all duration-300"
@@ -24,7 +23,7 @@ const Footer = () => {
                 <Instagram size={20} />
               </a>
               <a
-                href="https://facebook.com/vivalegriareceacao"
+                href="https://www.facebook.com/vivalegriarecreacao"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 rounded-full bg-[#FFD836] hover:bg-[#FF731D] hover:text-white transition-all duration-300"
@@ -34,10 +33,9 @@ const Footer = () => {
               </a>
             </div>
           </div>
-
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-5 text-foreground">Navegação</h3>
+            <h3 className="font-semibold mb-5 text-foreground">NavegaÃ§Ã£o</h3>
             <ul className="space-y-3">
               <li>
                 <Link to="/" className="text-sm text-muted-foreground hover:text-[#FF731D] transition-colors duration-300">
@@ -71,7 +69,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
           {/* Areas Served */}
           <div>
             <h3 className="font-semibold mb-5 text-foreground">Onde Atendemos</h3>
@@ -83,10 +80,9 @@ const Footer = () => {
               <li>Pinheiros</li>
               <li>Jardins</li>
               <li>ABC Paulista</li>
-              <li className="text-primary font-medium">+ toda São Paulo e região</li>
+              <li className="text-primary font-medium">+ toda SÃ£o Paulo e regiÃ£o</li>
             </ul>
           </div>
-
           {/* Contact - NAP */}
           <div>
             <h3 className="font-semibold mb-5 text-foreground">Contato</h3>
@@ -94,9 +90,9 @@ const Footer = () => {
               <li className="flex items-start space-x-3 text-sm">
                 <MapPin size={18} className="mt-1 flex-shrink-0 text-[#FFD836]" />
                 <div className="text-muted-foreground">
-                  <span className="font-medium text-foreground">Vivalegria Recreação Infantil</span><br />
-                  São Paulo - SP<br />
-                  Atendemos toda região metropolitana
+                  <span className="font-medium text-foreground">Vivalegria RecreaÃ§Ã£o Infantil</span><br />
+                  SÃ£o Paulo - SP<br />
+                  Atendemos toda regiÃ£o metropolitana
                 </div>
               </li>
               <li className="flex items-center space-x-3 text-sm">
@@ -113,24 +109,23 @@ const Footer = () => {
               </li>
             </ul>
             <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
-              Seg a Sex: 9h–18h<br />
-              Sáb: 9h–12h
+              Seg a Sex: 9hâ€“18h<br />
+              SÃ¡b: 9hâ€“12h
             </p>
           </div>
         </div>
-
         <div className="border-t border-[#FFD836]/30 mt-12 pt-10 text-center">
           <p className="text-sm text-muted-foreground font-medium">
-            © 2026 Vivalegria Recreação Infantil. Todos os direitos reservados.
+            Â© 2026 Vivalegria RecreaÃ§Ã£o Infantil. Todos os direitos reservados.
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            Recreação infantil em São Paulo • Vila Mariana • Moema • ABC
+            RecreaÃ§Ã£o infantil em SÃ£o Paulo â€¢ Vila Mariana â€¢ Moema â€¢ ABC
           </p>
           <div className="flex justify-center space-x-6 mt-4">
             <Link to="/privacidade" className="text-xs text-muted-foreground hover:text-[#FF731D] transition-colors duration-300">
-              Política de Privacidade
+              PolÃ­tica de Privacidade
             </Link>
-            <span className="text-xs text-muted-foreground">•</span>
+            <span className="text-xs text-muted-foreground">â€¢</span>
             <Link to="/termos" className="text-xs text-muted-foreground hover:text-[#FF731D] transition-colors duration-300">
               Termos de Uso
             </Link>
@@ -140,5 +135,4 @@ const Footer = () => {
     </footer>
   );
 };
-
 export default Footer;

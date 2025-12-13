@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
@@ -16,9 +16,7 @@ import { StepDadosContratante } from "./StepDadosContratante";
 import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
-
-const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
-
+const STEP_LABELS = ["IdentificaÃ§Ã£o", "Dados Pessoais", "Dados do Evento"];
 const initialFormData: ContratacaoFormData = {
   tipoCliente: 'novo',
   tipoCadastro: 'pf',
@@ -35,15 +33,12 @@ const initialFormData: ContratacaoFormData = {
   horaInicio: '',
   localEvento: '',
 };
-
 export const ContratacaoForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<ContratacaoFormData>(initialFormData);
   const [errors, setErrors] = useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
   const { packageType, numChildren, selectedWorkshops, selectedExtras, calculateTotal } = useConfigurator();
-
   const updateFormData = (data: Partial<ContratacaoFormData>) => {
     setFormData(prev => ({ ...prev, ...data }));
     // Clear errors for updated fields
@@ -54,100 +49,77 @@ export const ContratacaoForm = () => {
       return newErrors;
     });
   };
-
   const validateStep1 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
-    
     if (!formData.cpfCnpj) {
-      newErrors.cpfCnpj = formData.tipoCadastro === 'pf' ? 'CPF é obrigatório' : 'CNPJ é obrigatório';
+      newErrors.cpfCnpj = formData.tipoCadastro === 'pf' ? 'CPF Ã© obrigatÃ³rio' : 'CNPJ Ã© obrigatÃ³rio';
     } else if (formData.tipoCadastro === 'pf' && !validateCPF(formData.cpfCnpj)) {
-      newErrors.cpfCnpj = 'CPF inválido';
+      newErrors.cpfCnpj = 'CPF invÃ¡lido';
     } else if (formData.tipoCadastro === 'pj' && !validateCNPJ(formData.cpfCnpj)) {
-      newErrors.cpfCnpj = 'CNPJ inválido';
+      newErrors.cpfCnpj = 'CNPJ invÃ¡lido';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const validateStep2 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
-    
     if (!formData.nomeCompleto.trim()) {
-      newErrors.nomeCompleto = 'Nome completo é obrigatório';
+      newErrors.nomeCompleto = 'Nome completo Ã© obrigatÃ³rio';
     }
-    
     if (!formData.telefone || unmask(formData.telefone).length < 10) {
-      newErrors.telefone = 'Telefone inválido';
+      newErrors.telefone = 'Telefone invÃ¡lido';
     }
-    
     if (!formData.email) {
-      newErrors.email = 'E-mail é obrigatório';
+      newErrors.email = 'E-mail Ã© obrigatÃ³rio';
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'E-mail inválido';
+      newErrors.email = 'E-mail invÃ¡lido';
     }
-    
     if (!formData.emailConfirmacao) {
-      newErrors.emailConfirmacao = 'Confirmação de e-mail é obrigatória';
+      newErrors.emailConfirmacao = 'ConfirmaÃ§Ã£o de e-mail Ã© obrigatÃ³ria';
     } else if (formData.email !== formData.emailConfirmacao) {
-      newErrors.emailConfirmacao = 'Os e-mails não coincidem';
+      newErrors.emailConfirmacao = 'Os e-mails nÃ£o coincidem';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const validateStep3 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
-    
     if (!formData.dataEvento) {
-      newErrors.dataEvento = 'Data do evento é obrigatória';
+      newErrors.dataEvento = 'Data do evento Ã© obrigatÃ³ria';
     }
-    
     if (!formData.horaInicio) {
-      newErrors.horaInicio = 'Hora de início é obrigatória';
+      newErrors.horaInicio = 'Hora de inÃ­cio Ã© obrigatÃ³ria';
     }
-    
     if (!formData.localEvento.trim()) {
-      newErrors.localEvento = 'Local do evento é obrigatório';
+      newErrors.localEvento = 'Local do evento Ã© obrigatÃ³rio';
     }
-
     if (!packageType) {
       toast.error('Selecione um pacote antes de continuar');
       return false;
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleNext = () => {
     let isValid = false;
-    
     if (currentStep === 1) isValid = validateStep1();
     else if (currentStep === 2) isValid = validateStep2();
-    
     if (isValid && currentStep < 3) {
       setCurrentStep(prev => prev + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(prev => prev - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-
   const handleSubmit = async () => {
     if (!validateStep3()) return;
-
     setIsSubmitting(true);
-    
     try {
       const total = calculateTotal();
-      
       const reservaData = {
         tipo_cliente: formData.tipoCliente,
         tipo_cadastro: formData.tipoCadastro,
@@ -168,17 +140,12 @@ export const ContratacaoForm = () => {
         extras_selecionados: selectedExtras,
         total_calculado: total,
       };
-
       const { error } = await supabase.from('reservas').insert(reservaData);
-
       if (error) throw error;
-
       toast.success('Reserva enviada com sucesso! Entraremos em contato em breve.');
-      
       // Reset form
       setFormData(initialFormData);
       setCurrentStep(1);
-      
     } catch (error) {
       console.error('Error submitting reservation:', error);
       toast.error('Erro ao enviar reserva. Tente novamente.');
@@ -186,7 +153,6 @@ export const ContratacaoForm = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg border-viva-yellow/20">
       <CardContent className="p-6 md:p-8">
@@ -195,7 +161,6 @@ export const ContratacaoForm = () => {
           totalSteps={3} 
           stepLabels={STEP_LABELS}
         />
-
         <div className="min-h-[400px]">
           {currentStep === 1 && (
             <StepIdentificacao 
@@ -219,7 +184,6 @@ export const ContratacaoForm = () => {
             />
           )}
         </div>
-
         <div className="flex justify-between mt-8 pt-6 border-t">
           <Button
             variant="outline"
@@ -230,10 +194,9 @@ export const ContratacaoForm = () => {
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Button>
-
           {currentStep < 3 ? (
             <Button onClick={handleNext} className="gap-2 bg-viva-orange hover:bg-viva-orange/90">
-              Próximo
+              PrÃ³ximo
               <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, Eye, Check, X, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -31,7 +31,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/admin/AdminLayout";
-
 const AdminReservas = () => {
   const { user, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -43,30 +42,25 @@ const AdminReservas = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedReserva, setSelectedReserva] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-
   useEffect(() => {
     if (!isLoading && (!user || !isAdmin)) {
       navigate("/admin/login");
     }
   }, [user, isAdmin, isLoading, navigate]);
-
   useEffect(() => {
     if (user && isAdmin) {
       fetchReservas();
     }
   }, [user, isAdmin]);
-
   useEffect(() => {
     filterReservas();
   }, [reservas, searchTerm, statusFilter]);
-
   const fetchReservas = async () => {
     try {
       const { data, error } = await supabase
         .from("reservas")
         .select("*")
         .order("created_at", { ascending: false });
-
       if (error) throw error;
       setReservas(data || []);
     } catch (error) {
@@ -75,10 +69,8 @@ const AdminReservas = () => {
       setLoadingData(false);
     }
   };
-
   const filterReservas = () => {
     let filtered = [...reservas];
-
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
@@ -88,27 +80,21 @@ const AdminReservas = () => {
           r.telefone?.includes(term)
       );
     }
-
     if (statusFilter !== "all") {
       filtered = filtered.filter((r) => r.status === statusFilter);
     }
-
     setFilteredReservas(filtered);
   };
-
   const updateStatus = async (id: string, newStatus: string) => {
     try {
       const { error } = await supabase
         .from("reservas")
         .update({ status: newStatus })
         .eq("id", id);
-
       if (error) throw error;
-
       setReservas((prev) =>
         prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r))
       );
-
       toast({
         title: "Status atualizado",
         description: `Reserva marcada como ${newStatus}`,
@@ -117,37 +103,31 @@ const AdminReservas = () => {
       console.error("Error updating status:", error);
       toast({
         title: "Erro",
-        description: "Não foi possível atualizar o status",
+        description: "NÃ£o foi possÃ­vel atualizar o status",
         variant: "destructive",
       });
     }
   };
-
   const deleteReserva = async () => {
     if (!deleteId) return;
-
     try {
       const { error } = await supabase.from("reservas").delete().eq("id", deleteId);
-
       if (error) throw error;
-
       setReservas((prev) => prev.filter((r) => r.id !== deleteId));
       setDeleteId(null);
-
       toast({
-        title: "Reserva excluída",
+        title: "Reserva excluÃ­da",
         description: "A reserva foi removida com sucesso",
       });
     } catch (error) {
       console.error("Error deleting reserva:", error);
       toast({
         title: "Erro",
-        description: "Não foi possível excluir a reserva",
+        description: "NÃ£o foi possÃ­vel excluir a reserva",
         variant: "destructive",
       });
     }
   };
-
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pendente":
@@ -160,7 +140,6 @@ const AdminReservas = () => {
         return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">{status}</span>;
     }
   };
-
   if (isLoading || !user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -168,7 +147,6 @@ const AdminReservas = () => {
       </div>
     );
   }
-
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -176,7 +154,6 @@ const AdminReservas = () => {
           <h1 className="text-3xl font-bold">Reservas</h1>
           <p className="text-muted-foreground">Gerencie todas as reservas de eventos</p>
         </div>
-
         {/* Filters */}
         <Card className="p-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -203,7 +180,6 @@ const AdminReservas = () => {
             </Select>
           </div>
         </Card>
-
         {/* Table */}
         <Card className="p-6">
           <div className="overflow-x-auto">
@@ -213,10 +189,10 @@ const AdminReservas = () => {
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Cliente</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Data Evento</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Pacote</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Crianças</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">CrianÃ§as</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Status</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Total</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Ações</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃ§Ãµes</th>
                 </tr>
               </thead>
               <tbody>
@@ -301,7 +277,6 @@ const AdminReservas = () => {
           </div>
         </Card>
       </div>
-
       {/* Details Dialog */}
       <Dialog open={!!selectedReserva} onOpenChange={() => setSelectedReserva(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -338,7 +313,6 @@ const AdminReservas = () => {
                   {getStatusBadge(selectedReserva.status)}
                 </div>
               </div>
-
               <div className="border-t pt-4">
                 <h4 className="font-semibold mb-3">Dados do Evento</h4>
                 <div className="grid grid-cols-2 gap-4">
@@ -349,7 +323,7 @@ const AdminReservas = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Horário</p>
+                    <p className="text-sm text-muted-foreground">HorÃ¡rio</p>
                     <p className="font-medium">{selectedReserva.hora_inicio}</p>
                   </div>
                   <div>
@@ -357,14 +331,13 @@ const AdminReservas = () => {
                     <p className="font-medium">{selectedReserva.local_evento}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Nº Crianças</p>
+                    <p className="text-sm text-muted-foreground">NÂº CrianÃ§as</p>
                     <p className="font-medium">{selectedReserva.numero_criancas}</p>
                   </div>
                 </div>
               </div>
-
               <div className="border-t pt-4">
-                <h4 className="font-semibold mb-3">Pacote e Serviços</h4>
+                <h4 className="font-semibold mb-3">Pacote e ServiÃ§os</h4>
                 <div className="space-y-2">
                   <div>
                     <p className="text-sm text-muted-foreground">Pacote</p>
@@ -388,7 +361,6 @@ const AdminReservas = () => {
                   )}
                 </div>
               </div>
-
               <div className="border-t pt-4">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">Total</span>
@@ -397,10 +369,9 @@ const AdminReservas = () => {
                   </span>
                 </div>
               </div>
-
               {selectedReserva.endereco && (
                 <div className="border-t pt-4">
-                  <h4 className="font-semibold mb-3">Endereço</h4>
+                  <h4 className="font-semibold mb-3">EndereÃ§o</h4>
                   <p className="text-sm">
                     {selectedReserva.endereco}
                     {selectedReserva.complemento && `, ${selectedReserva.complemento}`}
@@ -413,14 +384,13 @@ const AdminReservas = () => {
           )}
         </DialogContent>
       </Dialog>
-
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+            <AlertDialogTitle>Confirmar exclusÃ£o</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir esta reserva? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir esta reserva? Esta aÃ§Ã£o nÃ£o pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -434,5 +404,4 @@ const AdminReservas = () => {
     </AdminLayout>
   );
 };
-
 export default AdminReservas;

@@ -1,9 +1,8 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Calculator, MessageCircle, Sparkles } from "lucide-react";
-
 const pricingData: Record<number, { classico: number; select: number }> = {
   15: { classico: 589.90, select: 789.90 },
   20: { classico: 764.90, select: 969.90 },
@@ -14,7 +13,6 @@ const pricingData: Record<number, { classico: number; select: number }> = {
   45: { classico: 1439.90, select: 1639.90 },
   50: { classico: 1564.90, select: 1769.90 },
 };
-
 const getClosestPrice = (children: number) => {
   const keys = Object.keys(pricingData).map(Number).sort((a, b) => a - b);
   const closest = keys.reduce((prev, curr) =>
@@ -22,40 +20,35 @@ const getClosestPrice = (children: number) => {
   );
   return pricingData[closest];
 };
-
 const PriceCalculator = () => {
   const [children, setChildren] = useState(20);
   const [selectedPackage, setSelectedPackage] = useState<"classico" | "select">("select");
-  
   const prices = getClosestPrice(children);
   const currentPrice = prices[selectedPackage];
-  
   const whatsappMessage = encodeURIComponent(
-    `Olá! 🎉 Gostaria de reservar o *Pacote ${selectedPackage === "select" ? "SELECT" : "CLÁSSICO"}* para *${children} crianças*.\n\nValor: R$ ${currentPrice.toFixed(2).replace(".", ",")}\n\nPode me ajudar com o agendamento?`
+    `OlÃ¡! ðŸŽ‰ Gostaria de reservar o *Pacote ${selectedPackage === "select" ? "SELECT" : "CLÃSSICO"}* para *${children} crianÃ§as*.\n\nValor: R$ ${currentPrice.toFixed(2).replace(".", ",")}\n\nPode me ajudar com o agendamento?`
   );
-
   return (
     <section className="py-20 bg-gradient-to-br from-secondary/30 via-background to-primary/10">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 mb-4">
             <Calculator className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-primary">Calculadora de Preços</span>
+            <span className="text-sm font-semibold text-primary">Calculadora de PreÃ§os</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Monte seu Orçamento em Segundos
+            Monte seu OrÃ§amento em Segundos
           </h2>
           <p className="text-xl text-muted-foreground">
-            Selecione o número de crianças e veja o valor na hora!
+            Selecione o nÃºmero de crianÃ§as e veja o valor na hora!
           </p>
         </div>
-
         <div className="max-w-4xl mx-auto">
           <Card className="p-8 md:p-12 shadow-2xl border-2 border-secondary/30">
             {/* Children Slider */}
             <div className="mb-10">
               <label className="block text-lg font-semibold mb-4">
-                Quantas crianças terá na festa?
+                Quantas crianÃ§as terÃ¡ na festa?
               </label>
               <div className="flex items-center gap-6">
                 <Slider
@@ -71,10 +64,9 @@ const PriceCalculator = () => {
                 </div>
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Arraste para ajustar (15-50 crianças)
+                Arraste para ajustar (15-50 crianÃ§as)
               </p>
             </div>
-
             {/* Package Selection */}
             <div className="mb-10">
               <label className="block text-lg font-semibold mb-4">
@@ -89,13 +81,12 @@ const PriceCalculator = () => {
                       : "border-border hover:border-primary/50"
                   }`}
                 >
-                  <h4 className="text-xl font-bold mb-2">Pacote CLÁSSICO</h4>
-                  <p className="text-sm text-muted-foreground mb-3">3 horas • 1 recreador</p>
+                  <h4 className="text-xl font-bold mb-2">Pacote CLÃSSICO</h4>
+                  <p className="text-sm text-muted-foreground mb-3">3 horas â€¢ 1 recreador</p>
                   <p className="text-2xl font-bold text-primary">
                     R$ {prices.classico.toFixed(2).replace(".", ",")}
                   </p>
                 </button>
-                
                 <button
                   onClick={() => setSelectedPackage("select")}
                   className={`p-6 rounded-2xl border-2 text-left transition-all duration-300 relative ${
@@ -111,14 +102,13 @@ const PriceCalculator = () => {
                     </span>
                   </div>
                   <h4 className="text-xl font-bold mb-2">Pacote SELECT</h4>
-                  <p className="text-sm text-muted-foreground mb-3">4 horas • 2 recreadores</p>
+                  <p className="text-sm text-muted-foreground mb-3">4 horas â€¢ 2 recreadores</p>
                   <p className="text-2xl font-bold text-primary">
                     R$ {prices.select.toFixed(2).replace(".", ",")}
                   </p>
                 </button>
               </div>
             </div>
-
             {/* Result */}
             <div className="bg-muted rounded-2xl p-6 mb-8">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -148,9 +138,8 @@ const PriceCalculator = () => {
                 </Button>
               </div>
             </div>
-
             <p className="text-center text-sm text-muted-foreground">
-              📍 Valores para São Paulo e região. Taxa de deslocamento pode ser aplicada. 
+              ðŸ“ Valores para SÃ£o Paulo e regiÃ£o. Taxa de deslocamento pode ser aplicada. 
               <br />50% de sinal via PIX para reservar sua data.
             </p>
           </Card>
@@ -159,5 +148,4 @@ const PriceCalculator = () => {
     </section>
   );
 };
-
 export default PriceCalculator;

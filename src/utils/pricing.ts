@@ -1,6 +1,5 @@
-// Dynamic Pricing Calculator for Vivalegria
-// Based on "Tabela de Preços 2025 – Vivalegria Festas"
-
+﻿// Dynamic Pricing Calculator for Vivalegria
+// Based on "Tabela de PreÃ§os 2025 â€“ Vivalegria Festas"
 export type ChildrenRange = 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50;
 export type PackageType = "select" | "classic";
 export type WorkshopType = 
@@ -16,7 +15,6 @@ export type WorkshopType =
   | "baby"
   | "torta"
   | "oficinas_criativas";
-
 // Package Base Prices (Updated 2025)
 const packagePrices: Record<PackageType, Record<ChildrenRange, number>> = {
   classic: {
@@ -40,7 +38,6 @@ const packagePrices: Record<PackageType, Record<ChildrenRange, number>> = {
     50: 1769.90,
   },
 };
-
 // Workshop/Service Prices (Updated 2025)
 const workshopPrices: Record<WorkshopType, Record<ChildrenRange, number>> = {
   pintura_pro: { 15: 249.90, 20: 274.90, 25: 299.90, 30: 324.90, 35: 349.90, 40: 374.90, 45: 399.90, 50: 425.00 },
@@ -56,43 +53,36 @@ const workshopPrices: Record<WorkshopType, Record<ChildrenRange, number>> = {
   baby: { 15: 300, 20: 340, 25: 360, 30: 380, 35: 400, 40: 420, 45: 440, 50: 460 },
   torta: { 15: 180, 20: 200, 25: 210, 30: 220, 35: 230, 40: 240, 45: 250, 50: 260 },
 };
-
 export const calculatePackagePrice = (
   packageType: PackageType,
   numChildren: ChildrenRange
 ): number => {
   return packagePrices[packageType][numChildren];
 };
-
 export const calculateWorkshopPrice = (
   workshopType: WorkshopType,
   numChildren: ChildrenRange
 ): number => {
   return workshopPrices[workshopType][numChildren];
 };
-
 export const getMinimumPrice = (type: "package" | "workshop", name: string): number => {
   if (type === "package") {
     return packagePrices[name as PackageType][15];
   }
   return workshopPrices[name as WorkshopType][15];
 };
-
 export const formatPrice = (price: number): string => {
   return price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
-
 export const childrenRanges: { label: string; value: ChildrenRange }[] = [
-  { label: "Até 15 crianças", value: 15 },
-  { label: "16-20 crianças", value: 20 },
-  { label: "21-25 crianças", value: 25 },
-  { label: "26-30 crianças", value: 30 },
-  { label: "31-35 crianças", value: 35 },
-  { label: "36-40 crianças", value: 40 },
-  { label: "41-45 crianças", value: 45 },
-  { label: "46-50 crianças", value: 50 },
-];
-
+  { label: "AtÃ© 15 crianÃ§as", value: 15 },
+  { label: "16-20 crianÃ§as", value: 20 },
+  { label: "21-25 crianÃ§as", value: 25 },
+  { label: "26-30 crianÃ§as", value: 30 },
+  { label: "31-35 crianÃ§as", value: 35 },
+  { label: "36-40 crianÃ§as", value: 40 },
+  { label: "41-45 crianÃ§as", value: 45 },
+  { label: "46-50 crianÃ§as", value: 50 }];
 // Price table data for display
 export const priceTableData = [
   { children: 15, pinturaPro: 249.90, pinturaBasica: 149.90, oficinaTela: 330.00, oficinasCriativas: 250.00, classic: 589.90, select: 789.90 },
@@ -102,5 +92,4 @@ export const priceTableData = [
   { children: 35, pinturaPro: 349.90, pinturaBasica: 249.00, oficinaTela: 676.00, oficinasCriativas: 526.00, classic: 1189.90, select: 1389.90 },
   { children: 40, pinturaPro: 374.90, pinturaBasica: 274.00, oficinaTela: 751.00, oficinasCriativas: 581.00, classic: 1314.90, select: 1519.90 },
   { children: 45, pinturaPro: 399.90, pinturaBasica: 299.00, oficinaTela: 826.00, oficinasCriativas: 635.00, classic: 1439.90, select: 1639.90 },
-  { children: 50, pinturaPro: 425.00, pinturaBasica: 325.00, oficinaTela: 901.00, oficinasCriativas: 685.00, classic: 1564.90, select: 1769.90 },
-];
+  { children: 50, pinturaPro: 425.00, pinturaBasica: 325.00, oficinaTela: 901.00, oficinasCriativas: 685.00, classic: 1564.90, select: 1769.90 }];

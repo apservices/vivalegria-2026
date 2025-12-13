@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Heart, Users, Clock, Star, Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,7 +10,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { maskPhone } from "@/utils/inputMasks";
-
 const TrabalheConosco = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,31 +22,24 @@ const TrabalheConosco = () => {
     sobre_voce: "",
   });
   const [disponibilidade, setDisponibilidade] = useState<string[]>([]);
-
   const benefits = [
-    { icon: Heart, title: "Ambiente Alegre", description: "Trabalhe em um ambiente descontraído e cheio de energia positiva" },
-    { icon: Users, title: "Equipe Unida", description: "Faça parte de uma equipe colaborativa e apaixonada pelo que faz" },
-    { icon: Clock, title: "Flexibilidade", description: "Horários flexíveis que se adaptam à sua rotina" },
-    { icon: Star, title: "Crescimento", description: "Oportunidades de desenvolvimento profissional e treinamentos" },
-  ];
-
+    { icon: Heart, title: "Ambiente Alegre", description: "Trabalhe em um ambiente descontraÃ­do e cheio de energia positiva" },
+    { icon: Users, title: "Equipe Unida", description: "FaÃ§a parte de uma equipe colaborativa e apaixonada pelo que faz" },
+    { icon: Clock, title: "Flexibilidade", description: "HorÃ¡rios flexÃ­veis que se adaptam Ã  sua rotina" },
+    { icon: Star, title: "Crescimento", description: "Oportunidades de desenvolvimento profissional e treinamentos" }];
   const disponibilidadeOptions = [
     { value: "fins_semana", label: "Finais de semana" },
     { value: "feriados", label: "Feriados" },
-    { value: "eventos_escolares", label: "Eventos escolares (dias úteis)" },
-    { value: "eventos_corporativos", label: "Eventos corporativos" },
-  ];
-
+    { value: "eventos_escolares", label: "Eventos escolares (dias Ãºteis)" },
+    { value: "eventos_corporativos", label: "Eventos corporativos" }];
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
     if (name === "telefone") {
       setFormData(prev => ({ ...prev, [name]: maskPhone(value) }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
-
   const toggleDisponibilidade = (value: string) => {
     setDisponibilidade(prev =>
       prev.includes(value)
@@ -55,21 +47,17 @@ const TrabalheConosco = () => {
         : [...prev, value]
     );
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!formData.nome_completo || !formData.email || !formData.telefone || !formData.cidade) {
       toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos obrigatórios.",
+        title: "Campos obrigatÃ³rios",
+        description: "Por favor, preencha todos os campos obrigatÃ³rios.",
         variant: "destructive",
       });
       return;
     }
-
     setIsSubmitting(true);
-
     try {
       const { error } = await supabase.from("candidaturas").insert({
         nome_completo: formData.nome_completo,
@@ -80,14 +68,11 @@ const TrabalheConosco = () => {
         disponibilidade: disponibilidade.length > 0 ? disponibilidade : null,
         sobre_voce: formData.sobre_voce || null,
       });
-
       if (error) throw error;
-
       toast({
         title: "Candidatura enviada!",
         description: "Recebemos sua candidatura. Entraremos em contato em breve!",
       });
-
       setFormData({
         nome_completo: "",
         email: "",
@@ -108,26 +93,23 @@ const TrabalheConosco = () => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <>
       <SEO
-        title="Trabalhe Conosco | Vivalegria Recreação"
-        description="Faça parte da equipe Vivalegria! Vagas para recreadores e monitores de eventos infantis em São Paulo."
+        title="Trabalhe Conosco | Vivalegria RecreaÃ§Ã£o"
+        description="FaÃ§a parte da equipe Vivalegria! Vagas para recreadores e monitores de eventos infantis em SÃ£o Paulo."
         canonical="/trabalhe-conosco"
       />
-
       <div className="min-h-screen pt-20">
         {/* Hero */}
         <section className="py-24 bg-gradient-to-br from-[#FFD836]/20 via-white to-white">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Trabalhe Conosco</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Venha fazer parte da equipe que transforma festas em momentos mágicos!
+              Venha fazer parte da equipe que transforma festas em momentos mÃ¡gicos!
             </p>
           </div>
         </section>
-
         {/* Benefits */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -145,7 +127,6 @@ const TrabalheConosco = () => {
             </div>
           </div>
         </section>
-
         {/* Requirements */}
         <section className="py-16 bg-[#FFF8E6]">
           <div className="container mx-auto px-4">
@@ -156,12 +137,11 @@ const TrabalheConosco = () => {
                   <h3 className="text-xl font-bold mb-4 text-[#FF731D]">Perfil desejado</h3>
                   <ul className="space-y-3">
                     {[
-                      "Paixão por trabalhar com crianças",
-                      "Energia e disposição para eventos",
-                      "Boa comunicação e simpatia",
+                      "PaixÃ£o por trabalhar com crianÃ§as",
+                      "Energia e disposiÃ§Ã£o para eventos",
+                      "Boa comunicaÃ§Ã£o e simpatia",
                       "Responsabilidade e pontualidade",
-                      "Criatividade e proatividade",
-                    ].map((item, i) => (
+                      "Criatividade e proatividade"].map((item, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-5 h-5 text-[#FF731D] mt-0.5 flex-shrink-0" />
                         <span className="text-sm">{item}</span>
@@ -173,12 +153,11 @@ const TrabalheConosco = () => {
                   <h3 className="text-xl font-bold mb-4 text-[#FF731D]">Diferenciais</h3>
                   <ul className="space-y-3">
                     {[
-                      "Experiência com recreação infantil",
-                      "Formação em Pedagogia, Educação Física ou áreas afins",
+                      "ExperiÃªncia com recreaÃ§Ã£o infantil",
+                      "FormaÃ§Ã£o em Pedagogia, EducaÃ§Ã£o FÃ­sica ou Ã¡reas afins",
                       "Conhecimento em oficinas criativas",
                       "Disponibilidade para finais de semana",
-                      "Veículo próprio",
-                    ].map((item, i) => (
+                      "VeÃ­culo prÃ³prio"].map((item, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-5 h-5 text-[#FFD836] mt-0.5 flex-shrink-0" />
                         <span className="text-sm">{item}</span>
@@ -190,16 +169,14 @@ const TrabalheConosco = () => {
             </div>
           </div>
         </section>
-
         {/* Application Form */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-4">Envie sua candidatura</h2>
               <p className="text-center text-muted-foreground mb-8">
-                Preencha o formulário abaixo e entraremos em contato!
+                Preencha o formulÃ¡rio abaixo e entraremos em contato!
               </p>
-
               <Card className="p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -227,7 +204,6 @@ const TrabalheConosco = () => {
                       />
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="telefone">Telefone/WhatsApp *</Label>
@@ -247,12 +223,11 @@ const TrabalheConosco = () => {
                         name="cidade"
                         value={formData.cidade}
                         onChange={handleChange}
-                        placeholder="São Paulo - SP"
+                        placeholder="SÃ£o Paulo - SP"
                         required
                       />
                     </div>
                   </div>
-
                   <div className="space-y-2">
                     <Label>Disponibilidade</Label>
                     <div className="grid grid-cols-2 gap-3">
@@ -270,31 +245,28 @@ const TrabalheConosco = () => {
                       ))}
                     </div>
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="experiencia">Experiência com crianças</Label>
+                    <Label htmlFor="experiencia">ExperiÃªncia com crianÃ§as</Label>
                     <Textarea
                       id="experiencia"
                       name="experiencia"
                       value={formData.experiencia}
                       onChange={handleChange}
-                      placeholder="Conte sobre sua experiência trabalhando com crianças..."
+                      placeholder="Conte sobre sua experiÃªncia trabalhando com crianÃ§as..."
                       rows={3}
                     />
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="sobre_voce">Sobre você</Label>
+                    <Label htmlFor="sobre_voce">Sobre vocÃª</Label>
                     <Textarea
                       id="sobre_voce"
                       name="sobre_voce"
                       value={formData.sobre_voce}
                       onChange={handleChange}
-                      placeholder="Por que você quer trabalhar na Vivalegria?"
+                      placeholder="Por que vocÃª quer trabalhar na Vivalegria?"
                       rows={3}
                     />
                   </div>
-
                   <Button
                     type="submit"
                     size="lg"
@@ -319,5 +291,4 @@ const TrabalheConosco = () => {
     </>
   );
 };
-
 export default TrabalheConosco;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, Eye, UserCheck, Archive, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -31,7 +31,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/admin/AdminLayout";
-
 const AdminCandidaturas = () => {
   const { user, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -43,30 +42,25 @@ const AdminCandidaturas = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedCandidatura, setSelectedCandidatura] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-
   useEffect(() => {
     if (!isLoading && (!user || !isAdmin)) {
       navigate("/admin/login");
     }
   }, [user, isAdmin, isLoading, navigate]);
-
   useEffect(() => {
     if (user && isAdmin) {
       fetchCandidaturas();
     }
   }, [user, isAdmin]);
-
   useEffect(() => {
     filterCandidaturas();
   }, [candidaturas, searchTerm, statusFilter]);
-
   const fetchCandidaturas = async () => {
     try {
       const { data, error } = await supabase
         .from("candidaturas")
         .select("*")
         .order("created_at", { ascending: false });
-
       if (error) throw error;
       setCandidaturas(data || []);
     } catch (error) {
@@ -75,10 +69,8 @@ const AdminCandidaturas = () => {
       setLoadingData(false);
     }
   };
-
   const filterCandidaturas = () => {
     let filtered = [...candidaturas];
-
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
@@ -88,27 +80,21 @@ const AdminCandidaturas = () => {
           c.cidade?.toLowerCase().includes(term)
       );
     }
-
     if (statusFilter !== "all") {
       filtered = filtered.filter((c) => c.status === statusFilter);
     }
-
     setFilteredCandidaturas(filtered);
   };
-
   const updateStatus = async (id: string, newStatus: string) => {
     try {
       const { error } = await supabase
         .from("candidaturas")
         .update({ status: newStatus })
         .eq("id", id);
-
       if (error) throw error;
-
       setCandidaturas((prev) =>
         prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c))
       );
-
       toast({
         title: "Status atualizado",
         description: `Candidatura marcada como ${newStatus}`,
@@ -117,37 +103,31 @@ const AdminCandidaturas = () => {
       console.error("Error updating status:", error);
       toast({
         title: "Erro",
-        description: "Não foi possível atualizar o status",
+        description: "NÃ£o foi possÃ­vel atualizar o status",
         variant: "destructive",
       });
     }
   };
-
   const deleteCandidatura = async () => {
     if (!deleteId) return;
-
     try {
       const { error } = await supabase.from("candidaturas").delete().eq("id", deleteId);
-
       if (error) throw error;
-
       setCandidaturas((prev) => prev.filter((c) => c.id !== deleteId));
       setDeleteId(null);
-
       toast({
-        title: "Candidatura excluída",
+        title: "Candidatura excluÃ­da",
         description: "A candidatura foi removida com sucesso",
       });
     } catch (error) {
       console.error("Error deleting candidatura:", error);
       toast({
         title: "Erro",
-        description: "Não foi possível excluir a candidatura",
+        description: "NÃ£o foi possÃ­vel excluir a candidatura",
         variant: "destructive",
       });
     }
   };
-
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pendente":
@@ -160,14 +140,12 @@ const AdminCandidaturas = () => {
         return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">{status}</span>;
     }
   };
-
   const disponibilidadeLabels: Record<string, string> = {
     fins_semana: "Finais de semana",
     feriados: "Feriados",
     eventos_escolares: "Eventos escolares",
     eventos_corporativos: "Eventos corporativos",
   };
-
   if (isLoading || !user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -175,7 +153,6 @@ const AdminCandidaturas = () => {
       </div>
     );
   }
-
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -183,7 +160,6 @@ const AdminCandidaturas = () => {
           <h1 className="text-3xl font-bold">Candidaturas</h1>
           <p className="text-muted-foreground">Gerencie candidaturas para vagas de emprego</p>
         </div>
-
         {/* Filters */}
         <Card className="p-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -210,7 +186,6 @@ const AdminCandidaturas = () => {
             </Select>
           </div>
         </Card>
-
         {/* Table */}
         <Card className="p-6">
           <div className="overflow-x-auto">
@@ -221,7 +196,7 @@ const AdminCandidaturas = () => {
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Cidade</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Data</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Status</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Ações</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃ§Ãµes</th>
                 </tr>
               </thead>
               <tbody>
@@ -300,7 +275,6 @@ const AdminCandidaturas = () => {
           </div>
         </Card>
       </div>
-
       {/* Details Dialog */}
       <Dialog open={!!selectedCandidatura} onOpenChange={() => setSelectedCandidatura(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -345,7 +319,6 @@ const AdminCandidaturas = () => {
                   </p>
                 </div>
               </div>
-
               {selectedCandidatura.disponibilidade?.length > 0 && (
                 <div className="border-t pt-4">
                   <p className="text-sm text-muted-foreground mb-2">Disponibilidade</p>
@@ -358,21 +331,18 @@ const AdminCandidaturas = () => {
                   </div>
                 </div>
               )}
-
               {selectedCandidatura.experiencia && (
                 <div className="border-t pt-4">
-                  <p className="text-sm text-muted-foreground mb-2">Experiência com crianças</p>
+                  <p className="text-sm text-muted-foreground mb-2">ExperiÃªncia com crianÃ§as</p>
                   <p className="text-sm bg-muted p-3 rounded-lg">{selectedCandidatura.experiencia}</p>
                 </div>
               )}
-
               {selectedCandidatura.sobre_voce && (
                 <div className="border-t pt-4">
                   <p className="text-sm text-muted-foreground mb-2">Sobre o candidato</p>
                   <p className="text-sm bg-muted p-3 rounded-lg">{selectedCandidatura.sobre_voce}</p>
                 </div>
               )}
-
               <div className="border-t pt-4 flex gap-2">
                 <Button
                   onClick={() => window.open(`https://wa.me/55${selectedCandidatura.telefone.replace(/\D/g, "")}`, "_blank")}
@@ -392,14 +362,13 @@ const AdminCandidaturas = () => {
           )}
         </DialogContent>
       </Dialog>
-
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
+            <AlertDialogTitle>Confirmar exclusÃ£o</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir esta candidatura? Esta ação não pode ser desfeita.
+              Tem certeza que deseja excluir esta candidatura? Esta aÃ§Ã£o nÃ£o pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -413,5 +382,4 @@ const AdminCandidaturas = () => {
     </AdminLayout>
   );
 };
-
 export default AdminCandidaturas;

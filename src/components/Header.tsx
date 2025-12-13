@@ -1,14 +1,12 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
-
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -16,7 +14,6 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/pacotes", label: "Pacotes" },
@@ -24,11 +21,8 @@ const Header = () => {
     { to: "/guia-para-pais", label: "Guia para Pais" },
     { to: "/quem-somos", label: "Quem Somos" },
     { to: "/corporativo", label: "Corporativo" },
-    { to: "/contato", label: "Contato" },
-  ];
-
+    { to: "/contato", label: "Contato" }];
   const isActive = (path: string) => location.pathname === path;
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -39,9 +33,8 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center transition-transform hover:scale-105 duration-300">
-            <img src={logoVivalegria} alt="Vivalegria Recreação" className="h-12 md:h-14 w-auto" />
+            <img src={logoVivalegria} alt="Vivalegria RecreaÃ§Ã£o" className="h-12 md:h-14 w-auto" />
           </Link>
-
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link) => (
@@ -60,7 +53,6 @@ const Header = () => {
               </Link>
             ))}
           </nav>
-
           {/* CTA Button */}
           <div className="hidden lg:block">
             <Button asChild size="lg" className="rounded-full shadow-soft hover:shadow-hover">
@@ -69,7 +61,6 @@ const Header = () => {
               </Link>
             </Button>
           </div>
-
           {/* Mobile Menu Button */}
           <button
             className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"
@@ -79,7 +70,6 @@ const Header = () => {
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <nav className="lg:hidden py-4 border-t border-border animate-fade-in">
@@ -110,5 +100,4 @@ const Header = () => {
     </header>
   );
 };
-
 export default Header;

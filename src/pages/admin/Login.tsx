@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Mail, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
-
 const AdminLogin = () => {
   const navigate = useNavigate();
   const { user, isAdmin, isLoading, signIn } = useAuth();
@@ -16,21 +15,17 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   useEffect(() => {
     if (!isLoading && user && isAdmin) {
       navigate("/admin");
     }
   }, [user, isAdmin, isLoading, navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-
     try {
       const { error: signInError } = await signIn(email, password);
-      
       if (signInError) {
         if (signInError.message.includes("Invalid login")) {
           setError("E-mail ou senha incorretos.");
@@ -39,7 +34,6 @@ const AdminLogin = () => {
         }
         return;
       }
-
       // Wait a bit for auth state to update and check admin role
       setTimeout(async () => {
         // The auth context will handle the redirect
@@ -50,7 +44,6 @@ const AdminLogin = () => {
       setIsSubmitting(false);
     }
   };
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -58,7 +51,6 @@ const AdminLogin = () => {
       </div>
     );
   }
-
   if (user && !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -66,7 +58,7 @@ const AdminLogin = () => {
           <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
           <h1 className="text-xl font-bold mb-2">Acesso Negado</h1>
           <p className="text-muted-foreground mb-4">
-            Sua conta não possui permissões de administrador.
+            Sua conta nÃ£o possui permissÃµes de administrador.
           </p>
           <Button onClick={() => navigate("/")} variant="outline">
             Voltar para o site
@@ -75,23 +67,20 @@ const AdminLogin = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFD836]/10 via-white to-white p-4">
       <Card className="p-8 max-w-md w-full">
         <div className="text-center mb-8">
           <img src={logoVivalegria} alt="Vivalegria" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold">Área Administrativa</h1>
+          <h1 className="text-2xl font-bold">Ãrea Administrativa</h1>
           <p className="text-muted-foreground">Acesso restrito</p>
         </div>
-
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email">E-mail</Label>
@@ -108,7 +97,6 @@ const AdminLogin = () => {
               />
             </div>
           </div>
-
           <div className="space-y-2">
             <Label htmlFor="password">Senha</Label>
             <div className="relative">
@@ -118,13 +106,12 @@ const AdminLogin = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 className="pl-10"
                 required
               />
             </div>
           </div>
-
           <Button
             type="submit"
             className="w-full rounded-full"
@@ -133,15 +120,13 @@ const AdminLogin = () => {
             {isSubmitting ? "Entrando..." : "Entrar"}
           </Button>
         </form>
-
         <div className="mt-6 text-center">
           <Button variant="link" onClick={() => navigate("/")}>
-            ← Voltar para o site
+            â† Voltar para o site
           </Button>
         </div>
       </Card>
     </div>
   );
 };
-
 export default AdminLogin;

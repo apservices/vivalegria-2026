@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Calendar, Users, FileText, TrendingUp, Clock, CheckCircle, XCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -6,14 +6,12 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
-
 interface Stats {
   reservasPendentes: number;
   reservasConfirmadas: number;
   candidaturasPendentes: number;
   totalReservas: number;
 }
-
 const AdminDashboard = () => {
   const { user, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -25,30 +23,24 @@ const AdminDashboard = () => {
   });
   const [recentReservas, setRecentReservas] = useState<any[]>([]);
   const [loadingStats, setLoadingStats] = useState(true);
-
   useEffect(() => {
     if (!isLoading && (!user || !isAdmin)) {
       navigate("/admin/login");
     }
   }, [user, isAdmin, isLoading, navigate]);
-
   useEffect(() => {
     if (user && isAdmin) {
       fetchStats();
       fetchRecentReservas();
     }
   }, [user, isAdmin]);
-
   const fetchStats = async () => {
     try {
       const [reservasResult, candidaturasResult] = await Promise.all([
         supabase.from("reservas").select("status"),
-        supabase.from("candidaturas").select("status"),
-      ]);
-
+        supabase.from("candidaturas").select("status")]);
       const reservas = reservasResult.data || [];
       const candidaturas = candidaturasResult.data || [];
-
       setStats({
         reservasPendentes: reservas.filter(r => r.status === "pendente").length,
         reservasConfirmadas: reservas.filter(r => r.status === "confirmado").length,
@@ -61,7 +53,6 @@ const AdminDashboard = () => {
       setLoadingStats(false);
     }
   };
-
   const fetchRecentReservas = async () => {
     try {
       const { data } = await supabase
@@ -69,13 +60,11 @@ const AdminDashboard = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(5);
-
       setRecentReservas(data || []);
     } catch (error) {
       console.error("Error fetching recent reservas:", error);
     }
   };
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -83,11 +72,9 @@ const AdminDashboard = () => {
       </div>
     );
   }
-
   if (!user || !isAdmin) {
     return null;
   }
-
   const statCards = [
     {
       title: "Reservas Pendentes",
@@ -116,9 +103,7 @@ const AdminDashboard = () => {
       icon: TrendingUp,
       color: "text-purple-600",
       bgColor: "bg-purple-100",
-    },
-  ];
-
+    }];
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pendente":
@@ -131,15 +116,13 @@ const AdminDashboard = () => {
         return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">{status}</span>;
     }
   };
-
   return (
     <AdminLayout>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Visão geral do sistema</p>
+          <p className="text-muted-foreground">VisÃ£o geral do sistema</p>
         </div>
-
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((stat, index) => (
@@ -158,7 +141,6 @@ const AdminDashboard = () => {
             </Card>
           ))}
         </div>
-
         {/* Recent Reservations */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-6">
@@ -167,7 +149,6 @@ const AdminDashboard = () => {
               <Link to="/admin/reservas">Ver todas</Link>
             </Button>
           </div>
-
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -208,7 +189,6 @@ const AdminDashboard = () => {
             </table>
           </div>
         </Card>
-
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-6">
@@ -225,7 +205,6 @@ const AdminDashboard = () => {
               <Link to="/admin/reservas">Acessar Reservas</Link>
             </Button>
           </Card>
-
           <Card className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-full bg-[#73B6F0]/20 flex items-center justify-center">
@@ -245,5 +224,4 @@ const AdminDashboard = () => {
     </AdminLayout>
   );
 };
-
 export default AdminDashboard;

@@ -1,18 +1,14 @@
-import { MessageCircle } from "lucide-react";
+﻿import { MessageCircle } from "lucide-react";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { useLocation } from "react-router-dom";
-
 const WhatsAppButton = () => {
   const location = useLocation();
   const isContratarPage = location.pathname === "/contratar";
-  
   // Use configurator context if on contratar page, otherwise default link
   const { getWhatsAppMessage } = useConfigurator();
-  
   const href = isContratarPage 
     ? getWhatsAppMessage() 
     : "https://wa.me/5511965982251";
-
   return (
     <a
       href={href}
@@ -25,5 +21,4 @@ const WhatsAppButton = () => {
     </a>
   );
 };
-
 export default WhatsAppButton;

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { 
   Brain, 
   Heart, 
@@ -14,96 +14,89 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SEO from "@/components/SEO";
-
 const GuiaParaPais = () => {
   const developmentTopics = [
     {
       icon: Brain,
       title: "Desenvolvimento Cognitivo",
-      description: "O brincar estruturado estimula o raciocínio lógico, resolução de problemas e criatividade. Atividades guiadas desenvolvem habilidades essenciais para o aprendizado."
+      description: "O brincar estruturado estimula o raciocÃ­nio lÃ³gico, resoluÃ§Ã£o de problemas e criatividade. Atividades guiadas desenvolvem habilidades essenciais para o aprendizado."
     },
     {
       icon: Heart,
-      title: "Inteligência Emocional",
-      description: "Brincadeiras em grupo ensinam empatia, cooperação e gestão de emoções. Monitores treinados facilitam interações positivas e construtivas."
+      title: "InteligÃªncia Emocional",
+      description: "Brincadeiras em grupo ensinam empatia, cooperaÃ§Ã£o e gestÃ£o de emoÃ§Ãµes. Monitores treinados facilitam interaÃ§Ãµes positivas e construtivas."
     },
     {
       icon: Palette,
-      title: "Expressão Criativa",
-      description: "Oficinas artísticas permitem que crianças expressem sentimentos e ideias de forma única, fortalecendo autoestima e identidade."
+      title: "ExpressÃ£o Criativa",
+      description: "Oficinas artÃ­sticas permitem que crianÃ§as expressem sentimentos e ideias de forma Ãºnica, fortalecendo autoestima e identidade."
     }
   ];
-
   const partyChecklist = [
-    "Definir data e horário com antecedência (mínimo 15 dias)",
-    "Escolher tema ou oficinas de acordo com a idade das crianças",
-    "Confirmar número de convidados para dimensionar monitores",
-    "Preparar espaço adequado (interno ou externo)",
-    "Comunicar alergias ou restrições alimentares",
-    "Ter área separada para os pais (opcional)",
-    "Providenciar kit básico de primeiros socorros",
-    "Definir horário de entrada e saída dos convidados"
+    "Definir data e horÃ¡rio com antecedÃªncia (mÃ­nimo 15 dias)",
+    "Escolher tema ou oficinas de acordo com a idade das crianÃ§as",
+    "Confirmar nÃºmero de convidados para dimensionar monitores",
+    "Preparar espaÃ§o adequado (interno ou externo)",
+    "Comunicar alergias ou restriÃ§Ãµes alimentares",
+    "Ter Ã¡rea separada para os pais (opcional)",
+    "Providenciar kit bÃ¡sico de primeiros socorros",
+    "Definir horÃ¡rio de entrada e saÃ­da dos convidados"
   ];
-
   const safetyTips = [
     {
-      title: "Espaço Seguro",
-      description: "Verifique se o local é livre de obstáculos e superfícies perigosas"
+      title: "EspaÃ§o Seguro",
+      description: "Verifique se o local Ã© livre de obstÃ¡culos e superfÃ­cies perigosas"
     },
     {
-      title: "Supervisão Adequada",
-      description: "Nossa equipe mantém proporção ideal de 1 monitor para cada 10-12 crianças"
+      title: "SupervisÃ£o Adequada",
+      description: "Nossa equipe mantÃ©m proporÃ§Ã£o ideal de 1 monitor para cada 10-12 crianÃ§as"
     },
     {
       title: "Materiais Certificados",
-      description: "Todos os materiais são atóxicos, hipoalergênicos e aprovados pelo INMETRO"
+      description: "Todos os materiais sÃ£o atÃ³xicos, hipoalergÃªnicos e aprovados pelo INMETRO"
     },
     {
       title: "Protocolos de Higiene",
-      description: "Sanitização de equipamentos antes, durante e após o evento"
+      description: "SanitizaÃ§Ã£o de equipamentos antes, durante e apÃ³s o evento"
     }
   ];
-
   const creativityTopics = [
     {
       icon: Sparkles,
       title: "Arte como Ferramenta",
-      description: "Atividades artísticas desenvolvem coordenação motora fina, concentração e autoconfiança. Cada obra é uma conquista pessoal."
+      description: "Atividades artÃ­sticas desenvolvem coordenaÃ§Ã£o motora fina, concentraÃ§Ã£o e autoconfianÃ§a. Cada obra Ã© uma conquista pessoal."
     },
     {
       icon: Lightbulb,
       title: "Oficinas Educativas",
-      description: "Slime ensina química básica, jardinagem conecta com a natureza, pintura explora cores e formas. Aprender brincando é mais eficaz."
+      description: "Slime ensina quÃ­mica bÃ¡sica, jardinagem conecta com a natureza, pintura explora cores e formas. Aprender brincando Ã© mais eficaz."
     }
   ];
-
   const trendingIdeas = [
     {
-      title: "Festas Temáticas Sustentáveis",
-      description: "Decoração eco-friendly, oficinas de reciclagem criativa e jogos que ensinam sobre meio ambiente"
+      title: "Festas TemÃ¡ticas SustentÃ¡veis",
+      description: "DecoraÃ§Ã£o eco-friendly, oficinas de reciclagem criativa e jogos que ensinam sobre meio ambiente"
     },
     {
-      title: "Experiências Sensoriais",
+      title: "ExperiÃªncias Sensoriais",
       description: "Massinha caseira, slime texturizado e pintura com diferentes materiais para estimular todos os sentidos"
     },
     {
       title: "Festa no Estilo Maker",
-      description: "Crianças criam suas próprias lembrancinhas em oficinas interativas"
+      description: "CrianÃ§as criam suas prÃ³prias lembrancinhas em oficinas interativas"
     },
     {
-      title: "Celebração Multi-Idade",
-      description: "Estações de atividades adaptadas para diferentes faixas etárias no mesmo evento"
+      title: "CelebraÃ§Ã£o Multi-Idade",
+      description: "EstaÃ§Ãµes de atividades adaptadas para diferentes faixas etÃ¡rias no mesmo evento"
     }
   ];
-
   return (
     <>
       <SEO
-        title="Guia para Pais | Vivalegria Recreação"
-        description="Dicas essenciais para pais: desenvolvimento infantil, organização de festas, segurança, educação criativa e tendências em eventos infantis."
+        title="Guia para Pais | Vivalegria RecreaÃ§Ã£o"
+        description="Dicas essenciais para pais: desenvolvimento infantil, organizaÃ§Ã£o de festas, seguranÃ§a, educaÃ§Ã£o criativa e tendÃªncias em eventos infantis."
         canonical="/guia-para-pais"
       />
-
       <div className="min-h-screen pt-20">
         {/* Hero Section */}
         <section className="py-24 bg-gradient-subtle">
@@ -114,12 +107,11 @@ const GuiaParaPais = () => {
               </div>
               <h1 className="text-balance">Guia Completo para Pais</h1>
               <p className="text-xl text-muted-foreground text-balance">
-                Insights sobre desenvolvimento infantil, dicas práticas e inspiração para criar momentos inesquecíveis
+                Insights sobre desenvolvimento infantil, dicas prÃ¡ticas e inspiraÃ§Ã£o para criar momentos inesquecÃ­veis
               </p>
             </div>
           </div>
         </section>
-
         {/* Desenvolvimento Infantil */}
         <section className="py-24">
           <div className="container mx-auto px-4">
@@ -127,10 +119,9 @@ const GuiaParaPais = () => {
               <div className="text-center mb-16">
                 <h2 className="mb-4">Desenvolvimento Infantil</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Entenda como o brincar impacta positivamente o crescimento das crianças
+                  Entenda como o brincar impacta positivamente o crescimento das crianÃ§as
                 </p>
               </div>
-
               <div className="grid md:grid-cols-3 gap-8">
                 {developmentTopics.map((topic, index) => (
                   <Card key={index} className="hover-lift">
@@ -151,7 +142,6 @@ const GuiaParaPais = () => {
             </div>
           </div>
         </section>
-
         {/* Dicas para Festa Infantil */}
         <section className="py-24 bg-gradient-subtle">
           <div className="container mx-auto px-4">
@@ -159,10 +149,9 @@ const GuiaParaPais = () => {
               <div className="text-center mb-16">
                 <h2 className="mb-4">Dicas para Festa Infantil</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Checklist completo para organizar uma celebração segura e memorável
+                  Checklist completo para organizar uma celebraÃ§Ã£o segura e memorÃ¡vel
                 </p>
               </div>
-
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Checklist */}
                 <Card className="p-8">
@@ -176,12 +165,11 @@ const GuiaParaPais = () => {
                     ))}
                   </div>
                 </Card>
-
                 {/* Safety Tips */}
                 <Card className="p-8">
                   <div className="flex items-center gap-3 mb-6">
                     <Shield className="w-6 h-6 text-primary" />
-                    <h3 className="text-2xl font-bold">Segurança em Primeiro Lugar</h3>
+                    <h3 className="text-2xl font-bold">SeguranÃ§a em Primeiro Lugar</h3>
                   </div>
                   <div className="space-y-6">
                     {safetyTips.map((tip, index) => (
@@ -195,7 +183,6 @@ const GuiaParaPais = () => {
                   </div>
                 </Card>
               </div>
-
               {/* Package Selection Tips */}
               <Card className="mt-8 p-8 border-primary/20">
                 <h3 className="text-2xl font-bold mb-6">Como Escolher o Pacote Ideal</h3>
@@ -203,20 +190,20 @@ const GuiaParaPais = () => {
                   <div>
                     <h4 className="font-semibold mb-3 text-primary">Considere:</h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li>• Número de crianças convidadas</li>
-                      <li>• Faixa etária predominante</li>
-                      <li>• Duração desejada do evento</li>
-                      <li>• Preferências temáticas das crianças</li>
-                      <li>• Espaço disponível (interno/externo)</li>
+                      <li>â€¢ NÃºmero de crianÃ§as convidadas</li>
+                      <li>â€¢ Faixa etÃ¡ria predominante</li>
+                      <li>â€¢ DuraÃ§Ã£o desejada do evento</li>
+                      <li>â€¢ PreferÃªncias temÃ¡ticas das crianÃ§as</li>
+                      <li>â€¢ EspaÃ§o disponÃ­vel (interno/externo)</li>
                     </ul>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-3 text-primary">Vivalegria recomenda:</h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li>• <strong>Classic</strong>: Até 15 crianças, 4 horas</li>
-                      <li>• <strong>Select</strong>: 16-30 crianças, experiência completa</li>
-                      <li>• <strong>Oficinas</strong>: Eventos educativos e criativos</li>
-                      <li>• <strong>Corporativo</strong>: Grandes eventos e empresas</li>
+                      <li>â€¢ <strong>Classic</strong>: AtÃ© 15 crianÃ§as, 4 horas</li>
+                      <li>â€¢ <strong>Select</strong>: 16-30 crianÃ§as, experiÃªncia completa</li>
+                      <li>â€¢ <strong>Oficinas</strong>: Eventos educativos e criativos</li>
+                      <li>â€¢ <strong>Corporativo</strong>: Grandes eventos e empresas</li>
                     </ul>
                   </div>
                 </div>
@@ -224,18 +211,16 @@ const GuiaParaPais = () => {
             </div>
           </div>
         </section>
-
-        {/* Educação & Criatividade */}
+        {/* EducaÃ§Ã£o & Criatividade */}
         <section className="py-24">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="mb-4">Educação & Criatividade</h2>
+                <h2 className="mb-4">EducaÃ§Ã£o & Criatividade</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   O poder transformador das atividades criativas no desenvolvimento infantil
                 </p>
               </div>
-
               <div className="grid md:grid-cols-2 gap-8 mb-12">
                 {creativityTopics.map((topic, index) => (
                   <Card key={index} className="p-8 hover-lift">
@@ -253,26 +238,25 @@ const GuiaParaPais = () => {
                   </Card>
                 ))}
               </div>
-
               <Card className="p-8 bg-gradient-subtle border-0">
-                <h3 className="text-2xl font-bold mb-6">Como as Crianças Aprendem Brincando</h3>
+                <h3 className="text-2xl font-bold mb-6">Como as CrianÃ§as Aprendem Brincando</h3>
                 <div className="grid md:grid-cols-3 gap-6">
                   <div>
                     <div className="text-3xl font-bold text-primary mb-2">75%</div>
                     <p className="text-sm text-muted-foreground">
-                      das crianças retêm melhor informações aprendidas de forma lúdica
+                      das crianÃ§as retÃªm melhor informaÃ§Ãµes aprendidas de forma lÃºdica
                     </p>
                   </div>
                   <div>
                     <div className="text-3xl font-bold text-primary mb-2">3x</div>
                     <p className="text-sm text-muted-foreground">
-                      mais engajamento em atividades práticas comparado a teóricas
+                      mais engajamento em atividades prÃ¡ticas comparado a teÃ³ricas
                     </p>
                   </div>
                   <div>
                     <div className="text-3xl font-bold text-primary mb-2">90%</div>
                     <p className="text-sm text-muted-foreground">
-                      dos pais relatam melhora na criatividade após oficinas regulares
+                      dos pais relatam melhora na criatividade apÃ³s oficinas regulares
                     </p>
                   </div>
                 </div>
@@ -280,8 +264,7 @@ const GuiaParaPais = () => {
             </div>
           </div>
         </section>
-
-        {/* Ideias e Tendências */}
+        {/* Ideias e TendÃªncias */}
         <section className="py-24 bg-gradient-subtle">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
@@ -289,15 +272,14 @@ const GuiaParaPais = () => {
                 <div className="inline-flex items-center gap-2 mb-4">
                   <TrendingUp className="w-6 h-6 text-primary" />
                   <span className="text-sm font-semibold text-primary uppercase tracking-wide">
-                    Tendências 2025
+                    TendÃªncias 2025
                   </span>
                 </div>
                 <h2 className="mb-4">Ideias Criativas e Modernas</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Inspire-se com as últimas tendências em festas e eventos infantis
+                  Inspire-se com as Ãºltimas tendÃªncias em festas e eventos infantis
                 </p>
               </div>
-
               <div className="grid md:grid-cols-2 gap-6">
                 {trendingIdeas.map((idea, index) => (
                   <Card key={index} className="p-6 hover-lift">
@@ -311,18 +293,16 @@ const GuiaParaPais = () => {
             </div>
           </div>
         </section>
-
         {/* CTA Blocks */}
         <section className="py-24">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="mb-4">Pronto para Criar Memórias Incríveis?</h2>
+                <h2 className="mb-4">Pronto para Criar MemÃ³rias IncrÃ­veis?</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Explore nossas soluções e encontre a perfeita para o seu evento
+                  Explore nossas soluÃ§Ãµes e encontre a perfeita para o seu evento
                 </p>
               </div>
-
               <div className="grid md:grid-cols-3 gap-6">
                 <Card className="p-8 text-center hover-lift border-primary/20">
                   <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
@@ -330,7 +310,7 @@ const GuiaParaPais = () => {
                   </div>
                   <h3 className="text-xl font-bold mb-3">Nossos Pacotes</h3>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Classic, Select e soluções personalizadas
+                    Classic, Select e soluÃ§Ãµes personalizadas
                   </p>
                   <Button asChild variant="outline" className="w-full rounded-full">
                     <Link to="/pacotes">
@@ -339,7 +319,6 @@ const GuiaParaPais = () => {
                     </Link>
                   </Button>
                 </Card>
-
                 <Card className="p-8 text-center hover-lift border-primary/20">
                   <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                     <Palette className="w-8 h-8 text-primary" />
@@ -355,7 +334,6 @@ const GuiaParaPais = () => {
                     </Link>
                   </Button>
                 </Card>
-
                 <Card className="p-8 text-center hover-lift border-primary/20">
                   <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center mx-auto mb-4">
                     <Sparkles className="w-8 h-8 text-white" />
@@ -366,18 +344,17 @@ const GuiaParaPais = () => {
                   </p>
                   <Button asChild className="w-full rounded-full shadow-premium">
                     <Link to="/contratar">
-                      Começar Agora
+                      ComeÃ§ar Agora
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Link>
                   </Button>
                 </Card>
               </div>
-
               {/* WhatsApp CTA */}
               <Card className="mt-8 p-8 bg-gradient-warm text-center border-0">
-                <h3 className="text-2xl font-bold mb-4 text-white">Ainda tem dúvidas?</h3>
+                <h3 className="text-2xl font-bold mb-4 text-white">Ainda tem dÃºvidas?</h3>
                 <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-                  Nossa equipe está pronta para ajudar você a planejar o evento perfeito
+                  Nossa equipe estÃ¡ pronta para ajudar vocÃª a planejar o evento perfeito
                 </p>
                 <Button 
                   asChild 
@@ -385,7 +362,7 @@ const GuiaParaPais = () => {
                   className="rounded-full bg-white text-primary hover:bg-white/90 shadow-premium"
                 >
                   <a 
-                    href="https://wa.me/5511965982251?text=Olá! Li o Guia para Pais e gostaria de saber mais sobre os serviços."
+                    href="https://wa.me/5511965982251?text=OlÃ¡! Li o Guia para Pais e gostaria de saber mais sobre os serviÃ§os."
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -401,5 +378,4 @@ const GuiaParaPais = () => {
     </>
   );
 };
-
 export default GuiaParaPais;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -37,7 +37,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-
 interface Profissional {
   id: string;
   registro: string | null;
@@ -47,7 +46,6 @@ interface Profissional {
   habilidades: Record<string, number> | null;
   status: string;
 }
-
 interface EventoCasting {
   id: string;
   reserva_id: string;
@@ -58,7 +56,6 @@ interface EventoCasting {
   confirmado: boolean;
   profissional?: Profissional;
 }
-
 interface Reserva {
   id: string;
   nome_completo: string;
@@ -70,7 +67,6 @@ interface Reserva {
   status: string;
   casting?: EventoCasting[];
 }
-
 const Casting = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -79,7 +75,6 @@ const Casting = () => {
   const [profissionalSearch, setProfissionalSearch] = useState("");
   const [selectedReserva, setSelectedReserva] = useState<string | null>(null);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
-
   // Fetch reservas with casting
   const { data: reservas, isLoading: loadingReservas } = useQuery({
     queryKey: ["reservas-casting"],
@@ -88,12 +83,10 @@ const Casting = () => {
         .from("reservas")
         .select("*")
         .order("data_evento", { ascending: true });
-      
       if (error) throw error;
       return data as Reserva[];
     },
   });
-
   // Fetch profissionais
   const { data: profissionais } = useQuery({
     queryKey: ["profissionais"],
@@ -103,12 +96,10 @@ const Casting = () => {
         .select("*")
         .eq("status", "ativo")
         .order("nome_completo");
-      
       if (error) throw error;
       return data as Profissional[];
     },
   });
-
   // Fetch casting for each reserva
   const { data: allCasting } = useQuery({
     queryKey: ["evento-casting"],
@@ -119,12 +110,10 @@ const Casting = () => {
           *,
           profissional:profissionais(*)
         `);
-      
       if (error) throw error;
       return data as EventoCasting[];
     },
   });
-
   // Add casting mutation
   const addCastingMutation = useMutation({
     mutationFn: async ({ 
@@ -157,7 +146,6 @@ const Casting = () => {
       toast({ title: "Erro ao adicionar profissional", variant: "destructive" });
     },
   });
-
   // Remove casting mutation
   const removeCastingMutation = useMutation({
     mutationFn: async (castingId: string) => {
@@ -172,7 +160,6 @@ const Casting = () => {
       toast({ title: "Profissional removido do evento" });
     },
   });
-
   // Toggle confirmation mutation
   const toggleConfirmMutation = useMutation({
     mutationFn: async ({ id, confirmado }: { id: string; confirmado: boolean }) => {
@@ -186,7 +173,6 @@ const Casting = () => {
       queryClient.invalidateQueries({ queryKey: ["evento-casting"] });
     },
   });
-
   // Update cache mutation
   const updateCacheMutation = useMutation({
     mutationFn: async ({ id, cache }: { id: string; cache: number }) => {
@@ -200,31 +186,25 @@ const Casting = () => {
       queryClient.invalidateQueries({ queryKey: ["evento-casting"] });
     },
   });
-
   // Import CSV function
   const handleImportCSV = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
         const text = e.target?.result as string;
         const lines = text.split('\n');
         const headers = lines[0].split(',');
-        
         const profissionaisToInsert = [];
-        
         for (let i = 1; i < lines.length; i++) {
           const values = lines[i].split(',');
           if (values.length < 5) continue;
-          
           const nomeIndex = headers.findIndex(h => h.includes('Nome completo'));
           const apelidoIndex = headers.findIndex(h => h.includes('Apelido'));
           const telefoneIndex = headers.findIndex(h => h.includes('Telefone'));
           const emailIndex = headers.findIndex(h => h.includes('mail'));
           const registroIndex = headers.findIndex(h => h.includes('Registro'));
-          
           if (nomeIndex >= 0 && values[nomeIndex]?.trim()) {
             profissionaisToInsert.push({
               nome_completo: values[nomeIndex]?.trim().replace(/"/g, ''),
@@ -235,7 +215,6 @@ const Casting = () => {
             });
           }
         }
-        
         if (profissionaisToInsert.length > 0) {
           const { error } = await supabase
             .from("profissionais")
@@ -243,9 +222,7 @@ const Casting = () => {
               onConflict: 'registro',
               ignoreDuplicates: true 
             });
-          
           if (error) throw error;
-          
           queryClient.invalidateQueries({ queryKey: ["profissionais"] });
           toast({ title: `${profissionaisToInsert.length} profissionais importados!` });
           setIsImportDialogOpen(false);
@@ -257,36 +234,28 @@ const Casting = () => {
     };
     reader.readAsText(file);
   };
-
   // Get required professionals count based on package
   const getRequiredProfessionals = (pacoteTipo: string) => {
     if (pacoteTipo.toLowerCase().includes('select')) return 2;
     return 1;
   };
-
   // Filter reservas
   const filteredReservas = reservas?.filter(r => {
     const matchesSearch = r.nome_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           r.local_evento.toLowerCase().includes(searchTerm.toLowerCase());
-    
     if (statusFilter === "all") return matchesSearch;
-    
     const casting = allCasting?.filter(c => c.reserva_id === r.id) || [];
     const required = getRequiredProfessionals(r.pacote_tipo);
     const isCastingComplete = casting.length >= required;
-    
     if (statusFilter === "complete") return matchesSearch && isCastingComplete;
     if (statusFilter === "incomplete") return matchesSearch && !isCastingComplete;
-    
     return matchesSearch;
   });
-
   // Filter profissionais for autocomplete
   const filteredProfissionais = profissionais?.filter(p =>
     p.nome_completo.toLowerCase().includes(profissionalSearch.toLowerCase()) ||
     p.apelido?.toLowerCase().includes(profissionalSearch.toLowerCase())
   ).slice(0, 10);
-
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -294,10 +263,9 @@ const Casting = () => {
           <div>
             <h1 className="text-3xl font-bold">Casting</h1>
             <p className="text-muted-foreground">
-              Gerencie a alocação de profissionais para cada evento
+              Gerencie a alocaÃ§Ã£o de profissionais para cada evento
             </p>
           </div>
-          
           <Dialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -325,7 +293,6 @@ const Casting = () => {
             </DialogContent>
           </Dialog>
         </div>
-
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="p-4">
@@ -361,7 +328,7 @@ const Casting = () => {
                 <DollarSign className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Cachês (Mês)</p>
+                <p className="text-sm text-muted-foreground">Total CachÃªs (MÃªs)</p>
                 <p className="text-2xl font-bold">
                   R$ {(allCasting?.reduce((acc, c) => acc + (c.cache || 0), 0) || 0).toLocaleString('pt-BR')}
                 </p>
@@ -369,7 +336,6 @@ const Casting = () => {
             </div>
           </Card>
         </div>
-
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
@@ -392,7 +358,6 @@ const Casting = () => {
             </SelectContent>
           </Select>
         </div>
-
         {/* Events List */}
         <div className="space-y-4">
           {loadingReservas ? (
@@ -408,7 +373,6 @@ const Casting = () => {
               const requiredProfessionals = getRequiredProfessionals(reserva.pacote_tipo);
               const isCastingComplete = eventCasting.length >= requiredProfessionals;
               const totalCache = eventCasting.reduce((acc, c) => acc + (c.cache || 0), 0);
-
               return (
                 <Card key={reserva.id} className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-start gap-6">
@@ -420,13 +384,11 @@ const Casting = () => {
                         </Badge>
                         <Badge variant="outline">{reserva.pacote_tipo}</Badge>
                       </div>
-                      
                       <h3 className="text-xl font-semibold">{reserva.nome_completo}</h3>
-                      
                       <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {format(new Date(reserva.data_evento), "dd/MM/yyyy", { locale: ptBR })} às {reserva.hora_inicio}
+                          {format(new Date(reserva.data_evento), "dd/MM/yyyy", { locale: ptBR })} Ã s {reserva.hora_inicio}
                         </span>
                         <span className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
@@ -434,12 +396,11 @@ const Casting = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <Users className="w-4 h-4" />
-                          {reserva.numero_criancas} crianças
+                          {reserva.numero_criancas} crianÃ§as
                         </span>
                       </div>
-                      
                       <div className="flex items-center gap-2 text-sm">
-                        <span>Profissionais necessários:</span>
+                        <span>Profissionais necessÃ¡rios:</span>
                         <span className="font-semibold">{requiredProfessionals}</span>
                         <span className="text-muted-foreground">|</span>
                         <span>Alocados:</span>
@@ -448,7 +409,6 @@ const Casting = () => {
                         </span>
                       </div>
                     </div>
-
                     {/* Casting Management */}
                     <div className="lg:w-96 space-y-4">
                       <div className="flex items-center justify-between">
@@ -459,7 +419,6 @@ const Casting = () => {
                           </span>
                         )}
                       </div>
-
                       {/* Allocated Professionals */}
                       <div className="space-y-2">
                         {eventCasting.map((casting) => (
@@ -483,7 +442,7 @@ const Casting = () => {
                             </div>
                             <Input
                               type="number"
-                              placeholder="Cachê"
+                              placeholder="CachÃª"
                               value={casting.cache || ''}
                               onChange={(e) => updateCacheMutation.mutate({ 
                                 id: casting.id, 
@@ -501,7 +460,6 @@ const Casting = () => {
                           </div>
                         ))}
                       </div>
-
                       {/* Add Professional */}
                       <div className="space-y-2">
                         <div className="relative">
@@ -517,7 +475,6 @@ const Casting = () => {
                             className="pl-10"
                           />
                         </div>
-                        
                         {selectedReserva === reserva.id && profissionalSearch && (
                           <div className="bg-background border rounded-lg max-h-40 overflow-y-auto">
                             {filteredProfissionais?.length === 0 ? (
@@ -545,7 +502,6 @@ const Casting = () => {
                                 </button>
                               ))
                             )}
-                            
                             {/* Add manual option */}
                             <button
                               onClick={() => {
@@ -575,5 +531,4 @@ const Casting = () => {
     </AdminLayout>
   );
 };
-
 export default Casting;

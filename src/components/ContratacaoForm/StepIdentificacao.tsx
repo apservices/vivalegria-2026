@@ -1,4 +1,4 @@
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+﻿import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,24 +11,21 @@ import {
 import { maskCPF, maskCNPJ } from "@/utils/inputMasks";
 import { StepProps, TipoCliente, TipoCadastro } from "./types";
 import { User, Building2 } from "lucide-react";
-
 export const StepIdentificacao = ({ formData, updateFormData, errors }: StepProps) => {
   const handleCpfCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const masked = formData.tipoCadastro === 'pf' ? maskCPF(value) : maskCNPJ(value);
     updateFormData({ cpfCnpj: masked });
   };
-
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-semibold text-foreground mb-2">Identificação</h2>
-        <p className="text-muted-foreground">Informe seus dados de identificação</p>
+        <h2 className="text-2xl font-semibold text-foreground mb-2">IdentificaÃ§Ã£o</h2>
+        <p className="text-muted-foreground">Informe seus dados de identificaÃ§Ã£o</p>
       </div>
-
       {/* Tipo de Cliente */}
       <div className="space-y-3">
-        <Label className="text-base font-medium">Você é cliente?</Label>
+        <Label className="text-base font-medium">VocÃª Ã© cliente?</Label>
         <RadioGroup
           value={formData.tipoCliente}
           onValueChange={(value: TipoCliente) => updateFormData({ tipoCliente: value })}
@@ -44,7 +41,6 @@ export const StepIdentificacao = ({ formData, updateFormData, errors }: StepProp
           </div>
         </RadioGroup>
       </div>
-
       {/* Tipo de Cadastro */}
       <div className="space-y-3">
         <Label className="text-base font-medium">Tipo de cadastro</Label>
@@ -61,19 +57,18 @@ export const StepIdentificacao = ({ formData, updateFormData, errors }: StepProp
             <SelectItem value="pf">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span>Pessoa Física (CPF)</span>
+                <span>Pessoa FÃ­sica (CPF)</span>
               </div>
             </SelectItem>
             <SelectItem value="pj">
               <div className="flex items-center gap-2">
                 <Building2 className="h-4 w-4" />
-                <span>Pessoa Jurídica (CNPJ)</span>
+                <span>Pessoa JurÃ­dica (CNPJ)</span>
               </div>
             </SelectItem>
           </SelectContent>
         </Select>
       </div>
-
       {/* CPF ou CNPJ */}
       <div className="space-y-3">
         <Label htmlFor="cpfCnpj" className="text-base font-medium">

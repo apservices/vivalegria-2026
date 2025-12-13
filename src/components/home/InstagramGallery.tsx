@@ -1,6 +1,5 @@
-import { Instagram } from "lucide-react";
+﻿import { Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 // Usando imagens do projeto existente
 import vivaSlime from "@/assets/viva-slime.png";
 import vivaRecreacao from "@/assets/viva-recreacao.png";
@@ -8,16 +7,13 @@ import vivaPintura from "@/assets/viva-pintura.png";
 import vivaEquipe from "@/assets/viva-equipe.png";
 import oficinaPintura from "@/assets/oficina-pintura.jpg";
 import oficinaSlime from "@/assets/oficina-slime.jpg";
-
 const images = [
   { src: vivaSlime, alt: "Oficina de Slime Vivalegria SP" },
-  { src: vivaRecreacao, alt: "Recreação infantil festa aniversário" },
+  { src: vivaRecreacao, alt: "RecreaÃ§Ã£o infantil festa aniversÃ¡rio" },
   { src: vivaPintura, alt: "Pintura em tela festa infantil" },
   { src: vivaEquipe, alt: "Equipe Vivalegria recreadores" },
-  { src: oficinaPintura, alt: "Oficina pintura artística crianças" },
-  { src: oficinaSlime, alt: "Slime colorido festa" },
-];
-
+  { src: oficinaPintura, alt: "Oficina pintura artÃ­stica crianÃ§as" },
+  { src: oficinaSlime, alt: "Slime colorido festa" }];
 const InstagramGallery = () => {
   return (
     <section className="py-20 bg-muted">
@@ -31,15 +27,14 @@ const InstagramGallery = () => {
             Destaques no Instagram
           </h2>
           <p className="text-xl text-muted-foreground">
-            Veja a alegria dos nossos eventos! 📸
+            Veja a alegria dos nossos eventos! ðŸ“¸
           </p>
         </div>
-
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
           {images.map((image, index) => (
             <a
               key={index}
-              href="https://instagram.com/vivalegria_"
+              href="https://www.instagram.com/vivalegria_/"
               target="_blank"
               rel="noopener noreferrer"
               className="relative group aspect-square overflow-hidden rounded-2xl"
@@ -56,7 +51,6 @@ const InstagramGallery = () => {
             </a>
           ))}
         </div>
-
         <div className="text-center">
           <Button
             asChild
@@ -64,7 +58,7 @@ const InstagramGallery = () => {
             className="rounded-full text-lg px-8 h-14 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] hover:opacity-90"
           >
             <a
-              href="https://instagram.com/vivalegria_"
+              href="https://www.instagram.com/vivalegria_/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2"
@@ -78,5 +72,4 @@ const InstagramGallery = () => {
     </section>
   );
 };
-
 export default InstagramGallery;
