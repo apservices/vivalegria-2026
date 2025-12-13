@@ -11,10 +11,10 @@ import oficinaSlime from "@/assets/oficina-slime.jpg";
 
 const images = [
   { src: vivaSlime, alt: "Oficina de Slime Vivalegria SP" },
-  { src: vivaRecreacao, alt: "Recreação infantil em festa de aniversário" },
+  { src: vivaRecreacao, alt: "RecreaÃƒÂ§ÃƒÂ£o infantil em festa de aniversÃƒÂ¡rio" },
   { src: vivaPintura, alt: "Pintura em tela para festa infantil" },
   { src: vivaEquipe, alt: "Equipe Vivalegria de recreadores" },
-  { src: oficinaPintura, alt: "Oficina de pintura artística para crianças" },
+  { src: oficinaPintura, alt: "Oficina de pintura artÃƒÂ­stica para crianÃƒÂ§as" },
   { src: oficinaSlime, alt: "Slime colorido em festa infantil" },
 ];
 
@@ -33,7 +33,7 @@ const InstagramGallery = () => {
           </h2>
 
           <p className="text-xl text-muted-foreground">
-            Veja a alegria dos nossos eventos! 📸
+            Veja a alegria dos nossos eventos! Ã°Å¸â€œÂ¸
           </p>
         </div>
 

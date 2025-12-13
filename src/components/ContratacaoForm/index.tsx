@@ -17,7 +17,7 @@ import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
 
-const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
+const STEP_LABELS = ["IdentificaÃƒÂ§ÃƒÂ£o", "Dados Pessoais", "Dados do Evento"];
 
 const initialFormData: ContratacaoFormData = {
   tipoCliente: "novo",
@@ -69,18 +69,18 @@ export const ContratacaoForm = () => {
     if (!formData.cpfCnpj) {
       newErrors.cpfCnpj =
         formData.tipoCadastro === "pf"
-          ? "CPF é obrigatório"
-          : "CNPJ é obrigatório";
+          ? "CPF ÃƒÂ© obrigatÃƒÂ³rio"
+          : "CNPJ ÃƒÂ© obrigatÃƒÂ³rio";
     } else if (
       formData.tipoCadastro === "pf" &&
       !validateCPF(formData.cpfCnpj)
     ) {
-      newErrors.cpfCnpj = "CPF inválido";
+      newErrors.cpfCnpj = "CPF invÃƒÂ¡lido";
     } else if (
       formData.tipoCadastro === "pj" &&
       !validateCNPJ(formData.cpfCnpj)
     ) {
-      newErrors.cpfCnpj = "CNPJ inválido";
+      newErrors.cpfCnpj = "CNPJ invÃƒÂ¡lido";
     }
 
     setErrors(newErrors);
@@ -91,24 +91,24 @@ export const ContratacaoForm = () => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
 
     if (!formData.nomeCompleto.trim()) {
-      newErrors.nomeCompleto = "Nome completo é obrigatório";
+      newErrors.nomeCompleto = "Nome completo ÃƒÂ© obrigatÃƒÂ³rio";
     }
 
     if (!formData.telefone || unmask(formData.telefone).length < 10) {
-      newErrors.telefone = "Telefone inválido";
+      newErrors.telefone = "Telefone invÃƒÂ¡lido";
     }
 
     if (!formData.email) {
-      newErrors.email = "E-mail é obrigatório";
+      newErrors.email = "E-mail ÃƒÂ© obrigatÃƒÂ³rio";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = "E-mail inválido";
+      newErrors.email = "E-mail invÃƒÂ¡lido";
     }
 
     if (!formData.emailConfirmacao) {
       newErrors.emailConfirmacao =
-        "Confirmação de e-mail é obrigatória";
+        "ConfirmaÃƒÂ§ÃƒÂ£o de e-mail ÃƒÂ© obrigatÃƒÂ³ria";
     } else if (formData.email !== formData.emailConfirmacao) {
-      newErrors.emailConfirmacao = "Os e-mails não coincidem";
+      newErrors.emailConfirmacao = "Os e-mails nÃƒÂ£o coincidem";
     }
 
     setErrors(newErrors);
@@ -119,15 +119,15 @@ export const ContratacaoForm = () => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
 
     if (!formData.dataEvento) {
-      newErrors.dataEvento = "Data do evento é obrigatória";
+      newErrors.dataEvento = "Data do evento ÃƒÂ© obrigatÃƒÂ³ria";
     }
 
     if (!formData.horaInicio) {
-      newErrors.horaInicio = "Hora de início é obrigatória";
+      newErrors.horaInicio = "Hora de inÃƒÂ­cio ÃƒÂ© obrigatÃƒÂ³ria";
     }
 
     if (!formData.localEvento.trim()) {
-      newErrors.localEvento = "Local do evento é obrigatório";
+      newErrors.localEvento = "Local do evento ÃƒÂ© obrigatÃƒÂ³rio";
     }
 
     if (!packageType) {
@@ -258,7 +258,7 @@ export const ContratacaoForm = () => {
               onClick={handleNext}
               className="gap-2 bg-viva-orange hover:bg-viva-orange/90"
             >
-              Próximo
+              PrÃƒÂ³ximo
               <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (

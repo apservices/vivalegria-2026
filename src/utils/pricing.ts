@@ -1,5 +1,5 @@
-﻿// Dynamic Pricing Calculator for Vivalegria
-// Based on "Tabela de PreÃ§os 2025 â€“ Vivalegria Festas"
+// Dynamic Pricing Calculator for Vivalegria
+// Based on "Tabela de PreÃƒÂ§os 2025 Ã¢â‚¬â€œ Vivalegria Festas"
 export type ChildrenRange = 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50;
 export type PackageType = "select" | "classic";
 export type WorkshopType = 
@@ -75,14 +75,14 @@ export const formatPrice = (price: number): string => {
   return price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 export const childrenRanges: { label: string; value: ChildrenRange }[] = [
-  { label: "AtÃ© 15 crianÃ§as", value: 15 },
-  { label: "16-20 crianÃ§as", value: 20 },
-  { label: "21-25 crianÃ§as", value: 25 },
-  { label: "26-30 crianÃ§as", value: 30 },
-  { label: "31-35 crianÃ§as", value: 35 },
-  { label: "36-40 crianÃ§as", value: 40 },
-  { label: "41-45 crianÃ§as", value: 45 },
-  { label: "46-50 crianÃ§as", value: 50 }];
+  { label: "AtÃƒÂ© 15 crianÃƒÂ§as", value: 15 },
+  { label: "16-20 crianÃƒÂ§as", value: 20 },
+  { label: "21-25 crianÃƒÂ§as", value: 25 },
+  { label: "26-30 crianÃƒÂ§as", value: 30 },
+  { label: "31-35 crianÃƒÂ§as", value: 35 },
+  { label: "36-40 crianÃƒÂ§as", value: 40 },
+  { label: "41-45 crianÃƒÂ§as", value: 45 },
+  { label: "46-50 crianÃƒÂ§as", value: 50 }];
 // Price table data for display
 export const priceTableData = [
   { children: 15, pinturaPro: 249.90, pinturaBasica: 149.90, oficinaTela: 330.00, oficinasCriativas: 250.00, classic: 589.90, select: 789.90 },

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Calendar, Users, FileText, TrendingUp, Clock, CheckCircle, XCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -121,7 +121,7 @@ const AdminDashboard = () => {
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">VisÃ£o geral do sistema</p>
+          <p className="text-muted-foreground">VisÃƒÂ£o geral do sistema</p>
         </div>
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

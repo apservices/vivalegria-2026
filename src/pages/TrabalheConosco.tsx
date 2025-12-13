@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Heart, Users, Clock, Star, Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,16 +25,16 @@ const TrabalheConosco = () => {
   const [disponibilidade, setDisponibilidade] = useState<string[]>([]);
 
   const benefits = [
-    { icon: Heart, title: "Ambiente Alegre", description: "Trabalhe em um ambiente descontraído e cheio de energia positiva" },
-    { icon: Users, title: "Equipe Unida", description: "Faça parte de uma equipe colaborativa e apaixonada pelo que faz" },
-    { icon: Clock, title: "Flexibilidade", description: "Horários flexíveis que se adaptam à sua rotina" },
+    { icon: Heart, title: "Ambiente Alegre", description: "Trabalhe em um ambiente descontraÃ­do e cheio de energia positiva" },
+    { icon: Users, title: "Equipe Unida", description: "FaÃ§a parte de uma equipe colaborativa e apaixonada pelo que faz" },
+    { icon: Clock, title: "Flexibilidade", description: "HorÃ¡rios flexÃ­veis que se adaptam Ã  sua rotina" },
     { icon: Star, title: "Crescimento", description: "Oportunidades de desenvolvimento profissional e treinamentos" },
   ];
 
   const disponibilidadeOptions = [
     { value: "fins_semana", label: "Finais de semana" },
     { value: "feriados", label: "Feriados" },
-    { value: "eventos_escolares", label: "Eventos escolares (dias úteis)" },
+    { value: "eventos_escolares", label: "Eventos escolares (dias Ãºteis)" },
     { value: "eventos_corporativos", label: "Eventos corporativos" },
   ];
 
@@ -59,8 +59,8 @@ const TrabalheConosco = () => {
     e.preventDefault();
     if (!formData.nome_completo || !formData.email || !formData.telefone || !formData.cidade) {
       toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos obrigatórios.",
+        title: "Campos obrigatÃ³rios",
+        description: "Por favor, preencha todos os campos obrigatÃ³rios.",
         variant: "destructive",
       });
       return;
@@ -109,8 +109,8 @@ const TrabalheConosco = () => {
   return (
     <>
       <SEO
-        title="Trabalhe Conosco | Vivalegria Recreação"
-        description="Faça parte da equipe Vivalegria! Vagas para recreadores e monitores de eventos infantis em São Paulo."
+        title="Trabalhe Conosco | Vivalegria RecreaÃ§Ã£o"
+        description="FaÃ§a parte da equipe Vivalegria! Vagas para recreadores e monitores de eventos infantis em SÃ£o Paulo."
         canonical="/trabalhe-conosco"
       />
       <div className="min-h-screen pt-20">
@@ -119,7 +119,7 @@ const TrabalheConosco = () => {
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Trabalhe Conosco</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Venha fazer parte da equipe que transforma festas em momentos mágicos!
+              Venha fazer parte da equipe que transforma festas em momentos mÃ¡gicos!
             </p>
           </div>
         </section>
@@ -152,9 +152,9 @@ const TrabalheConosco = () => {
                   <h3 className="text-xl font-bold mb-4 text-[#FF731D]">Perfil desejado</h3>
                   <ul className="space-y-3">
                     {[
-                      "Paixão por trabalhar com crianças",
-                      "Energia e disposição para eventos",
-                      "Boa comunicação e simpatia",
+                      "PaixÃ£o por trabalhar com crianÃ§as",
+                      "Energia e disposiÃ§Ã£o para eventos",
+                      "Boa comunicaÃ§Ã£o e simpatia",
                       "Responsabilidade e pontualidade",
                       "Criatividade e proatividade",
                     ].map((item, i) => (
@@ -169,11 +169,11 @@ const TrabalheConosco = () => {
                   <h3 className="text-xl font-bold mb-4 text-[#FF731D]">Diferenciais</h3>
                   <ul className="space-y-3">
                     {[
-                      "Experiência com recreação infantil",
-                      "Formação em Pedagogia, Educação Física ou áreas afins",
+                      "ExperiÃªncia com recreaÃ§Ã£o infantil",
+                      "FormaÃ§Ã£o em Pedagogia, EducaÃ§Ã£o FÃ­sica ou Ã¡reas afins",
                       "Conhecimento em oficinas criativas",
                       "Disponibilidade para finais de semana",
-                      "Veículo próprio",
+                      "VeÃ­culo prÃ³prio",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-5 h-5 text-[#FFD836] mt-0.5 flex-shrink-0" />
@@ -193,7 +193,7 @@ const TrabalheConosco = () => {
             <div className="max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-4">Envie sua candidatura</h2>
               <p className="text-center text-muted-foreground mb-8">
-                Preencha o formulário abaixo e entraremos em contato!
+                Preencha o formulÃ¡rio abaixo e entraremos em contato!
               </p>
               <Card className="p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -241,7 +241,7 @@ const TrabalheConosco = () => {
                         name="cidade"
                         value={formData.cidade}
                         onChange={handleChange}
-                        placeholder="São Paulo - SP"
+                        placeholder="SÃ£o Paulo - SP"
                         required
                       />
                     </div>
@@ -264,24 +264,24 @@ const TrabalheConosco = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="experiencia">Experiência com crianças</Label>
+                    <Label htmlFor="experiencia">ExperiÃªncia com crianÃ§as</Label>
                     <Textarea
                       id="experiencia"
                       name="experiencia"
                       value={formData.experiencia}
                       onChange={handleChange}
-                      placeholder="Conte sobre sua experiência trabalhando com crianças..."
+                      placeholder="Conte sobre sua experiÃªncia trabalhando com crianÃ§as..."
                       rows={3}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="sobre_voce">Sobre você</Label>
+                    <Label htmlFor="sobre_voce">Sobre vocÃª</Label>
                     <Textarea
                       id="sobre_voce"
                       name="sobre_voce"
                       value={formData.sobre_voce}
                       onChange={handleChange}
-                      placeholder="Por que você quer trabalhar na Vivalegria?"
+                      placeholder="Por que vocÃª quer trabalhar na Vivalegria?"
                       rows={3}
                     />
                   </div>

@@ -1,4 +1,4 @@
-﻿// Input mask utilities for Brazilian formats
+// Input mask utilities for Brazilian formats
 export const maskCPF = (value: string): string => {
   return value
     .replace(/\D/g, '')

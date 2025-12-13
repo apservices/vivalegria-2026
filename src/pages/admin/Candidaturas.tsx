@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, Eye, UserCheck, Archive, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -103,7 +103,7 @@ const AdminCandidaturas = () => {
       console.error("Error updating status:", error);
       toast({
         title: "Erro",
-        description: "NÃ£o foi possÃ­vel atualizar o status",
+        description: "NÃƒÂ£o foi possÃƒÂ­vel atualizar o status",
         variant: "destructive",
       });
     }
@@ -116,14 +116,14 @@ const AdminCandidaturas = () => {
       setCandidaturas((prev) => prev.filter((c) => c.id !== deleteId));
       setDeleteId(null);
       toast({
-        title: "Candidatura excluÃ­da",
+        title: "Candidatura excluÃƒÂ­da",
         description: "A candidatura foi removida com sucesso",
       });
     } catch (error) {
       console.error("Error deleting candidatura:", error);
       toast({
         title: "Erro",
-        description: "NÃ£o foi possÃ­vel excluir a candidatura",
+        description: "NÃƒÂ£o foi possÃƒÂ­vel excluir a candidatura",
         variant: "destructive",
       });
     }
@@ -196,7 +196,7 @@ const AdminCandidaturas = () => {
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Cidade</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Data</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Status</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃ§Ãµes</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃƒÂ§ÃƒÂµes</th>
                 </tr>
               </thead>
               <tbody>
@@ -333,7 +333,7 @@ const AdminCandidaturas = () => {
               )}
               {selectedCandidatura.experiencia && (
                 <div className="border-t pt-4">
-                  <p className="text-sm text-muted-foreground mb-2">ExperiÃªncia com crianÃ§as</p>
+                  <p className="text-sm text-muted-foreground mb-2">ExperiÃƒÂªncia com crianÃƒÂ§as</p>
                   <p className="text-sm bg-muted p-3 rounded-lg">{selectedCandidatura.experiencia}</p>
                 </div>
               )}
@@ -366,9 +366,9 @@ const AdminCandidaturas = () => {
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar exclusÃ£o</AlertDialogTitle>
+            <AlertDialogTitle>Confirmar exclusÃƒÂ£o</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir esta candidatura? Esta aÃ§Ã£o nÃ£o pode ser desfeita.
+              Tem certeza que deseja excluir esta candidatura? Esta aÃƒÂ§ÃƒÂ£o nÃƒÂ£o pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,10 +17,10 @@ const NotFound = () => {
         <div className="space-y-4">
           <h1 className="text-6xl md:text-8xl font-bold text-primary">404</h1>
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-            Oops! Página não encontrada
+            Oops! PÃ¡gina nÃ£o encontrada
           </h2>
           <p className="text-lg text-muted-foreground">
-            A página que você está procurando não existe ou foi movida.
+            A pÃ¡gina que vocÃª estÃ¡ procurando nÃ£o existe ou foi movida.
           </p>
         </div>
 
@@ -34,7 +34,7 @@ const NotFound = () => {
         </div>
 
         <p className="text-sm text-muted-foreground pt-8">
-          Enquanto isso, que tal explorar nossos pacotes incríveis?
+          Enquanto isso, que tal explorar nossos pacotes incrÃ­veis?
         </p>
       </div>
     </div>

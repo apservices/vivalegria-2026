@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 interface VideoHeroProps {
   videoUrl?: string;
@@ -23,11 +23,11 @@ const VideoHero = ({ videoUrl = "/videos/hero-vivalegria.mp4" }: VideoHeroProps)
         <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-white drop-shadow-2xl">
             Transforme seu evento em um<br />
-            <span className="text-[#FFD836]">momento mÃ¡gico!</span>
+            <span className="text-[#FFD836]">momento mÃƒÂ¡gico!</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            RecreaÃ§Ã£o infantil com alegria, seguranÃ§a e profissionalismo.<br />
-            ExperiÃªncias inesquecÃ­veis para toda a famÃ­lia.
+            RecreaÃƒÂ§ÃƒÂ£o infantil com alegria, seguranÃƒÂ§a e profissionalismo.<br />
+            ExperiÃƒÂªncias inesquecÃƒÂ­veis para toda a famÃƒÂ­lia.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button asChild size="lg" className="rounded-full text-lg px-10 h-14 bg-[#FF731D] hover:bg-[#FF4E17] text-white border-0">

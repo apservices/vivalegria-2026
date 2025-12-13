@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -23,8 +23,8 @@ const Contato = () => {
     // Basic validation
     if (!formData.name || !formData.email || !formData.phone || !formData.message) {
       toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos do formulário.",
+        title: "Campos obrigatÃ³rios",
+        description: "Por favor, preencha todos os campos do formulÃ¡rio.",
         variant: "destructive",
       });
       return;
@@ -35,7 +35,7 @@ const Contato = () => {
     window.open(whatsappUrl, "_blank");
     toast({
       title: "Mensagem enviada!",
-      description: "Em breve entraremos em contato com você.",
+      description: "Em breve entraremos em contato com vocÃª.",
     });
     // Reset form
     setFormData({ name: "", email: "", phone: "", eventType: "", message: "" });
@@ -51,8 +51,8 @@ const Contato = () => {
   return (
     <>
       <SEO
-        title="Contato | Vivalegria Recreação"
-        description="Entre em contato com a Vivalegria. Atendemos toda a região do ABC Paulista e Grande São Paulo."
+        title="Contato | Vivalegria RecreaÃ§Ã£o"
+        description="Entre em contato com a Vivalegria. Atendemos toda a regiÃ£o do ABC Paulista e Grande SÃ£o Paulo."
         canonical="/contato"
       />
       <div className="min-h-screen pt-20">
@@ -112,9 +112,9 @@ const Contato = () => {
                       <MapPin className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold mb-2">Endereço</h3>
+                      <h3 className="font-bold mb-2">EndereÃ§o</h3>
                       <p className="text-muted-foreground">
-                        São Paulo - SP
+                        SÃ£o Paulo - SP
                       </p>
                     </div>
                   </div>
@@ -125,10 +125,10 @@ const Contato = () => {
                       <Clock className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold mb-2">Horário de Atendimento</h3>
+                      <h3 className="font-bold mb-2">HorÃ¡rio de Atendimento</h3>
                       <p className="text-muted-foreground">
-                        Seg a Sex: 9h às 18h<br />
-                        Sáb: 9h às 12h
+                        Seg a Sex: 9h Ã s 18h<br />
+                        SÃ¡b: 9h Ã s 12h
                       </p>
                     </div>
                   </div>
@@ -185,7 +185,7 @@ const Contato = () => {
                           name="eventType"
                           value={formData.eventType}
                           onChange={handleChange}
-                          placeholder="Ex: Aniversário, Corporativo..."
+                          placeholder="Ex: AniversÃ¡rio, Corporativo..."
                         />
                       </div>
                     </div>
@@ -196,7 +196,7 @@ const Contato = () => {
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
-                        placeholder="Conte-nos sobre seu evento, data, número de crianças, etc."
+                        placeholder="Conte-nos sobre seu evento, data, nÃºmero de crianÃ§as, etc."
                         rows={6}
                         required
                       />
@@ -216,9 +216,9 @@ const Contato = () => {
         <section className="py-24 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="mb-4">Nossa Localização</h2>
+              <h2 className="mb-4">Nossa LocalizaÃ§Ã£o</h2>
               <p className="text-lg text-muted-foreground">
-                Visite nosso escritório ou agende uma visita
+                Visite nosso escritÃ³rio ou agende uma visita
               </p>
             </div>
             <div className="max-w-6xl mx-auto">
@@ -231,7 +231,7 @@ const Contato = () => {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Localização Vivalegria"
+                  title="LocalizaÃ§Ã£o Vivalegria"
                 ></iframe>
               </div>
             </div>

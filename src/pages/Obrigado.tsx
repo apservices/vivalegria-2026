@@ -21,7 +21,7 @@ const Obrigado = () => {
             />
             <div className="space-y-4 max-w-2xl mx-auto">
               <h1 className="text-3xl md:text-4xl font-bold text-primary">
-                Obrigado por escolher a Vivalegria! ?? Seu evento vai ser incr�vel!
+                Obrigado por escolher a Vivalegria! ?? Seu evento vai ser incrÃ­vel!
               </h1>
               <p className="text-muted-foreground text-lg">
                 Em breve entraremos em contato para confirmar todos os detalhes.

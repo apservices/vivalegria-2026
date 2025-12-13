@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { maskPhone, maskCEP } from "@/utils/inputMasks";
@@ -80,10 +80,10 @@ export const StepDadosContratante = ({
         )}
       </div>
 
-      {/* Confirmação de Email */}
+      {/* ConfirmaÃ§Ã£o de Email */}
       <div className="space-y-2">
         <Label htmlFor="emailConfirmacao" className="text-base font-medium">
-          Confirmação de E-mail *
+          ConfirmaÃ§Ã£o de E-mail *
         </Label>
         <Input
           id="emailConfirmacao"
@@ -128,17 +128,17 @@ export const StepDadosContratante = ({
         </div>
       </div>
 
-      {/* Endereço */}
+      {/* EndereÃ§o */}
       <div className="space-y-2">
         <Label htmlFor="endereco" className="text-base font-medium">
-          Endereço
+          EndereÃ§o
         </Label>
         <Input
           id="endereco"
           type="text"
           value={formData.endereco}
           onChange={(e) => updateFormData({ endereco: e.target.value })}
-          placeholder="Rua, número"
+          placeholder="Rua, nÃºmero"
         />
       </div>
 

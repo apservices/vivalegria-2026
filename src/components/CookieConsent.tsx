@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Cookie } from "lucide-react";
@@ -30,10 +30,10 @@ const CookieConsent = () => {
           <div className="flex-1">
             <h3 className="font-semibold mb-2">Cookies e Privacidade</h3>
             <p className="text-sm text-muted-foreground">
-              Usamos cookies para melhorar sua experiÃªncia em nosso site. Ao continuar navegando, 
-              vocÃª concorda com nossa{" "}
+              Usamos cookies para melhorar sua experiÃƒÂªncia em nosso site. Ao continuar navegando, 
+              vocÃƒÂª concorda com nossa{" "}
               <Link to="/privacidade" className="text-primary hover:underline">
-                PolÃ­tica de Privacidade
+                PolÃƒÂ­tica de Privacidade
               </Link>
               .
             </p>

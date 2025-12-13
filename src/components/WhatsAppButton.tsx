@@ -1,4 +1,4 @@
-﻿import { MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { useLocation } from "react-router-dom";
 const WhatsAppButton = () => {

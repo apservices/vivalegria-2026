@@ -12,24 +12,24 @@ import SEO from "@/components/SEO";
 import { formatPrice, getMinimumPrice } from "@/utils/pricing";
 import Mascote from "@/components/Mascote";
 
-// ⚠️ garanta que isso existe ou está importado corretamente
+// Ã¢Å¡Â Ã¯Â¸Â garanta que isso existe ou estÃƒÂ¡ importado corretamente
 // import { premiumPackages } from "@/data/premiumPackages";
 
 const Pacotes = () => {
   return (
     <>
       <SEO
-        title="Pacotes de Recreação Infantil | Vivalegria"
-        description="Conheça nossos pacotes premium de recreação infantil para festas inesquecíveis."
+        title="Pacotes de RecreaÃƒÂ§ÃƒÂ£o Infantil | Vivalegria"
+        description="ConheÃƒÂ§a nossos pacotes premium de recreaÃƒÂ§ÃƒÂ£o infantil para festas inesquecÃƒÂ­veis."
       />
 
       {/* Premium Packages */}
       <section className="py-24 bg-gradient-subtle">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="mb-4">Experiências Especiais</h2>
+            <h2 className="mb-4">ExperiÃƒÂªncias Especiais</h2>
             <p className="text-lg text-muted-foreground">
-              Serviços premium para tornar sua festa ainda mais incrível
+              ServiÃƒÂ§os premium para tornar sua festa ainda mais incrÃƒÂ­vel
             </p>
           </div>
 
@@ -72,7 +72,7 @@ const Pacotes = () => {
 
                   <div className="space-y-3 mb-6">
                     <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                      O que está incluso:
+                      O que estÃƒÂ¡ incluso:
                     </h3>
 
                     {pkg.features.map((feature, i) => (
@@ -85,7 +85,7 @@ const Pacotes = () => {
 
                   {pkg.note && (
                     <p className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg mb-6 italic">
-                      💡 {pkg.note}
+                      Ã°Å¸â€™Â¡ {pkg.note}
                     </p>
                   )}
 
@@ -99,7 +99,7 @@ const Pacotes = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      💬 Consultar no WhatsApp
+                      Ã°Å¸â€™Â¬ Consultar no WhatsApp
                     </a>
                   </Button>
                 </Card>

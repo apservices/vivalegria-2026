@@ -31,22 +31,22 @@ const Contratar = () => {
     {
       id: "classic" as const,
       name: "Classic",
-      description: "Diversão garantida com brincadeiras clássicas",
+      description: "DiversÃƒÂ£o garantida com brincadeiras clÃƒÂ¡ssicas",
       features: [
         "Recreadores especializados",
-        "Brincadeiras clássicas",
-        "Duração: 4 horas",
+        "Brincadeiras clÃƒÂ¡ssicas",
+        "DuraÃƒÂ§ÃƒÂ£o: 4 horas",
         "Material de qualidade",
       ],
     },
     {
       id: "select" as const,
       name: "Select",
-      description: "Experiência premium com atividades exclusivas",
+      description: "ExperiÃƒÂªncia premium com atividades exclusivas",
       features: [
         "Tudo do Classic",
-        "Atividades temáticas",
-        "Pintura facial básica",
+        "Atividades temÃƒÂ¡ticas",
+        "Pintura facial bÃƒÂ¡sica",
         "Massinha + paraquedas",
         "Presente para aniversariante",
         "Kit piquenique completo",
@@ -58,19 +58,19 @@ const Contratar = () => {
     {
       id: "slime" as WorkshopType,
       name: "Slime",
-      description: "Criação de slimes coloridos e divertidos",
+      description: "CriaÃƒÂ§ÃƒÂ£o de slimes coloridos e divertidos",
       image: oficinaSlime,
     },
     {
       id: "micangas" as WorkshopType,
-      name: "Miçangas",
-      description: "Criação de bijuterias e acessórios",
+      name: "MiÃƒÂ§angas",
+      description: "CriaÃƒÂ§ÃƒÂ£o de bijuterias e acessÃƒÂ³rios",
       image: oficinaMicangas,
     },
     {
       id: "cupcake" as WorkshopType,
       name: "Cupcake",
-      description: "Decoração de cupcakes deliciosos",
+      description: "DecoraÃƒÂ§ÃƒÂ£o de cupcakes deliciosos",
       image: oficinaCupcake,
     },
     {
@@ -101,7 +101,7 @@ const Contratar = () => {
   return (
     <>
       <SEO
-        title="Contratar Serviços | Vivalegria"
+        title="Contratar ServiÃƒÂ§os | Vivalegria"
         description="Configure seu pacote ideal para festas infantis. Escolha entre pacotes Classic e Select, adicione oficinas criativas e reserve agora!"
         canonical="/contratar"
       />
@@ -162,7 +162,7 @@ const Contratar = () => {
                     <div className="space-y-6 animate-fade-in">
                       <div>
                         <Badge className="mb-2">Passo 2</Badge>
-                        <h2 className="text-3xl font-bold">Número de Crianças</h2>
+                        <h2 className="text-3xl font-bold">NÃƒÂºmero de CrianÃƒÂ§as</h2>
                       </div>
                       <div className="flex flex-wrap gap-3">
                         {childrenRanges.map((range) => (
@@ -264,7 +264,7 @@ const Contratar = () => {
                     <h3 className="text-2xl font-bold">Resumo</h3>
                     {!packageType ? (
                       <p className="text-muted-foreground text-center py-8">
-                        Selecione um pacote para começar
+                        Selecione um pacote para comeÃƒÂ§ar
                       </p>
                     ) : (
                       <>
@@ -274,8 +274,8 @@ const Contratar = () => {
                             <p className="font-semibold">{packageType === "classic" ? "Classic" : "Select"}</p>
                           </div>
                           <div className="pb-3 border-b">
-                            <p className="text-sm text-muted-foreground">Crianças</p>
-                            <p className="font-semibold">{numChildren} crianças</p>
+                            <p className="text-sm text-muted-foreground">CrianÃƒÂ§as</p>
+                            <p className="font-semibold">{numChildren} crianÃƒÂ§as</p>
                           </div>
                           {selectedWorkshops.length > 0 && (
                             <div className="pb-3 border-b">
@@ -283,7 +283,7 @@ const Contratar = () => {
                               <ul className="space-y-1">
                                 {selectedWorkshops.map((w) => (
                                   <li key={w} className="text-sm">
-                                    • {workshops.find(ws => ws.id === w)?.name}
+                                    Ã¢â‚¬Â¢ {workshops.find(ws => ws.id === w)?.name}
                                   </li>
                                 ))}
                               </ul>
@@ -295,7 +295,7 @@ const Contratar = () => {
                               <ul className="space-y-1">
                                 {selectedExtras.map((e) => (
                                   <li key={e} className="text-sm">
-                                    • {extras.find(ex => ex.id === e)?.name}
+                                    Ã¢â‚¬Â¢ {extras.find(ex => ex.id === e)?.name}
                                   </li>
                                 ))}
                               </ul>
@@ -314,7 +314,7 @@ const Contratar = () => {
                         </Button>
                         <a href={getWhatsAppMessage()} target="_blank" rel="noopener noreferrer" className="block">
                           <Button variant="outline" className="w-full" size="lg">
-                            📱 Falar no WhatsApp
+                            Ã°Å¸â€œÂ± Falar no WhatsApp
                           </Button>
                         </a>
                       </>
@@ -326,7 +326,7 @@ const Contratar = () => {
           </div>
         </section>
 
-        {/* Formulário de Contratação */}
+        {/* FormulÃƒÂ¡rio de ContrataÃƒÂ§ÃƒÂ£o */}
         {packageType && (
           <section id="contratacao-form" className="py-16 bg-viva-offwhite">
             <div className="container mx-auto px-4">
@@ -334,7 +334,7 @@ const Contratar = () => {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold mb-4">Complete Sua Reserva</h2>
                   <p className="text-muted-foreground">
-                    Preencha o formulário abaixo para finalizar sua reserva
+                    Preencha o formulÃƒÂ¡rio abaixo para finalizar sua reserva
                   </p>
                 </div>
                 <ContratacaoForm />

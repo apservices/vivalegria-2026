@@ -1,4 +1,4 @@
-﻿import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,12 +20,12 @@ export const StepIdentificacao = ({ formData, updateFormData, errors }: StepProp
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-semibold text-foreground mb-2">IdentificaÃ§Ã£o</h2>
-        <p className="text-muted-foreground">Informe seus dados de identificaÃ§Ã£o</p>
+        <h2 className="text-2xl font-semibold text-foreground mb-2">IdentificaÃƒÂ§ÃƒÂ£o</h2>
+        <p className="text-muted-foreground">Informe seus dados de identificaÃƒÂ§ÃƒÂ£o</p>
       </div>
       {/* Tipo de Cliente */}
       <div className="space-y-3">
-        <Label className="text-base font-medium">VocÃª Ã© cliente?</Label>
+        <Label className="text-base font-medium">VocÃƒÂª ÃƒÂ© cliente?</Label>
         <RadioGroup
           value={formData.tipoCliente}
           onValueChange={(value: TipoCliente) => updateFormData({ tipoCliente: value })}
@@ -57,13 +57,13 @@ export const StepIdentificacao = ({ formData, updateFormData, errors }: StepProp
             <SelectItem value="pf">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span>Pessoa FÃ­sica (CPF)</span>
+                <span>Pessoa FÃƒÂ­sica (CPF)</span>
               </div>
             </SelectItem>
             <SelectItem value="pj">
               <div className="flex items-center gap-2">
                 <Building2 className="h-4 w-4" />
-                <span>Pessoa JurÃ­dica (CNPJ)</span>
+                <span>Pessoa JurÃƒÂ­dica (CNPJ)</span>
               </div>
             </SelectItem>
           </SelectContent>

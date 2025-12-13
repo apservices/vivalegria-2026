@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Mail, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -58,7 +58,7 @@ const AdminLogin = () => {
           <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
           <h1 className="text-xl font-bold mb-2">Acesso Negado</h1>
           <p className="text-muted-foreground mb-4">
-            Sua conta nÃ£o possui permissÃµes de administrador.
+            Sua conta nÃƒÂ£o possui permissÃƒÂµes de administrador.
           </p>
           <Button onClick={() => navigate("/")} variant="outline">
             Voltar para o site
@@ -72,7 +72,7 @@ const AdminLogin = () => {
       <Card className="p-8 max-w-md w-full">
         <div className="text-center mb-8">
           <img src={logoVivalegria} alt="Vivalegria" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold">Ãrea Administrativa</h1>
+          <h1 className="text-2xl font-bold">ÃƒÂrea Administrativa</h1>
           <p className="text-muted-foreground">Acesso restrito</p>
         </div>
         {error && (
@@ -106,7 +106,7 @@ const AdminLogin = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                placeholder="Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢Ã¢â‚¬Â¢"
                 className="pl-10"
                 required
               />
@@ -122,7 +122,7 @@ const AdminLogin = () => {
         </form>
         <div className="mt-6 text-center">
           <Button variant="link" onClick={() => navigate("/")}>
-            â† Voltar para o site
+            Ã¢â€ Â Voltar para o site
           </Button>
         </div>
       </Card>

@@ -1,4 +1,4 @@
-﻿import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
@@ -26,10 +26,10 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
             <span className="text-muted-foreground">Pacote:</span>
-            <span className="ml-2 font-medium">{packageType ? packageNames[packageType] : 'NÃ£o selecionado'}</span>
+            <span className="ml-2 font-medium">{packageType ? packageNames[packageType] : 'NÃƒÂ£o selecionado'}</span>
           </div>
           <div>
-            <span className="text-muted-foreground">CrianÃ§as:</span>
+            <span className="text-muted-foreground">CrianÃƒÂ§as:</span>
             <span className="ml-2 font-medium">{numChildren}</span>
           </div>
         </div>
@@ -69,11 +69,11 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
           <p className="text-sm text-destructive">{errors.dataEvento}</p>
         )}
       </div>
-      {/* Hora de InÃ­cio */}
+      {/* Hora de InÃƒÂ­cio */}
       <div className="space-y-2">
         <Label htmlFor="horaInicio" className="text-base font-medium flex items-center gap-2">
           <Clock className="h-4 w-4 text-viva-orange" />
-          Hora de InÃ­cio *
+          Hora de InÃƒÂ­cio *
         </Label>
         <Input
           id="horaInicio"
@@ -96,7 +96,7 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
           id="localEvento"
           value={formData.localEvento}
           onChange={(e) => updateFormData({ localEvento: e.target.value })}
-          placeholder="EndereÃ§o completo onde serÃ¡ realizado o evento"
+          placeholder="EndereÃƒÂ§o completo onde serÃƒÂ¡ realizado o evento"
           rows={3}
           className={errors.localEvento ? 'border-destructive' : ''}
         />

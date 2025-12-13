@@ -1,4 +1,4 @@
-﻿import { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Calendar, Users, LogOut, Home, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
           <img src={logoVivalegria} alt="Vivalegria" className="h-10" />
-          <p className="text-xs text-muted-foreground mt-2">Ãrea Administrativa</p>
+          <p className="text-xs text-muted-foreground mt-2">ÃƒÂrea Administrativa</p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => (

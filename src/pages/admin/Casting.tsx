@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -263,7 +263,7 @@ const Casting = () => {
           <div>
             <h1 className="text-3xl font-bold">Casting</h1>
             <p className="text-muted-foreground">
-              Gerencie a alocaÃ§Ã£o de profissionais para cada evento
+              Gerencie a alocaÃƒÂ§ÃƒÂ£o de profissionais para cada evento
             </p>
           </div>
           <Dialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
@@ -328,7 +328,7 @@ const Casting = () => {
                 <DollarSign className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total CachÃªs (MÃªs)</p>
+                <p className="text-sm text-muted-foreground">Total CachÃƒÂªs (MÃƒÂªs)</p>
                 <p className="text-2xl font-bold">
                   R$ {(allCasting?.reduce((acc, c) => acc + (c.cache || 0), 0) || 0).toLocaleString('pt-BR')}
                 </p>
@@ -388,7 +388,7 @@ const Casting = () => {
                       <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {format(new Date(reserva.data_evento), "dd/MM/yyyy", { locale: ptBR })} Ã s {reserva.hora_inicio}
+                          {format(new Date(reserva.data_evento), "dd/MM/yyyy", { locale: ptBR })} ÃƒÂ s {reserva.hora_inicio}
                         </span>
                         <span className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
@@ -396,11 +396,11 @@ const Casting = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <Users className="w-4 h-4" />
-                          {reserva.numero_criancas} crianÃ§as
+                          {reserva.numero_criancas} crianÃƒÂ§as
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <span>Profissionais necessÃ¡rios:</span>
+                        <span>Profissionais necessÃƒÂ¡rios:</span>
                         <span className="font-semibold">{requiredProfessionals}</span>
                         <span className="text-muted-foreground">|</span>
                         <span>Alocados:</span>
@@ -442,7 +442,7 @@ const Casting = () => {
                             </div>
                             <Input
                               type="number"
-                              placeholder="CachÃª"
+                              placeholder="CachÃƒÂª"
                               value={casting.cache || ''}
                               onChange={(e) => updateCacheMutation.mutate({ 
                                 id: casting.id, 

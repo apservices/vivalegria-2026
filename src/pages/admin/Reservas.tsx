@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, Eye, Check, X, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -103,7 +103,7 @@ const AdminReservas = () => {
       console.error("Error updating status:", error);
       toast({
         title: "Erro",
-        description: "NÃ£o foi possÃ­vel atualizar o status",
+        description: "NÃƒÂ£o foi possÃƒÂ­vel atualizar o status",
         variant: "destructive",
       });
     }
@@ -116,14 +116,14 @@ const AdminReservas = () => {
       setReservas((prev) => prev.filter((r) => r.id !== deleteId));
       setDeleteId(null);
       toast({
-        title: "Reserva excluÃ­da",
+        title: "Reserva excluÃƒÂ­da",
         description: "A reserva foi removida com sucesso",
       });
     } catch (error) {
       console.error("Error deleting reserva:", error);
       toast({
         title: "Erro",
-        description: "NÃ£o foi possÃ­vel excluir a reserva",
+        description: "NÃƒÂ£o foi possÃƒÂ­vel excluir a reserva",
         variant: "destructive",
       });
     }
@@ -189,10 +189,10 @@ const AdminReservas = () => {
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Cliente</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Data Evento</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Pacote</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">CrianÃ§as</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">CrianÃƒÂ§as</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Status</th>
                   <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Total</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃ§Ãµes</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃƒÂ§ÃƒÂµes</th>
                 </tr>
               </thead>
               <tbody>
@@ -323,7 +323,7 @@ const AdminReservas = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">HorÃ¡rio</p>
+                    <p className="text-sm text-muted-foreground">HorÃƒÂ¡rio</p>
                     <p className="font-medium">{selectedReserva.hora_inicio}</p>
                   </div>
                   <div>
@@ -331,13 +331,13 @@ const AdminReservas = () => {
                     <p className="font-medium">{selectedReserva.local_evento}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">NÂº CrianÃ§as</p>
+                    <p className="text-sm text-muted-foreground">NÃ‚Âº CrianÃƒÂ§as</p>
                     <p className="font-medium">{selectedReserva.numero_criancas}</p>
                   </div>
                 </div>
               </div>
               <div className="border-t pt-4">
-                <h4 className="font-semibold mb-3">Pacote e ServiÃ§os</h4>
+                <h4 className="font-semibold mb-3">Pacote e ServiÃƒÂ§os</h4>
                 <div className="space-y-2">
                   <div>
                     <p className="text-sm text-muted-foreground">Pacote</p>
@@ -371,7 +371,7 @@ const AdminReservas = () => {
               </div>
               {selectedReserva.endereco && (
                 <div className="border-t pt-4">
-                  <h4 className="font-semibold mb-3">EndereÃ§o</h4>
+                  <h4 className="font-semibold mb-3">EndereÃƒÂ§o</h4>
                   <p className="text-sm">
                     {selectedReserva.endereco}
                     {selectedReserva.complemento && `, ${selectedReserva.complemento}`}
@@ -388,9 +388,9 @@ const AdminReservas = () => {
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar exclusÃ£o</AlertDialogTitle>
+            <AlertDialogTitle>Confirmar exclusÃƒÂ£o</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir esta reserva? Esta aÃ§Ã£o nÃ£o pode ser desfeita.
+              Tem certeza que deseja excluir esta reserva? Esta aÃƒÂ§ÃƒÂ£o nÃƒÂ£o pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

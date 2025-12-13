@@ -1,4 +1,4 @@
-﻿import { Clock, Users, Gift, ArrowRight } from "lucide-react";
+import { Clock, Users, Gift, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,7 +16,7 @@ const Oficinas = () => {
       id: 1,
       title: "Slime",
       image: oficinaSlime,
-      description: "Criação de slimes coloridos e divertidos com texturas variadas",
+      description: "CriaÃ§Ã£o de slimes coloridos e divertidos com texturas variadas",
       takeHome: "Slime personalizado em potinho",
       duration: "45-60 min",
       ages: "5-12 anos",
@@ -24,10 +24,10 @@ const Oficinas = () => {
     },
     {
       id: 2,
-      title: "Miçangas",
+      title: "MiÃ§angas",
       image: oficinaMicangas,
-      description: "Confecção de pulseiras, colares e acessórios criativos",
-      takeHome: "Pulseira ou colar de miçangas",
+      description: "ConfecÃ§Ã£o de pulseiras, colares e acessÃ³rios criativos",
+      takeHome: "Pulseira ou colar de miÃ§angas",
       duration: "60 min",
       ages: "6-14 anos",
       color: "viva-blue",
@@ -36,7 +36,7 @@ const Oficinas = () => {
       id: 3,
       title: "Cupcakes",
       image: oficinaCupcake,
-      description: "Decoração de cupcakes com chantilly e confeitos coloridos",
+      description: "DecoraÃ§Ã£o de cupcakes com chantilly e confeitos coloridos",
       takeHome: "Cupcake decorado",
       duration: "45 min",
       ages: "4-12 anos",
@@ -46,7 +46,7 @@ const Oficinas = () => {
       id: 4,
       title: "Pintura em Tela",
       image: oficinaPintura,
-      description: "Arte em tela com tintas acrílicas e criatividade livre",
+      description: "Arte em tela com tintas acrÃ­licas e criatividade livre",
       takeHome: "Obra de arte em tela",
       duration: "60-75 min",
       ages: "5-14 anos",
@@ -66,16 +66,16 @@ const Oficinas = () => {
 
   const steps = [
     { number: "1", title: "Escolha", description: "Selecione as oficinas que mais combinam com o seu evento" },
-    { number: "2", title: "Agende", description: "Entre em contato e defina data, horário e número de crianças" },
-    { number: "3", title: "Preparamos", description: "Nossa equipe leva todos os materiais e organiza o espaço" },
-    { number: "4", title: "Diversão", description: "As crianças criam, aprendem e levam suas obras para casa" },
+    { number: "2", title: "Agende", description: "Entre em contato e defina data, horÃ¡rio e nÃºmero de crianÃ§as" },
+    { number: "3", title: "Preparamos", description: "Nossa equipe leva todos os materiais e organiza o espaÃ§o" },
+    { number: "4", title: "DiversÃ£o", description: "As crianÃ§as criam, aprendem e levam suas obras para casa" },
   ];
 
   return (
     <>
       <SEO
-        title="Oficinas Criativas | Vivalegria Recreação"
-        description="Oficinas criativas para crianças: slime, miçangas, cupcakes, pintura em tela e jardinagem. Cada criança leva sua criação para casa!"
+        title="Oficinas Criativas | Vivalegria RecreaÃ§Ã£o"
+        description="Oficinas criativas para crianÃ§as: slime, miÃ§angas, cupcakes, pintura em tela e jardinagem. Cada crianÃ§a leva sua criaÃ§Ã£o para casa!"
         canonical="/oficinas"
       />
       <div className="min-h-screen pt-20">
@@ -86,7 +86,7 @@ const Oficinas = () => {
               <Badge className="mb-4 bg-primary shadow-soft" variant="secondary">Aprender Brincando</Badge>
               <h1 className="text-balance">Oficinas Criativas Vivalegria</h1>
               <p className="text-xl text-muted-foreground text-balance">
-                Experiências educativas e divertidas. Cada criança cria, aprende e leva sua obra para casa!
+                ExperiÃªncias educativas e divertidas. Cada crianÃ§a cria, aprende e leva sua obra para casa!
               </p>
               <Button asChild size="lg" className="rounded-full shadow-premium">
                 <Link to="/contratar">
@@ -131,7 +131,7 @@ const Oficinas = () => {
                     <div className="p-3 bg-gradient-subtle rounded-lg mb-4">
                       <p className="text-sm font-semibold text-primary">A partir de R$ 150</p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Valor ajustado conforme nº de crianças
+                        Valor ajustado conforme nÂº de crianÃ§as
                       </p>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
@@ -141,12 +141,12 @@ const Oficinas = () => {
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Clock className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Duração:</span>
+                      <span className="font-medium">DuraÃ§Ã£o:</span>
                       <span className="text-muted-foreground">{workshop.duration}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Users className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Faixa etária:</span>
+                      <span className="font-medium">Faixa etÃ¡ria:</span>
                       <span className="text-muted-foreground">{workshop.ages}</span>
                     </div>
                   </CardContent>
@@ -162,7 +162,7 @@ const Oficinas = () => {
             <div className="text-center mb-16">
               <h2 className="mb-4">Como Funciona</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Processo simples e profissional do início ao fim
+                Processo simples e profissional do inÃ­cio ao fim
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -186,9 +186,9 @@ const Oficinas = () => {
         <section className="py-24 bg-gradient-warm">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8">
-              <h2 className="text-balance text-white">Pronto para criar memórias inesquecíveis?</h2>
+              <h2 className="text-balance text-white">Pronto para criar memÃ³rias inesquecÃ­veis?</h2>
               <p className="text-xl text-white/90">
-                Escolha as oficinas e crie um evento único para as crianças
+                Escolha as oficinas e crie um evento Ãºnico para as crianÃ§as
               </p>
               <Button asChild size="lg" className="rounded-full text-lg px-10 h-14 shadow-premium bg-white text-viva-orange hover:bg-white/90">
                 <Link to="/contratar">

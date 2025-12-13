@@ -11,25 +11,25 @@ const securityPoints = [
     icon: Users,
     title: "Equipe Treinada",
     description:
-      "Todos os recreadores passam por treinamento intensivo e possuem experiência comprovada com crianças.",
+      "Todos os recreadores passam por treinamento intensivo e possuem experiÃƒÂªncia comprovada com crianÃƒÂ§as.",
   },
   {
     icon: Shield,
-    title: "Protocolos de Segurança",
+    title: "Protocolos de SeguranÃƒÂ§a",
     description:
-      "Seguimos protocolos rigorosos de higiene e segurança em todos os eventos.",
+      "Seguimos protocolos rigorosos de higiene e seguranÃƒÂ§a em todos os eventos.",
   },
   {
     icon: HeartHandshake,
-    title: "Acompanhamento Próximo",
+    title: "Acompanhamento PrÃƒÂ³ximo",
     description:
-      "Proporção de 1 monitor para cada 15 crianças, garantindo atenção individualizada.",
+      "ProporÃƒÂ§ÃƒÂ£o de 1 monitor para cada 15 crianÃƒÂ§as, garantindo atenÃƒÂ§ÃƒÂ£o individualizada.",
   },
   {
     icon: Award,
     title: "Materiais Premium",
     description:
-      "Utilizamos apenas materiais atóxicos e seguros, adequados para cada faixa etária.",
+      "Utilizamos apenas materiais atÃƒÂ³xicos e seguros, adequados para cada faixa etÃƒÂ¡ria.",
   },
 ];
 
@@ -43,19 +43,19 @@ const SecuritySection = () => {
             <div className="inline-flex items-center gap-2 bg-accent/20 text-accent-foreground rounded-full px-4 py-2 mb-6">
               <Shield className="w-5 h-5 text-accent" />
               <span className="text-sm font-semibold text-foreground">
-                Segurança em Primeiro Lugar
+                SeguranÃƒÂ§a em Primeiro Lugar
               </span>
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Seu filho em boas mãos enquanto você curte a festa
+              Seu filho em boas mÃƒÂ£os enquanto vocÃƒÂª curte a festa
             </h2>
 
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              Com mais de 500 eventos realizados, a Vivalegria é referência em
-              recreação infantil segura e profissional em São Paulo. Nossa
-              equipe é cuidadosamente selecionada e treinada para garantir a
-              diversão com total segurança.
+              Com mais de 500 eventos realizados, a Vivalegria ÃƒÂ© referÃƒÂªncia em
+              recreaÃƒÂ§ÃƒÂ£o infantil segura e profissional em SÃƒÂ£o Paulo. Nossa
+              equipe ÃƒÂ© cuidadosamente selecionada e treinada para garantir a
+              diversÃƒÂ£o com total seguranÃƒÂ§a.
             </p>
 
             <div className="space-y-4">
@@ -92,12 +92,12 @@ const SecuritySection = () => {
 
               <div className="text-center p-4">
                 <p className="text-5xl font-bold mb-2">3+</p>
-                <p className="text-sm opacity-90">Anos de Experiência</p>
+                <p className="text-sm opacity-90">Anos de ExperiÃƒÂªncia</p>
               </div>
 
               <div className="text-center p-4">
                 <p className="text-5xl font-bold mb-2">100%</p>
-                <p className="text-sm opacity-90">Satisfação Garantida</p>
+                <p className="text-sm opacity-90">SatisfaÃƒÂ§ÃƒÂ£o Garantida</p>
               </div>
             </div>
 

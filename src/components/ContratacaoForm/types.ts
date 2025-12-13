@@ -1,7 +1,7 @@
-﻿export type TipoCliente = 'existente' | 'novo';
+export type TipoCliente = 'existente' | 'novo';
 export type TipoCadastro = 'pf' | 'pj';
 export interface ContratacaoFormData {
-  // Etapa 1: Identificação
+  // Etapa 1: IdentificaÃ§Ã£o
   tipoCliente: TipoCliente;
   tipoCadastro: TipoCadastro;
   cpfCnpj: string;
