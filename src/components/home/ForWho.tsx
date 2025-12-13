@@ -7,13 +7,13 @@ const audiences = [
   {
     icon: Baby,
     title: "Para Pais",
-    subtitle: "Festas de AniversÃƒÂ¡rio",
+    subtitle: "Festas de Aniversário",
     description:
-      "Transforme o aniversÃƒÂ¡rio do seu filho em um dia mÃƒÂ¡gico! Pacotes completos com recreaÃƒÂ§ÃƒÂ£o, oficinas criativas e muita diversÃƒÂ£o.",
+      "Transforme o aniversário do seu filho em um dia mágico! Pacotes completos com recreação, oficinas criativas e muita diversão.",
     features: [
-      "CrianÃƒÂ§as de 3 a 12 anos",
+      "Crianças de 3 a 12 anos",
       "Pacotes a partir de R$589",
-      "SÃƒÂ£o Paulo e regiÃƒÂ£o",
+      "São Paulo e região",
     ],
     cta: "Ver Pacotes",
     link: "/pacotes",
@@ -23,12 +23,12 @@ const audiences = [
   {
     icon: Heart,
     title: "Para Noivos",
-    subtitle: "Casamentos e CelebraÃƒÂ§ÃƒÂµes",
+    subtitle: "Casamentos e Celebrações",
     description:
-      "Seus convidados aproveitam a festa enquanto os pequenos se divertem com seguranÃƒÂ§a. EspaÃƒÂ§o kids profissional para o seu grande dia!",
+      "Seus convidados aproveitam a festa enquanto os pequenos se divertem com segurança. Espaço kids profissional para o seu grande dia!",
     features: [
       "Monitores especializados",
-      "Ambiente temÃƒÂ¡tico",
+      "Ambiente temático",
       "Atividades para todas as idades",
     ],
     cta: "Saiba Mais",
@@ -41,11 +41,11 @@ const audiences = [
     title: "Para Empresas",
     subtitle: "Eventos Corporativos",
     description:
-      "Shoppings, hotÃƒÂ©is, escolas e empresas. RecreaÃƒÂ§ÃƒÂ£o profissional para seus eventos com equipe sob demanda.",
+      "Shoppings, hotéis, escolas e empresas. Recreação profissional para seus eventos com equipe sob demanda.",
     features: [
       "Eventos de qualquer porte",
-      "RecreaÃƒÂ§ÃƒÂ£o temÃƒÂ¡tica",
-      "OrÃƒÂ§amento personalizado",
+      "Recreação temática",
+      "Orçamento personalizado",
     ],
     cta: "Fale Conosco",
     link: "/corporativo",
@@ -60,11 +60,11 @@ const ForWho = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Para Quem ÃƒÂ© a Vivalegria?
+            Para Quem é a Vivalegria?
           </h2>
           <p className="text-xl text-muted-foreground">
-            Atendemos festas infantis, casamentos e eventos corporativos em SÃƒÂ£o
-            Paulo e regiÃƒÂ£o
+            Atendemos festas infantis, casamentos e eventos corporativos em São
+            Paulo e região
           </p>
         </div>
 
