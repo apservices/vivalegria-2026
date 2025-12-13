@@ -200,3 +200,48 @@ All colors MUST be HSL.
     transform: translateY(0);
   }
 }
+
+.animate-mascote-fade {
+  animation: fadeIn 0.8s ease-out both;
+}
+
+.animate-mascote-pulinho {
+  animation: pulinho 1.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-mascote-balanco {
+  animation: balanco 2.6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulinho {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes balanco {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
