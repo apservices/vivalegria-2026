@@ -9,27 +9,27 @@ import vivaRecreacao from "@/assets/viva-recreacao.png";
 
 const blogPosts = [
   {
-    title: "10 Brincadeiras que as CrianÃƒÂ§as Amam em Festas de AniversÃƒÂ¡rio",
+    title: "10 Brincadeiras que as Crianças Amam em Festas de Aniversário",
     excerpt:
-      "Descubra as atividades mais pedidas e como elas transformam qualquer festa em um momento inesquecÃƒÂ­vel para os pequenos.",
+      "Descubra as atividades mais pedidas e como elas transformam qualquer festa em um momento inesquecível para os pequenos.",
     image: vivaRecreacao,
     category: "Dicas de Festas",
     readTime: "5 min",
     slug: "brincadeiras-festas-aniversario",
   },
   {
-    title: "Oficina de Slime: Por Que as CrianÃƒÂ§as SÃƒÂ£o Obcecadas?",
+    title: "Oficina de Slime: Por Que as Crianças São Obcecadas?",
     excerpt:
-      "Entenda a ciÃƒÂªncia por trÃƒÂ¡s do slime e como essa oficina criativa estimula a coordenaÃƒÂ§ÃƒÂ£o e a criatividade infantil.",
+      "Entenda a ciência por trás do slime e como essa oficina criativa estimula a coordenação e a criatividade infantil.",
     image: oficinaSlime,
     category: "Oficinas Criativas",
     readTime: "4 min",
     slug: "oficina-slime-criancas",
   },
   {
-    title: "Como Escolher a RecreaÃƒÂ§ÃƒÂ£o Ideal para seu Evento em SP",
+    title: "Como Escolher a Recreação Ideal para seu Evento em SP",
     excerpt:
-      "Guia completo para contratar recreaÃƒÂ§ÃƒÂ£o infantil em SÃƒÂ£o Paulo: o que avaliar, preÃƒÂ§os e dicas importantes.",
+      "Guia completo para contratar recreação infantil em São Paulo: o que avaliar, preços e dicas importantes.",
     image: oficinaPintura,
     category: "Guia do Cliente",
     readTime: "7 min",
@@ -48,11 +48,11 @@ const BlogPreview = () => {
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Dicas e InspiraÃƒÂ§ÃƒÂµes para sua Festa
+            Dicas e Inspirações para sua Festa
           </h2>
 
           <p className="text-xl text-muted-foreground">
-            ConteÃƒÂºdos exclusivos para pais e organizadores de eventos
+            Conteúdos exclusivos para pais e organizadores de eventos
           </p>
         </div>
 
@@ -101,7 +101,7 @@ const BlogPreview = () => {
                     className="rounded-full text-xs"
                   >
                     <a
-                      href="https://wa.me/5511965982251?text=OlÃƒÂ¡!%20Vi%20o%20blog%20e%20quero%20mais%20informaÃƒÂ§ÃƒÂµes%20sobre%20recreaÃƒÂ§ÃƒÂ£o%20infantil."
+                      href="https://wa.me/5511965982251?text=Ol%C3%A1!%20Vi%20o%20blog%20e%20quero%20mais%20informa%C3%A7%C3%B5es%20sobre%20recrea%C3%A7%C3%A3o%20infantil."
                       target="_blank"
                       rel="noopener noreferrer"
                     >
