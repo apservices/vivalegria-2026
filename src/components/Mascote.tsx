@@ -4,7 +4,7 @@ type MascotePose = "hero" | "cadastro" | "sucesso" | "banner" | "pintura" | "sli
 type MascoteAnimation = "fadeIn" | "pulinho" | "balanco" | "none";
 
 const poseDescriptions: Record<MascotePose, string> = {
-  hero: "em pose de vitÃ³ria",
+  hero: "em pose de vitória",
   cadastro: "segurando telefone",
   sucesso: "pulando de alegria",
   banner: "apontando para o banner",
