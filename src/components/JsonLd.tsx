@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+
 interface JsonLdProps {
   type?: "organization" | "local-business" | "faq" | "product" | "all-products";
   productData?: {
@@ -8,19 +9,21 @@ interface JsonLdProps {
     image?: string;
   };
 }
+
 const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
   const location = useLocation();
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Vivalegria RecreaÃƒÂ§ÃƒÂ£o Infantil",
+    "name": "Vivalegria Recreação Infantil",
     "url": "https://vivalegria.com.br",
     "logo": "https://vivalegria.com.br/logo-vivalegria.jpg",
-    "description": "RecreaÃƒÂ§ÃƒÂ£o infantil premium em SÃƒÂ£o Paulo com profissionalismo, seguranÃƒÂ§a e alto impacto emocional. Mais de 500 eventos realizados com excelÃƒÂªncia.",
+    "description": "Recreação infantil premium em São Paulo com profissionalismo, segurança e alto impacto emocional. Mais de 500 eventos realizados com excelência.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "SÃƒÂ£o Paulo e regiÃƒÂ£o",
-      "addressLocality": "SÃƒÂ£o Paulo",
+      "streetAddress": "São Paulo e região",
+      "addressLocality": "São Paulo",
       "addressRegion": "SP",
       "postalCode": "01000-000",
       "addressCountry": "BR"
@@ -37,19 +40,20 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "https://www.facebook.com/vivalegriarecreacao"
     ]
   };
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Vivalegria RecreaÃƒÂ§ÃƒÂ£o Infantil",
+    "name": "Vivalegria Recreação Infantil",
     "image": "https://vivalegria.com.br/logo-vivalegria.jpg",
     "priceRange": "R$ 589 - R$ 1.769",
     "telephone": "+55-11-96598-2251",
     "email": "contato@vivalegria.com.br",
-    "description": "RecreaÃƒÂ§ÃƒÂ£o infantil para festas em SÃƒÂ£o Paulo. Pacotes a partir de R$589,90 com recreadores profissionais, pintura facial, caÃƒÂ§a ao tesouro e muito mais! Atendemos Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC.",
+    "description": "Recreação infantil para festas em São Paulo. Pacotes a partir de R$589,90 com recreadores profissionais, pintura facial, caça ao tesouro e muito mais! Atendemos Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "SÃƒÂ£o Paulo e regiÃƒÂ£o metropolitana",
-      "addressLocality": "SÃƒÂ£o Paulo",
+      "streetAddress": "São Paulo e região metropolitana",
+      "addressLocality": "São Paulo",
       "addressRegion": "SP",
       "postalCode": "01000-000",
       "addressCountry": "BR"
@@ -79,7 +83,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "reviewCount": "127"
     },
     "areaServed": [
-      { "@type": "City", "name": "SÃƒÂ£o Paulo" },
+      { "@type": "City", "name": "São Paulo" },
       { "@type": "AdministrativeArea", "name": "Vila Mariana" },
       { "@type": "AdministrativeArea", "name": "Moema" },
       { "@type": "AdministrativeArea", "name": "Santo Amaro" },
@@ -90,14 +94,14 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Pacotes de RecreaÃƒÂ§ÃƒÂ£o Infantil",
+      "name": "Pacotes de Recreação Infantil",
       "itemListElement": [
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
             "name": "Pacote SELECT",
-            "description": "4 horas de recreaÃƒÂ§ÃƒÂ£o com 2 recreadores profissionais"
+            "description": "4 horas de recreação com 2 recreadores profissionais"
           },
           "price": "789.90",
           "priceCurrency": "BRL"
@@ -106,8 +110,8 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Pacote CLÃƒÂSSICO",
-            "description": "4 horas de recreaÃƒÂ§ÃƒÂ£o com 1 recreador"
+            "name": "Pacote CLÁSSICO",
+            "description": "4 horas de recreação com 1 recreador"
           },
           "price": "589.90",
           "priceCurrency": "BRL"
@@ -117,7 +121,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
           "itemOffered": {
             "@type": "Service",
             "name": "Baladinha Kids",
-            "description": "2 horas de festa com pista iluminada, luzes LED, mÃƒÂ¡quina de fumaÃƒÂ§a e playlist personalizada"
+            "description": "2 horas de festa com pista iluminada, luzes LED, máquina de fumaça e playlist personalizada"
           },
           "price": "989.00",
           "priceCurrency": "BRL"
@@ -126,42 +130,43 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "ÃƒÂrea Baby",
-            "description": "2 horas com espaÃƒÂ§o dedicado, atividades sensoriais e profissionais especializados para bebÃƒÂªs"
+            "name": "Área Baby",
+            "description": "2 horas com espaço dedicado, atividades sensoriais e profissionais especializados para bebês"
           },
           "price": "679.90",
           "priceCurrency": "BRL"
         }
       ]
     },
-    "paymentAccepted": "PIX, CartÃƒÂ£o de CrÃƒÂ©dito"
+    "paymentAccepted": "PIX, Cartão de Crédito"
   };
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Quanto custa o pacote Select para 25 crianÃƒÂ§as?",
+        "name": "Quanto custa o pacote Select para 25 crianças?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O pacote Select para 25 crianÃƒÂ§as custa R$ 1.119,90. Este valor inclui 4 horas de recreaÃƒÂ§ÃƒÂ£o, 2 recreadores profissionais, pintura facial, caÃƒÂ§a ao tesouro personalizada, escultura de balÃƒÂ£o, e muito mais!"
+          "text": "O pacote Select para 25 crianças custa R$ 1.119,90. Este valor inclui 4 horas de recreação, 2 recreadores profissionais, pintura facial, caça ao tesouro personalizada, escultura de balão, e muito mais!"
         }
       },
       {
         "@type": "Question",
-        "name": "O que estÃƒÂ¡ incluso na recreaÃƒÂ§ÃƒÂ£o clÃƒÂ¡ssica?",
+        "name": "O que está incluso na recreação clássica?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O Pacote ClÃƒÂ¡ssico inclui 4 horas de recreaÃƒÂ§ÃƒÂ£o com 1 recreador, escultura de balÃƒÂ£o, tatuagem infantil, caÃƒÂ§a ao tesouro, toalha de piquenique com kit desenho, e brincadeiras com cordas, bolas e cones. A partir de R$ 589,90 para atÃƒÂ© 15 crianÃƒÂ§as."
+          "text": "O Pacote Clássico inclui 4 horas de recreação com 1 recreador, escultura de balão, tatuagem infantil, caça ao tesouro, toalha de piquenique com kit desenho, e brincadeiras com cordas, bolas e cones. A partir de R$ 589,90 para até 15 crianças."
         }
       },
       {
         "@type": "Question",
-        "name": "VocÃƒÂªs atendem em toda SÃƒÂ£o Paulo?",
+        "name": "Vocês atendem em toda São Paulo?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! Atendemos SÃƒÂ£o Paulo capital e regiÃƒÂ£o metropolitana, incluindo Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC. Para locais mais distantes, pode ser aplicada uma taxa de deslocamento."
+          "text": "Sim! Atendemos São Paulo capital e região metropolitana, incluindo Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins e ABC. Para locais mais distantes, pode ser aplicada uma taxa de deslocamento."
         }
       },
       {
@@ -169,43 +174,44 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         "name": "Como funciona o pagamento?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "PIX: ÃƒÂ  vista ou 60% de sinal + 40% atÃƒÂ© 7 dias antes do evento. CartÃƒÂ£o: 3x sem juros acima de R$600 ou atÃƒÂ© 10x com juros. Emitimos contrato digital e nota fiscal."
+          "text": "PIX: à vista ou 60% de sinal + 40% até 7 dias antes do evento. Cartão: 3x sem juros acima de R$600 ou até 10x com juros. Emitimos contrato digital e nota fiscal."
         }
       },
       {
         "@type": "Question",
-        "name": "Posso adicionar mais crianÃƒÂ§as depois de fechar o pacote?",
+        "name": "Posso adicionar mais crianças depois de fechar o pacote?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! VocÃƒÂª pode ajustar o nÃƒÂºmero de crianÃƒÂ§as atÃƒÂ© 3 dias antes do evento. Valores para mais de 50 crianÃƒÂ§as sÃƒÂ£o calculados sob consulta."
+          "text": "Sim! Você pode ajustar o número de crianças até 3 dias antes do evento. Valores para mais de 50 crianças são calculados sob consulta."
         }
       },
       {
         "@type": "Question",
-        "name": "Os recreadores sÃƒÂ£o profissionais treinados?",
+        "name": "Os recreadores são profissionais treinados?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Todos os nossos recreadores passam por treinamento especÃƒÂ­fico da Vivalegria, com foco em seguranÃƒÂ§a infantil, primeiros socorros, e tÃƒÂ©cnicas de animaÃƒÂ§ÃƒÂ£o. SÃƒÂ£o profissionais experientes e apaixonados pelo que fazem!"
+          "text": "Todos os nossos recreadores passam por treinamento específico da Vivalegria, com foco em segurança infantil, primeiros socorros, e técnicas de animação. São profissionais experientes e apaixonados pelo que fazem!"
         }
       },
       {
         "@type": "Question",
-        "name": "O que ÃƒÂ© a Baladinha Kids?",
+        "name": "O que é a Baladinha Kids?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A Baladinha Kids ÃƒÂ© uma experiÃƒÂªncia premium com estrutura 3x3m, pista iluminada, luzes LED, caixa de som, mÃƒÂ¡quina de fumaÃƒÂ§a e playlist personalizada. Custa R$989 para atÃƒÂ© 20 crianÃƒÂ§as por 2 horas. Pode ser contratada com ou sem recreaÃƒÂ§ÃƒÂ£o."
+          "text": "A Baladinha Kids é uma experiência premium com estrutura 3x3m, pista iluminada, luzes LED, caixa de som, máquina de fumaça e playlist personalizada. Custa R$989 para até 20 crianças por 2 horas. Pode ser contratada com ou sem recreação."
         }
       },
       {
         "@type": "Question",
-        "name": "VocÃƒÂªs tÃƒÂªm serviÃƒÂ§o especial para bebÃƒÂªs?",
+        "name": "Vocês têm serviço especial para bebês?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! A ÃƒÂrea Baby oferece espaÃƒÂ§o dedicado com atividades sensoriais, brinquedos adequados e profissionais especializados para os menores. Custa R$679,90 para atÃƒÂ© 10 bebÃƒÂªs por 2 horas."
+          "text": "Sim! A Área Baby oferece espaço dedicado com atividades sensoriais, brinquedos adequados e profissionais especializados para os menores. Custa R$679,90 para até 10 bebês por 2 horas."
         }
       }
     ]
   };
+
   const productSchema = productData ? {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -224,7 +230,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "Vivalegria RecreaÃƒÂ§ÃƒÂ£o Infantil"
+        "name": "Vivalegria Recreação Infantil"
       }
     },
     "aggregateRating": {
@@ -233,13 +239,14 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       "reviewCount": "127"
     }
   } : null;
+
   const allProductsSchema = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Product",
-        "name": "Pacote SELECT - RecreaÃƒÂ§ÃƒÂ£o Infantil",
-        "description": "4 horas de recreaÃƒÂ§ÃƒÂ£o com 2 recreadores profissionais, pintura facial, caÃƒÂ§a ao tesouro, escultura de balÃƒÂ£o e muito mais",
+        "name": "Pacote SELECT - Recreação Infantil",
+        "description": "4 horas de recreação com 2 recreadores profissionais, pintura facial, caça ao tesouro, escultura de balão e muito mais",
         "brand": { "@type": "Brand", "name": "Vivalegria" },
         "offers": {
           "@type": "Offer",
@@ -251,8 +258,8 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       },
       {
         "@type": "Product",
-        "name": "Pacote CLÃƒÂSSICO - RecreaÃƒÂ§ÃƒÂ£o Infantil",
-        "description": "4 horas de recreaÃƒÂ§ÃƒÂ£o com 1 recreador, escultura de balÃƒÂ£o, tatuagem infantil, caÃƒÂ§a ao tesouro",
+        "name": "Pacote CLÁSSICO - Recreação Infantil",
+        "description": "4 horas de recreação com 1 recreador, escultura de balão, tatuagem infantil, caça ao tesouro",
         "brand": { "@type": "Brand", "name": "Vivalegria" },
         "offers": {
           "@type": "Offer",
@@ -265,7 +272,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       {
         "@type": "Product",
         "name": "Baladinha Kids",
-        "description": "Estrutura 3x3m com pista iluminada, luzes LED, mÃƒÂ¡quina de fumaÃƒÂ§a e playlist personalizada para atÃƒÂ© 20 crianÃƒÂ§as",
+        "description": "Estrutura 3x3m com pista iluminada, luzes LED, máquina de fumaça e playlist personalizada para até 20 crianças",
         "brand": { "@type": "Brand", "name": "Vivalegria" },
         "offers": {
           "@type": "Offer",
@@ -277,8 +284,8 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       },
       {
         "@type": "Product",
-        "name": "ÃƒÂrea Baby",
-        "description": "EspaÃƒÂ§o dedicado com atividades sensoriais e profissionais especializados para atÃƒÂ© 10 bebÃƒÂªs",
+        "name": "Área Baby",
+        "description": "Espaço dedicado com atividades sensoriais e profissionais especializados para até 10 bebês",
         "brand": { "@type": "Brand", "name": "Vivalegria" },
         "offers": {
           "@type": "Offer",
@@ -290,6 +297,7 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
       }
     ]
   };
+
   const getSchema = () => {
     switch (type) {
       case "local-business":
@@ -304,8 +312,11 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
         return organizationSchema;
     }
   };
+
   const schema = getSchema();
+
   if (!schema) return null;
+
   return (
     <script
       type="application/ld+json"
@@ -313,4 +324,5 @@ const JsonLd = ({ type = "organization", productData }: JsonLdProps) => {
     />
   );
 };
+
 export default JsonLd;
