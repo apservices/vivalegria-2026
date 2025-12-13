@@ -80,7 +80,7 @@ export const StepDadosContratante = ({
         )}
       </div>
 
-      {/* ConfirmaÃ§Ã£o de Email */}
+      {/* Confirmação de Email */}
       <div className="space-y-2">
         <Label htmlFor="emailConfirmacao" className="text-base font-medium">
           ConfirmaÃ§Ã£o de E-mail *
@@ -128,10 +128,10 @@ export const StepDadosContratante = ({
         </div>
       </div>
 
-      {/* EndereÃ§o */}
+      {/* Endereço */}
       <div className="space-y-2">
         <Label htmlFor="endereco" className="text-base font-medium">
-          EndereÃ§o
+          Endereço
         </Label>
         <Input
           id="endereco"
