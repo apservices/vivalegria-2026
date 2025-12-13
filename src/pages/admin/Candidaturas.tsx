@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import type React from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Filter, Eye, UserCheck, Archive, Trash2 } from "lucide-react";
 
@@ -68,7 +67,8 @@ const AdminCandidaturas = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const [selectedCandidatura, setSelectedCandidatura] = useState<Candidatura | null>(null);
+  const [selectedCandidatura, setSelectedCandidatura] =
+    useState<Candidatura | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const AdminCandidaturas = () => {
 
   useEffect(() => {
     if (user && isAdmin) {
-      fetchCandidaturas();
+      void fetchCandidaturas();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isAdmin]);
@@ -163,10 +163,7 @@ const AdminCandidaturas = () => {
     if (!deleteId) return;
 
     try {
-      const { error } = await supabase
-        .from("candidaturas")
-        .delete()
-        .eq("id", deleteId);
+      const { error } = await supabase.from("candidaturas").delete().eq("id", deleteId);
 
       if (error) throw error;
 
@@ -218,10 +215,7 @@ const AdminCandidaturas = () => {
     }
   };
 
-  const sanitizePhoneDigits = (phone?: string | null) => {
-    const digits = (phone || "").replace(/\D/g, "");
-    return digits;
-  };
+  const sanitizePhoneDigits = (phone?: string | null) => (phone || "").replace(/\D/g, "");
 
   if (isLoading || !user || !isAdmin) {
     return (
@@ -236,9 +230,7 @@ const AdminCandidaturas = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Candidaturas</h1>
-          <p className="text-muted-foreground">
-            Gerencie candidaturas para vagas de emprego
-          </p>
+          <p className="text-muted-foreground">Gerencie candidaturas para vagas de emprego</p>
         </div>
 
         {/* Filters */}
@@ -345,7 +337,7 @@ const AdminCandidaturas = () => {
                             </Button>
                           )}
 
-                          (candidatura.status ?? "pendente") !== "arquivado" && (
+                          {(candidatura.status ?? "pendente") !== "arquivado" && (
                             <Button
                               variant="ghost"
                               size="icon"
@@ -467,23 +459,15 @@ const AdminCandidaturas = () => {
 
               {selectedCandidatura.experiencia ? (
                 <div className="border-t pt-4">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Experiência com crianças
-                  </p>
-                  <p className="text-sm bg-muted p-3 rounded-lg">
-                    {selectedCandidatura.experiencia}
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-2">Experiência com crianças</p>
+                  <p className="text-sm bg-muted p-3 rounded-lg">{selectedCandidatura.experiencia}</p>
                 </div>
               ) : null}
 
               {selectedCandidatura.sobre_voce ? (
                 <div className="border-t pt-4">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Sobre o candidato
-                  </p>
-                  <p className="text-sm bg-muted p-3 rounded-lg">
-                    {selectedCandidatura.sobre_voce}
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-2">Sobre o candidato</p>
+                  <p className="text-sm bg-muted p-3 rounded-lg">{selectedCandidatura.sobre_voce}</p>
                 </div>
               ) : null}
 
