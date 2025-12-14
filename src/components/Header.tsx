@@ -33,12 +33,12 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-soft" : "bg-white"
+        isScrolled ? "bg-white shadow-soft py-2" : "bg-white py-4"
       }`}
     >
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+        <div className="flex items-center justify-between">
+          {/* Logo - Tamanho Aumentado */}
           <Link
             to="/"
             className="flex items-center transition-transform hover:scale-105 duration-300"
@@ -46,7 +46,8 @@ const Header = () => {
             <img
               src={logoVivalegria}
               alt="Vivalegria Recreação Infantil"
-              className="h-12 md:h-14 w-auto max-w-[180px] md:max-w-[200px] object-contain"
+              // Ajustei aqui: h-16 (mobile) e h-20 (desktop) para ficar bem maior
+              className="h-16 md:h-20 w-auto max-w-[220px] md:max-w-[280px] object-contain"
             />
           </Link>
 
@@ -94,7 +95,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <nav className="lg:hidden py-4 border-t border-border animate-fade-in">
+          <nav className="lg:hidden py-4 border-t border-border animate-fade-in mt-4">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
