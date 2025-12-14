@@ -1,15 +1,10 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import {
-  validateCPF,
-  validateCNPJ,
-  validateEmail,
-  unmask,
-} from "@/utils/inputMasks";
+import { validateCPF, validateCNPJ, validateEmail, unmask } from "@/utils/inputMasks";
 import { ContratacaoFormData } from "./types";
 import { StepIdentificacao } from "./StepIdentificacao";
 import { StepDadosContratante } from "./StepDadosContratante";
@@ -42,6 +37,32 @@ export const ContratacaoForm = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // ✅ Âncora: garante que a tela fique sempre no formulário (não volta pro topo da Home)
+  const formTopRef = useRef<HTMLDivElement | null>(null);
+
+  // ✅ Evita scroll "desnecessário" quando resetamos após submit
+  const skipNextScrollRef = useRef(false);
+
+  useLayoutEffect(() => {
+    if (skipNextScrollRef.current) {
+      skipNextScrollRef.current = false;
+      return;
+    }
+
+    const el = formTopRef.current;
+    if (!el) return;
+
+    // Header fixo e variável: calcula altura real
+    const headerEl = document.querySelector("header");
+    const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
+
+    // margem extra (respiro)
+    const offset = headerH + 16;
+
+    const y = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }, [currentStep]);
+
   const {
     packageType,
     numChildren,
@@ -69,15 +90,9 @@ export const ContratacaoForm = () => {
         formData.tipoCadastro === "pf"
           ? "CPF é obrigatório"
           : "CNPJ é obrigatório";
-    } else if (
-      formData.tipoCadastro === "pf" &&
-      !validateCPF(formData.cpfCnpj)
-    ) {
+    } else if (formData.tipoCadastro === "pf" && !validateCPF(formData.cpfCnpj)) {
       newErrors.cpfCnpj = "CPF inválido";
-    } else if (
-      formData.tipoCadastro === "pj" &&
-      !validateCNPJ(formData.cpfCnpj)
-    ) {
+    } else if (formData.tipoCadastro === "pj" && !validateCNPJ(formData.cpfCnpj)) {
       newErrors.cpfCnpj = "CNPJ inválido";
     }
 
@@ -115,17 +130,9 @@ export const ContratacaoForm = () => {
   const validateStep3 = (): boolean => {
     const newErrors: Partial<Record<keyof ContratacaoFormData, string>> = {};
 
-    if (!formData.dataEvento) {
-      newErrors.dataEvento = "Data do evento é obrigatória";
-    }
-
-    if (!formData.horaInicio) {
-      newErrors.horaInicio = "Hora de início é obrigatória";
-    }
-
-    if (!formData.localEvento.trim()) {
-      newErrors.localEvento = "Local do evento é obrigatório";
-    }
+    if (!formData.dataEvento) newErrors.dataEvento = "Data do evento é obrigatória";
+    if (!formData.horaInicio) newErrors.horaInicio = "Hora de início é obrigatória";
+    if (!formData.localEvento.trim()) newErrors.localEvento = "Local do evento é obrigatório";
 
     if (!packageType) {
       toast.error("Selecione um pacote antes de continuar");
@@ -144,14 +151,14 @@ export const ContratacaoForm = () => {
 
     if (isValid && currentStep < 3) {
       setCurrentStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // ✅ sem window.scrollTo aqui — o useLayoutEffect cuida
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // ✅ sem window.scrollTo aqui — o useLayoutEffect cuida
     }
   };
 
@@ -184,17 +191,15 @@ export const ContratacaoForm = () => {
         total_calculado: total,
       };
 
-      const { error } = await supabase
-        .from("reservas")
-        .insert(reservaData);
-
+      const { error } = await supabase.from("reservas").insert(reservaData);
       if (error) throw error;
 
-      toast.success(
-        "Reserva enviada com sucesso! Entraremos em contato em breve."
-      );
+      toast.success("Reserva enviada com sucesso! Entraremos em contato em breve.");
 
       setFormData(initialFormData);
+
+      // ✅ Reset sem “forçar” scroll (se quiser que role, remova essas 2 linhas)
+      skipNextScrollRef.current = true;
       setCurrentStep(1);
     } catch (error) {
       console.error("Erro ao enviar reserva:", error);
@@ -207,6 +212,9 @@ export const ContratacaoForm = () => {
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg border-viva-yellow/20">
       <CardContent className="p-6 md:p-8">
+        {/* ✅ âncora do topo do formulário */}
+        <div ref={formTopRef} className="h-1" />
+
         <ProgressIndicator
           currentStep={currentStep}
           totalSteps={3}

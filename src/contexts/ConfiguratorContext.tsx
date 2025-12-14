@@ -111,7 +111,7 @@ export const ConfiguratorProvider = ({ children }: { children: ReactNode }) => {
         ? state.selectedExtras.map((e) => extraLabels[e]).join(", ")
         : "nenhum";
 
-    const message = `OlÃƒÂ¡! Quero reservar o pacote ${packageName} para ${state.numChildren} crianÃƒÂ§as. Oficinas: ${workshops}. Extras: ${extras}. Total: R$ ${total.toLocaleString(
+    const message = `OlÃ¡! Quero reservar o pacote ${packageName} para ${state.numChildren} crianÃ§as. Oficinas: ${workshops}. Extras: ${extras}. Total: R$ ${total.toLocaleString(
       "pt-BR",
       { minimumFractionDigits: 2 }
     )}.`;

@@ -1,5 +1,5 @@
-// Dynamic Pricing Calculator for Vivalegria
-// Based on "Tabela de PreÃƒÂ§os 2025 Ã¢â‚¬â€œ Vivalegria Festas"
+﻿// Dynamic Pricing Calculator for Vivalegria
+// Based on "Tabela de Preços 2025 Ã¢â‚¬â€œ Vivalegria Festas"
 export type ChildrenRange = 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50;
 export type PackageType = "select" | "classic";
 export type WorkshopType = 
@@ -75,14 +75,14 @@ export const formatPrice = (price: number): string => {
   return price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 export const childrenRanges: { label: string; value: ChildrenRange }[] = [
-  { label: "AtÃƒÂ© 15 crianÃƒÂ§as", value: 15 },
-  { label: "16-20 crianÃƒÂ§as", value: 20 },
-  { label: "21-25 crianÃƒÂ§as", value: 25 },
-  { label: "26-30 crianÃƒÂ§as", value: 30 },
-  { label: "31-35 crianÃƒÂ§as", value: 35 },
-  { label: "36-40 crianÃƒÂ§as", value: 40 },
-  { label: "41-45 crianÃƒÂ§as", value: 45 },
-  { label: "46-50 crianÃƒÂ§as", value: 50 }];
+  { label: "Até 15 crianças", value: 15 },
+  { label: "16-20 crianças", value: 20 },
+  { label: "21-25 crianças", value: 25 },
+  { label: "26-30 crianças", value: 30 },
+  { label: "31-35 crianças", value: 35 },
+  { label: "36-40 crianças", value: 40 },
+  { label: "41-45 crianças", value: 45 },
+  { label: "46-50 crianças", value: 50 }];
 // Price table data for display
 export const priceTableData = [
   { children: 15, pinturaPro: 249.90, pinturaBasica: 149.90, oficinaTela: 330.00, oficinasCriativas: 250.00, classic: 589.90, select: 789.90 },
@@ -93,3 +93,6 @@ export const priceTableData = [
   { children: 40, pinturaPro: 374.90, pinturaBasica: 274.00, oficinaTela: 751.00, oficinasCriativas: 581.00, classic: 1314.90, select: 1519.90 },
   { children: 45, pinturaPro: 399.90, pinturaBasica: 299.00, oficinaTela: 826.00, oficinasCriativas: 635.00, classic: 1439.90, select: 1639.90 },
   { children: 50, pinturaPro: 425.00, pinturaBasica: 325.00, oficinaTela: 901.00, oficinasCriativas: 685.00, classic: 1564.90, select: 1769.90 }];
+
+
+
