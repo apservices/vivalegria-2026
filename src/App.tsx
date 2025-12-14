@@ -88,3 +88,9 @@ const App = () => (
 );
 
 export default App;
+import FestaInfantil from './pages/festa-infantil';
+import OrcamentoLP from './pages/orcamento-lp';
+
+// Dentro do Router:
+<Route path="/festa-infantil" element={<FestaInfantil />} />
+<Route path="/orcamento" element={<OrcamentoLP />} />
