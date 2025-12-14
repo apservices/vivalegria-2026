@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      avaliacoes_evento: {
+        Row: {
+          created_at: string
+          id: string
+          observacoes_admin: string | null
+          profissional_id: string | null
+          profissional_nome: string | null
+          reserva_id: string | null
+          respostas: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          observacoes_admin?: string | null
+          profissional_id?: string | null
+          profissional_nome?: string | null
+          reserva_id?: string | null
+          respostas?: Json
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          observacoes_admin?: string | null
+          profissional_id?: string | null
+          profissional_nome?: string | null
+          reserva_id?: string | null
+          respostas?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "avaliacoes_evento_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "avaliacoes_evento_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "reservas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       candidaturas: {
         Row: {
           cidade: string
@@ -97,6 +142,38 @@ export type Database = {
           },
           {
             foreignKeyName: "evento_casting_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "reservas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pesquisas_clientes: {
+        Row: {
+          created_at: string
+          id: string
+          reserva_id: string | null
+          respostas: Json
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reserva_id?: string | null
+          respostas?: Json
+          token: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reserva_id?: string | null
+          respostas?: Json
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pesquisas_clientes_reserva_id_fkey"
             columns: ["reserva_id"]
             isOneToOne: false
             referencedRelation: "reservas"
@@ -257,6 +334,38 @@ export type Database = {
         }
         Relationships: []
       }
+      tokens_pesquisa: {
+        Row: {
+          created_at: string
+          is_active: boolean
+          reserva_id: string
+          token: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          is_active?: boolean
+          reserva_id: string
+          token: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          is_active?: boolean
+          reserva_id?: string
+          token?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tokens_pesquisa_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "reservas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -283,6 +392,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_satisfaction_token: {
+        Args: { p_reserva_id: string }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -290,6 +403,11 @@ export type Database = {
         }
         Returns: boolean
       }
+      submit_pesquisa_satisfacao: {
+        Args: { p_respostas: Json; p_token: string }
+        Returns: Json
+      }
+      validate_pesquisa_token: { Args: { p_token: string }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
