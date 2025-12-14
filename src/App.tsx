@@ -30,9 +30,12 @@ import AdminCasting from "./pages/admin/Casting";
 import AdminAvaliacoes from "./pages/admin/Avaliacoes";
 import NotFound from "./pages/NotFound";
 
+// NOVAS LANDING PAGES
+import FestaInfantil from "./pages/festa-infantil/index";
+import OrcamentoLP from "./pages/orcamento-lp/index";
+
 const queryClient = new QueryClient();
 
-// Layout component for public pages
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
@@ -54,7 +57,6 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* Admin routes - no public layout */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/reservas" element={<AdminReservas />} />
@@ -62,11 +64,9 @@ const App = () => (
               <Route path="/admin/candidaturas" element={<AdminCandidaturas />} />
               <Route path="/admin/avaliacoes" element={<AdminAvaliacoes />} />
 
-              {/* Forms without header/footer */}
               <Route path="/avaliacao-evento" element={<AvaliacaoEvento />} />
               <Route path="/pesquisa-satisfacao" element={<PesquisaSatisfacao />} />
 
-              {/* Public routes with layout */}
               <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
               <Route path="/pacotes" element={<PublicLayout><Pacotes /></PublicLayout>} />
               <Route path="/oficinas" element={<PublicLayout><Oficinas /></PublicLayout>} />
@@ -78,6 +78,11 @@ const App = () => (
               <Route path="/privacidade" element={<PublicLayout><Privacidade /></PublicLayout>} />
               <Route path="/termos" element={<PublicLayout><Termos /></PublicLayout>} />
               <Route path="/trabalhe-conosco" element={<PublicLayout><TrabalheConosco /></PublicLayout>} />
+
+              {/* NOVAS LANDING PAGES */}
+              <Route path="/festa-infantil" element={<PublicLayout><FestaInfantil /></PublicLayout>} />
+              <Route path="/orcamento" element={<PublicLayout><OrcamentoLP /></PublicLayout>} />
+
               <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
             </Routes>
           </BrowserRouter>
@@ -88,9 +93,3 @@ const App = () => (
 );
 
 export default App;
-import FestaInfantil from './pages/festa-infantil';
-import OrcamentoLP from './pages/orcamento-lp';
-
-// Dentro do Router:
-<Route path="/festa-infantil" element={<FestaInfantil />} />
-<Route path="/orcamento" element={<OrcamentoLP />} />
