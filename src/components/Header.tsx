@@ -32,14 +32,15 @@ const Header = () => {
 
   return (
     <header
+      // AJUSTE: Reduzi o padding vertical (py-1 e py-2) para diminuir a altura da barra branca
+      // mantendo o logo grande.
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-soft py-2" : "bg-white py-4"
+        isScrolled ? "bg-white shadow-soft py-1" : "bg-white py-2"
       }`}
     >
       <div className="container mx-auto px-6">
-        {/* Removi a classe 'h-20' daqui para deixar a altura flexível conforme o logo */}
         <div className="flex items-center justify-between">
-          {/* Logo - Tamanho DOBRADO */}
+          {/* Logo - Tamanho Mantido Grande, mas com margem negativa para não estourar a barra */}
           <Link
             to="/"
             className="flex items-center transition-transform hover:scale-105 duration-300"
@@ -47,8 +48,8 @@ const Header = () => {
             <img
               src={logoVivalegria}
               alt="Vivalegria Recreação Infantil"
-              // AQUI ESTÁ A MUDANÇA: h-24 (96px mobile) e h-32 (128px desktop)
-              className="h-24 md:h-32 w-auto max-w-[280px] md:max-w-[400px] object-contain"
+              // Mantive h-24 e h-32 (grande), mas ajustei o object-contain e removi paddings extras
+              className="h-24 md:h-32 w-auto max-w-[280px] md:max-w-[400px] object-contain -my-4"
             />
           </Link>
 
@@ -96,7 +97,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <nav className="lg:hidden py-4 border-t border-border animate-fade-in mt-4">
+          <nav className="lg:hidden py-4 border-t border-border animate-fade-in mt-2 bg-white rounded-b-lg shadow-lg">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -112,7 +113,7 @@ const Header = () => {
               </Link>
             ))}
 
-            <div className="px-4 pt-4">
+            <div className="px-4 pt-4 pb-2">
               <Button asChild size="lg" className="w-full rounded-full">
                 <Link to="/contratar">Contratar Agora</Link>
               </Button>
