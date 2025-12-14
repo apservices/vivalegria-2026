@@ -11,6 +11,7 @@ import { StepDadosContratante } from "./StepDadosContratante";
 import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
 
@@ -32,6 +33,7 @@ const initialFormData: ContratacaoFormData = {
 };
 
 export const ContratacaoForm = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<ContratacaoFormData>(initialFormData);
   const [errors, setErrors] = useState<Partial<Record<keyof ContratacaoFormData, string>>>({});

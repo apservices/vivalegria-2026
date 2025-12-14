@@ -98,6 +98,51 @@ export type Database = {
         }
         Relationships: []
       }
+      clientes: {
+        Row: {
+          cep: string | null
+          cidade: string | null
+          complemento: string | null
+          cpf_cnpj: string
+          created_at: string
+          email: string | null
+          endereco: string | null
+          id: string
+          nome_completo: string
+          telefone: string | null
+          tipo_cadastro: string
+          updated_at: string
+        }
+        Insert: {
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          cpf_cnpj: string
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome_completo: string
+          telefone?: string | null
+          tipo_cadastro: string
+          updated_at?: string
+        }
+        Update: {
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          cpf_cnpj?: string
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome_completo?: string
+          telefone?: string | null
+          tipo_cadastro?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       evento_casting: {
         Row: {
           cache: number | null
@@ -263,11 +308,16 @@ export type Database = {
         Row: {
           cep: string | null
           cidade: string | null
+          cliente_id: string | null
+          codigo: string | null
           complemento: string | null
+          contrato_gerado_em: string | null
+          contrato_url: string | null
           cpf_cnpj: string
           created_at: string
           data_evento: string
           email: string
+          email_enviado_em: string | null
           endereco: string | null
           extras_selecionados: string[] | null
           hora_inicio: string
@@ -287,11 +337,16 @@ export type Database = {
         Insert: {
           cep?: string | null
           cidade?: string | null
+          cliente_id?: string | null
+          codigo?: string | null
           complemento?: string | null
+          contrato_gerado_em?: string | null
+          contrato_url?: string | null
           cpf_cnpj: string
           created_at?: string
           data_evento: string
           email: string
+          email_enviado_em?: string | null
           endereco?: string | null
           extras_selecionados?: string[] | null
           hora_inicio: string
@@ -311,11 +366,16 @@ export type Database = {
         Update: {
           cep?: string | null
           cidade?: string | null
+          cliente_id?: string | null
+          codigo?: string | null
           complemento?: string | null
+          contrato_gerado_em?: string | null
+          contrato_url?: string | null
           cpf_cnpj?: string
           created_at?: string
           data_evento?: string
           email?: string
+          email_enviado_em?: string | null
           endereco?: string | null
           extras_selecionados?: string[] | null
           hora_inicio?: string
@@ -332,7 +392,15 @@ export type Database = {
           total_calculado?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "reservas_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tokens_pesquisa: {
         Row: {
@@ -396,12 +464,30 @@ export type Database = {
         Args: { p_reserva_id: string }
         Returns: string
       }
+      get_or_create_cliente: {
+        Args: {
+          p_cep?: string
+          p_cidade?: string
+          p_complemento?: string
+          p_cpf_cnpj: string
+          p_email?: string
+          p_endereco?: string
+          p_nome_completo: string
+          p_telefone?: string
+          p_tipo_cadastro: string
+        }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      lookup_cliente_by_cpf_cnpj: {
+        Args: { p_cpf_cnpj: string }
+        Returns: Json
       }
       submit_pesquisa_satisfacao: {
         Args: { p_respostas: Json; p_token: string }
