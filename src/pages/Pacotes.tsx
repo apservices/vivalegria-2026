@@ -1,4 +1,4 @@
-import { Check, Star, Sparkles, Baby } from "lucide-react";
+﻿import { Check, Star, Sparkles, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
@@ -24,52 +24,52 @@ const premiumPackages: PremiumPackage[] = [
     badgeIcon: Star,
     audience: "Para festas enxutas e cheias de energia",
     description:
-      "Brincadeiras guiadas, dinâmica e organização para manter as crianças animadas do começo ao fim.",
+      "Brincadeiras guiadas, dinï¿½mica e organizaï¿½ï¿½o para manter as crianï¿½as animadas do comeï¿½o ao fim.",
     startPrice: "R$ 589",
     features: [
-      "Recreação com monitor(es) experiente(s)",
-      "Brincadeiras clássicas e gincanas",
-      "Organização das atividades por faixa etária",
-      "Materiais e itens de apoio para dinâmica",
-      "Segurança e condução profissional",
+      "Recreaï¿½ï¿½o com monitor(es) experiente(s)",
+      "Brincadeiras clï¿½ssicas e gincanas",
+      "Organizaï¿½ï¿½o das atividades por faixa etï¿½ria",
+      "Materiais e itens de apoio para dinï¿½mica",
+      "Seguranï¿½a e conduï¿½ï¿½o profissional",
     ],
-    note: "Ideal para aniversários em casa e salões com turmas menores.",
+    note: "Ideal para aniversï¿½rios em casa e salï¿½es com turmas menores.",
   },
   {
     name: "Select",
     badge: "Premium",
     badgeColor: "bg-viva-orange",
     badgeIcon: Sparkles,
-    audience: "Para quem quer uma experiência mais completa",
+    audience: "Para quem quer uma experiï¿½ncia mais completa",
     description:
-      "Mais tempo, mais equipe e mais experiências para transformar a festa em um momento memorável.",
+      "Mais tempo, mais equipe e mais experiï¿½ncias para transformar a festa em um momento memorï¿½vel.",
     startPrice: "R$ 1.119,90",
     features: [
-      "4 horas de recreação",
+      "4 horas de recreaï¿½ï¿½o",
       "2 recreadores profissionais",
-      "Pintura facial básica",
-      "Caça ao tesouro personalizada",
-      "Escultura de balão e tatuagem infantil",
-      "Atividades temáticas conforme perfil do evento",
+      "Pintura facial bï¿½sica",
+      "Caï¿½a ao tesouro personalizada",
+      "Escultura de balï¿½o e tatuagem infantil",
+      "Atividades temï¿½ticas conforme perfil do evento",
     ],
-    note: "Recomendado para festas maiores e quando você quer variedade de atividades.",
+    note: "Recomendado para festas maiores e quando vocï¿½ quer variedade de atividades.",
   },
   {
     name: "Baby & Kids",
-    badge: "0–4 anos",
+    badge: "0ï¿½4 anos",
     badgeColor: "bg-viva-gold",
     badgeIcon: Baby,
     audience: "Para pequenos com rotina e acolhimento",
     description:
-      "Atividades adaptadas para os menores, com foco em estímulos e brincadeiras seguras.",
+      "Atividades adaptadas para os menores, com foco em estï¿½mulos e brincadeiras seguras.",
     startPrice: "Sob consulta",
     features: [
-      "Brincadeiras sensoriais e lúdicas",
+      "Brincadeiras sensoriais e lï¿½dicas",
       "Ritmo mais calmo e adaptado",
-      "Acompanhamento e cuidado reforçados",
-      "Materiais adequados à idade",
+      "Acompanhamento e cuidado reforï¿½ados",
+      "Materiais adequados ï¿½ idade",
     ],
-    note: "Indicamos após entender a idade e o perfil do seu evento.",
+    note: "Indicamos apï¿½s entender a idade e o perfil do seu evento.",
   },
 ];
 
@@ -77,8 +77,8 @@ const Pacotes = () => {
   return (
     <>
       <SEO
-        title="Pacotes de Recreação Infantil | Vivalegria"
-        description="Conheça nossos pacotes premium de recreação infantil para festas inesquecíveis."
+        title="Pacotes de Recreaï¿½ï¿½o Infantil | Vivalegria"
+        description="Conheï¿½a nossos pacotes premium de recreaï¿½ï¿½o infantil para festas inesquecï¿½veis."
         canonical="/pacotes"
       />
 
@@ -86,9 +86,9 @@ const Pacotes = () => {
       <section className="py-24 bg-gradient-subtle">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="mb-4">Experiências Especiais</h2>
+            <h2 className="mb-4">Experiï¿½ncias Especiais</h2>
             <p className="text-lg text-muted-foreground">
-              Serviços premium para tornar sua festa ainda mais incrível
+              Serviï¿½os premium para tornar sua festa ainda mais incrï¿½vel
             </p>
           </div>
 
@@ -127,7 +127,7 @@ const Pacotes = () => {
 
                   <div className="space-y-3 mb-6">
                     <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                      O que está incluso:
+                      O que estï¿½ incluso:
                     </h3>
 
                     {pkg.features.map((feature, i) => (
@@ -140,7 +140,7 @@ const Pacotes = () => {
 
                   {pkg.note && (
                     <p className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg mb-6 italic">
-                      💡 {pkg.note}
+                      ?? {pkg.note}
                     </p>
                   )}
 
@@ -150,7 +150,7 @@ const Pacotes = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      💬 Consultar no WhatsApp
+                      ?? Consultar no WhatsApp
                     </a>
                   </Button>
                 </Card>
@@ -164,3 +164,4 @@ const Pacotes = () => {
 };
 
 export default Pacotes;
+
