@@ -20,19 +20,21 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin/candidaturas", label: "Candidaturas", icon: Users },
     { href: "/admin/avaliacoes", label: "Avaliações", icon: Star },
   ];
+
   const isActive = (href: string) => {
     if (href === "/admin") {
       return location.pathname === "/admin";
     }
     return location.pathname.startsWith(href);
   };
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
           <img src={logoVivalegria} alt="Vivalegria" className="h-10" />
-          <p className="text-xs text-muted-foreground mt-2">ÃƒÂrea Administrativa</p>
+          <p className="text-xs text-muted-foreground mt-2">Área Administrativa</p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => (
@@ -67,6 +69,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </Button>
         </div>
       </aside>
+
       {/* Main content */}
       <main className="flex-1 overflow-auto">
         <div className="p-8">
@@ -76,4 +79,5 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     </div>
   );
 };
+
 export default AdminLayout;
