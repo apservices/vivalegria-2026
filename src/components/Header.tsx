@@ -45,8 +45,8 @@ const Header = () => {
           >
             <img
               src={logoVivalegria}
-              alt="Vivalegria RecreaÃƒÂ§ÃƒÂ£o Infantil"
-              className="h-12 md:h-14 w-auto"
+              alt="Vivalegria Recreação Infantil"
+              className="h-12 md:h-14 w-auto max-w-[180px] md:max-w-[200px] object-contain"
             />
           </Link>
 
