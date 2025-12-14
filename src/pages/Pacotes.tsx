@@ -22,7 +22,7 @@ const premiumPackages: PremiumPackage[] = [
     badge: "Mais escolhido",
     badgeColor: "bg-primary",
     badgeIcon: Star,
-    audience: "Para festas enxutas e cheias de energia",
+    audience: "Na medida certa para diversão",
     description:
       "Brincadeiras guiadas, dinâmica e organização para manter as crianças animadas do começo ao fim.",
     startPrice: "R$ 589",
@@ -33,17 +33,17 @@ const premiumPackages: PremiumPackage[] = [
       "Materiais e itens de apoio para dinâmica",
       "Segurança e condução profissional",
     ],
-    note: "Ideal para aniversários em casa e salões com turmas menores.",
+    note: "⭐ Ideal para quem busca diversão organizada, segurança e alegria do começo ao fim.",
   },
   {
     name: "Select",
     badge: "Premium",
     badgeColor: "bg-viva-orange",
     badgeIcon: Sparkles,
-    audience: "Para quem quer uma experiência mais completa",
+    audience: "Diversão completa para brilhar em seu evento",
     description:
       "Mais tempo, mais equipe e mais experiências para transformar a festa em um momento memorável.",
-    startPrice: "R$ 1.119,90",
+    startPrice: "R$ 789,90",
     features: [
       "4 horas de recreação",
       "2 recreadores profissionais",
@@ -52,7 +52,7 @@ const premiumPackages: PremiumPackage[] = [
       "Escultura de balão e tatuagem infantil",
       "Atividades temáticas conforme perfil do evento",
     ],
-    note: "Recomendado para festas maiores e quando você quer variedade de atividades.",
+    note: "⭐ Recomendado para quem deseja uma experiência mais completa, personalizada e inesquecível.",
   },
   {
     name: "Baby & Kids",
