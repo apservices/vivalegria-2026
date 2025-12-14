@@ -31,46 +31,65 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/admin/AdminLayout";
+
 const AdminReservas = () => {
   const { user, isAdmin, isLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
   const [reservas, setReservas] = useState<any[]>([]);
   const [filteredReservas, setFilteredReservas] = useState<any[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
   const [selectedReserva, setSelectedReserva] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
   useEffect(() => {
     if (!isLoading && (!user || !isAdmin)) {
       navigate("/admin/login");
     }
   }, [user, isAdmin, isLoading, navigate]);
+
   useEffect(() => {
     if (user && isAdmin) {
       fetchReservas();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isAdmin]);
+
   useEffect(() => {
     filterReservas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reservas, searchTerm, statusFilter]);
+
   const fetchReservas = async () => {
     try {
       const { data, error } = await supabase
         .from("reservas")
         .select("*")
         .order("created_at", { ascending: false });
+
       if (error) throw error;
+
       setReservas(data || []);
     } catch (error) {
       console.error("Error fetching reservas:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível carregar as reservas.",
+        variant: "destructive",
+      });
     } finally {
       setLoadingData(false);
     }
   };
+
   const filterReservas = () => {
     let filtered = [...reservas];
+
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
@@ -80,23 +99,30 @@ const AdminReservas = () => {
           r.telefone?.includes(term)
       );
     }
+
     if (statusFilter !== "all") {
       filtered = filtered.filter((r) => r.status === statusFilter);
     }
+
     setFilteredReservas(filtered);
   };
+
   const updateStatus = async (id: string, newStatus: string) => {
     try {
       // Se for aprovação, chamar edge function para gerar contrato
       if (newStatus === "aprovado") {
         toast({
           title: "Gerando contrato...",
-          description: "Aguarde enquanto geramos o contrato e enviamos por e-mail",
+          description:
+            "Aguarde enquanto geramos o contrato e enviamos por e-mail.",
         });
 
-        const { data, error: fnError } = await supabase.functions.invoke("generate-contract", {
-          body: { reserva_id: id },
-        });
+        const { data, error: fnError } = await supabase.functions.invoke(
+          "generate-contract",
+          {
+            body: { reserva_id: id },
+          }
+        );
 
         if (fnError) {
           console.error("Error generating contract:", fnError);
@@ -117,8 +143,9 @@ const AdminReservas = () => {
           .from("reservas")
           .update({ status: newStatus })
           .eq("id", id);
+
         if (error) throw error;
-        
+
         toast({
           title: "Status atualizado",
           description: `Reserva marcada como ${newStatus}`,
@@ -136,40 +163,70 @@ const AdminReservas = () => {
       });
     }
   };
+
   const deleteReserva = async () => {
     if (!deleteId) return;
+
     try {
-      const { error } = await supabase.from("reservas").delete().eq("id", deleteId);
+      const { error } = await supabase
+        .from("reservas")
+        .delete()
+        .eq("id", deleteId);
+
       if (error) throw error;
+
       setReservas((prev) => prev.filter((r) => r.id !== deleteId));
       setDeleteId(null);
+
       toast({
-        title: "Reserva excluÃƒÂ­da",
+        title: "Reserva excluída",
         description: "A reserva foi removida com sucesso",
       });
     } catch (error) {
       console.error("Error deleting reserva:", error);
       toast({
         title: "Erro",
-        description: "NÃƒÂ£o foi possÃƒÂ­vel excluir a reserva",
+        description: "Não foi possível excluir a reserva",
         variant: "destructive",
       });
     }
   };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pendente":
-        return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pendente</span>;
+        return (
+          <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+            Pendente
+          </span>
+        );
       case "aprovado":
-        return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Aprovado</span>;
+        return (
+          <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+            Aprovado
+          </span>
+        );
       case "confirmado":
-        return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Confirmado</span>;
+        return (
+          <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
+            Confirmado
+          </span>
+        );
       case "cancelado":
-        return <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">Cancelado</span>;
+        return (
+          <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+            Cancelado
+          </span>
+        );
       default:
-        return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">{status}</span>;
+        return (
+          <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
+            {status}
+          </span>
+        );
     }
   };
+
   if (isLoading || !user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -177,25 +234,30 @@ const AdminReservas = () => {
       </div>
     );
   }
+
   return (
     <AdminLayout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Reservas</h1>
-          <p className="text-muted-foreground">Gerencie todas as reservas de eventos</p>
+          <p className="text-muted-foreground">
+            Gerencie todas as reservas de eventos
+          </p>
         </div>
+
         {/* Filters */}
         <Card className="p-4">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Buscar por nome, email ou telefone..."
+                placeholder="Buscar por nome, e-mail ou telefone..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
+
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full md:w-[180px]">
                 <Filter className="w-4 h-4 mr-2" />
@@ -204,27 +266,44 @@ const AdminReservas = () => {
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="pendente">Pendente</SelectItem>
+                <SelectItem value="aprovado">Aprovado</SelectItem>
                 <SelectItem value="confirmado">Confirmado</SelectItem>
                 <SelectItem value="cancelado">Cancelado</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </Card>
+
         {/* Table */}
         <Card className="p-6">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Cliente</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Data Evento</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Pacote</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">CrianÃƒÂ§as</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Status</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">Total</th>
-                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">AÃƒÂ§ÃƒÂµes</th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Cliente
+                  </th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Data do Evento
+                  </th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Pacote
+                  </th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Crianças
+                  </th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Status
+                  </th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Total
+                  </th>
+                  <th className="text-left py-3 px-2 text-sm font-medium text-muted-foreground">
+                    Ações
+                  </th>
                 </tr>
               </thead>
+
               <tbody>
                 {loadingData ? (
                   <tr>
@@ -234,28 +313,54 @@ const AdminReservas = () => {
                   </tr>
                 ) : filteredReservas.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-8 text-muted-foreground">
+                    <td
+                      colSpan={7}
+                      className="text-center py-8 text-muted-foreground"
+                    >
                       Nenhuma reserva encontrada
                     </td>
                   </tr>
                 ) : (
                   filteredReservas.map((reserva) => (
-                    <tr key={reserva.id} className="border-b hover:bg-muted/50">
+                    <tr
+                      key={reserva.id}
+                      className="border-b hover:bg-muted/50"
+                    >
                       <td className="py-3 px-2">
                         <p className="font-medium">{reserva.nome_completo}</p>
-                        <p className="text-sm text-muted-foreground">{reserva.telefone}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {reserva.telefone}
+                        </p>
                       </td>
+
                       <td className="py-3 px-2">
-                        {new Date(reserva.data_evento).toLocaleDateString("pt-BR")}
+                        {new Date(reserva.data_evento).toLocaleDateString(
+                          "pt-BR"
+                        )}
                         <br />
-                        <span className="text-sm text-muted-foreground">{reserva.hora_inicio}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {reserva.hora_inicio}
+                        </span>
                       </td>
-                      <td className="py-3 px-2 capitalize">{reserva.pacote_tipo}</td>
+
+                      <td className="py-3 px-2 capitalize">
+                        {reserva.pacote_tipo}
+                      </td>
+
                       <td className="py-3 px-2">{reserva.numero_criancas}</td>
-                      <td className="py-3 px-2">{getStatusBadge(reserva.status)}</td>
-                      <td className="py-3 px-2 font-medium">
-                        R$ {Number(reserva.total_calculado).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+
+                      <td className="py-3 px-2">
+                        {getStatusBadge(reserva.status)}
                       </td>
+
+                      <td className="py-3 px-2 font-medium">
+                        R${" "}
+                        {Number(reserva.total_calculado).toLocaleString(
+                          "pt-BR",
+                          { minimumFractionDigits: 2 }
+                        )}
+                      </td>
+
                       <td className="py-3 px-2">
                         <div className="flex items-center gap-1">
                           <Button
@@ -266,28 +371,35 @@ const AdminReservas = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </Button>
+
                           {reserva.status === "pendente" && (
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => updateStatus(reserva.id, "confirmado")}
+                              onClick={() =>
+                                updateStatus(reserva.id, "confirmado")
+                              }
                               title="Confirmar"
                               className="text-green-600 hover:text-green-700"
                             >
                               <Check className="w-4 h-4" />
                             </Button>
                           )}
+
                           {reserva.status !== "cancelado" && (
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => updateStatus(reserva.id, "cancelado")}
+                              onClick={() =>
+                                updateStatus(reserva.id, "cancelado")
+                              }
                               title="Cancelar"
                               className="text-red-600 hover:text-red-700"
                             >
                               <X className="w-4 h-4" />
                             </Button>
                           )}
+
                           <Button
                             variant="ghost"
                             size="icon"
@@ -307,12 +419,17 @@ const AdminReservas = () => {
           </div>
         </Card>
       </div>
+
       {/* Details Dialog */}
-      <Dialog open={!!selectedReserva} onOpenChange={() => setSelectedReserva(null)}>
+      <Dialog
+        open={!!selectedReserva}
+        onOpenChange={() => setSelectedReserva(null)}
+      >
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Detalhes da Reserva</DialogTitle>
           </DialogHeader>
+
           {selectedReserva && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
@@ -320,59 +437,83 @@ const AdminReservas = () => {
                   <p className="text-sm text-muted-foreground">Cliente</p>
                   <p className="font-medium">{selectedReserva.nome_completo}</p>
                 </div>
+
                 <div>
                   <p className="text-sm text-muted-foreground">Tipo</p>
                   <p className="font-medium capitalize">
-                    {selectedReserva.tipo_cliente === "novo" ? "Novo" : "Existente"} - {selectedReserva.tipo_cadastro?.toUpperCase()}
+                    {selectedReserva.tipo_cliente === "novo"
+                      ? "Novo"
+                      : "Existente"}{" "}
+                    - {selectedReserva.tipo_cadastro?.toUpperCase()}
                   </p>
                 </div>
+
                 <div>
                   <p className="text-sm text-muted-foreground">CPF/CNPJ</p>
                   <p className="font-medium">{selectedReserva.cpf_cnpj}</p>
                 </div>
+
                 <div>
                   <p className="text-sm text-muted-foreground">Telefone</p>
                   <p className="font-medium">{selectedReserva.telefone}</p>
                 </div>
+
                 <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
+                  <p className="text-sm text-muted-foreground">E-mail</p>
                   <p className="font-medium">{selectedReserva.email}</p>
                 </div>
+
                 <div>
                   <p className="text-sm text-muted-foreground">Status</p>
                   {getStatusBadge(selectedReserva.status)}
                 </div>
               </div>
+
               <div className="border-t pt-4">
                 <h4 className="font-semibold mb-3">Dados do Evento</h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Data</p>
                     <p className="font-medium">
-                      {new Date(selectedReserva.data_evento).toLocaleDateString("pt-BR")}
+                      {new Date(selectedReserva.data_evento).toLocaleDateString(
+                        "pt-BR"
+                      )}
                     </p>
                   </div>
+
                   <div>
-                    <p className="text-sm text-muted-foreground">HorÃƒÂ¡rio</p>
+                    <p className="text-sm text-muted-foreground">Horário</p>
                     <p className="font-medium">{selectedReserva.hora_inicio}</p>
                   </div>
+
                   <div>
                     <p className="text-sm text-muted-foreground">Local</p>
-                    <p className="font-medium">{selectedReserva.local_evento}</p>
+                    <p className="font-medium">
+                      {selectedReserva.local_evento}
+                    </p>
                   </div>
+
                   <div>
-                    <p className="text-sm text-muted-foreground">NÃ‚Âº CrianÃƒÂ§as</p>
-                    <p className="font-medium">{selectedReserva.numero_criancas}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Nº de Crianças
+                    </p>
+                    <p className="font-medium">
+                      {selectedReserva.numero_criancas}
+                    </p>
                   </div>
                 </div>
               </div>
+
               <div className="border-t pt-4">
-                <h4 className="font-semibold mb-3">Pacote e ServiÃƒÂ§os</h4>
+                <h4 className="font-semibold mb-3">Pacote e Serviços</h4>
                 <div className="space-y-2">
                   <div>
                     <p className="text-sm text-muted-foreground">Pacote</p>
-                    <p className="font-medium capitalize">{selectedReserva.pacote_tipo}</p>
+                    <p className="font-medium capitalize">
+                      {selectedReserva.pacote_tipo}
+                    </p>
                   </div>
+
                   {selectedReserva.oficinas_selecionadas?.length > 0 && (
                     <div>
                       <p className="text-sm text-muted-foreground">Oficinas</p>
@@ -381,6 +522,7 @@ const AdminReservas = () => {
                       </p>
                     </div>
                   )}
+
                   {selectedReserva.extras_selecionados?.length > 0 && (
                     <div>
                       <p className="text-sm text-muted-foreground">Extras</p>
@@ -391,20 +533,27 @@ const AdminReservas = () => {
                   )}
                 </div>
               </div>
+
               <div className="border-t pt-4">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold">Total</span>
                   <span className="text-2xl font-bold text-primary">
-                    R$ {Number(selectedReserva.total_calculado).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                    R${" "}
+                    {Number(selectedReserva.total_calculado).toLocaleString(
+                      "pt-BR",
+                      { minimumFractionDigits: 2 }
+                    )}
                   </span>
                 </div>
               </div>
+
               {selectedReserva.endereco && (
                 <div className="border-t pt-4">
-                  <h4 className="font-semibold mb-3">EndereÃƒÂ§o</h4>
+                  <h4 className="font-semibold mb-3">Endereço</h4>
                   <p className="text-sm">
                     {selectedReserva.endereco}
-                    {selectedReserva.complemento && `, ${selectedReserva.complemento}`}
+                    {selectedReserva.complemento &&
+                      `, ${selectedReserva.complemento}`}
                     <br />
                     {selectedReserva.cidade} - CEP: {selectedReserva.cep}
                   </p>
@@ -414,18 +563,24 @@ const AdminReservas = () => {
           )}
         </DialogContent>
       </Dialog>
+
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar exclusÃƒÂ£o</AlertDialogTitle>
+            <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir esta reserva? Esta aÃƒÂ§ÃƒÂ£o nÃƒÂ£o pode ser desfeita.
+              Tem certeza que deseja excluir esta reserva? Esta ação não pode ser
+              desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
+
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={deleteReserva} className="bg-destructive text-destructive-foreground">
+            <AlertDialogAction
+              onClick={deleteReserva}
+              className="bg-destructive text-destructive-foreground"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -434,4 +589,5 @@ const AdminReservas = () => {
     </AdminLayout>
   );
 };
+
 export default AdminReservas;
