@@ -37,8 +37,9 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-6">
+        {/* Removi a classe 'h-20' daqui para deixar a altura flexível conforme o logo */}
         <div className="flex items-center justify-between">
-          {/* Logo - Tamanho Aumentado */}
+          {/* Logo - Tamanho DOBRADO */}
           <Link
             to="/"
             className="flex items-center transition-transform hover:scale-105 duration-300"
@@ -46,8 +47,8 @@ const Header = () => {
             <img
               src={logoVivalegria}
               alt="Vivalegria Recreação Infantil"
-              // Ajustei aqui: h-16 (mobile) e h-20 (desktop) para ficar bem maior
-              className="h-16 md:h-20 w-auto max-w-[220px] md:max-w-[280px] object-contain"
+              // AQUI ESTÁ A MUDANÇA: h-24 (96px mobile) e h-32 (128px desktop)
+              className="h-24 md:h-32 w-auto max-w-[280px] md:max-w-[400px] object-contain"
             />
           </Link>
 
