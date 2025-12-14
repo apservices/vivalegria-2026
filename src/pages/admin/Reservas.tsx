@@ -87,23 +87,51 @@ const AdminReservas = () => {
   };
   const updateStatus = async (id: string, newStatus: string) => {
     try {
-      const { error } = await supabase
-        .from("reservas")
-        .update({ status: newStatus })
-        .eq("id", id);
-      if (error) throw error;
-      setReservas((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r))
-      );
-      toast({
-        title: "Status atualizado",
-        description: `Reserva marcada como ${newStatus}`,
-      });
+      // Se for aprovação, chamar edge function para gerar contrato
+      if (newStatus === "aprovado") {
+        toast({
+          title: "Gerando contrato...",
+          description: "Aguarde enquanto geramos o contrato e enviamos por e-mail",
+        });
+
+        const { data, error: fnError } = await supabase.functions.invoke("generate-contract", {
+          body: { reserva_id: id },
+        });
+
+        if (fnError) {
+          console.error("Error generating contract:", fnError);
+          toast({
+            title: "Erro ao gerar contrato",
+            description: "O contrato não pôde ser gerado. Tente novamente.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        toast({
+          title: "Contrato enviado!",
+          description: `E-mail com contrato enviado para o cliente (${data?.codigo})`,
+        });
+      } else {
+        const { error } = await supabase
+          .from("reservas")
+          .update({ status: newStatus })
+          .eq("id", id);
+        if (error) throw error;
+        
+        toast({
+          title: "Status atualizado",
+          description: `Reserva marcada como ${newStatus}`,
+        });
+      }
+
+      // Refresh data
+      fetchReservas();
     } catch (error) {
       console.error("Error updating status:", error);
       toast({
         title: "Erro",
-        description: "NÃƒÂ£o foi possÃƒÂ­vel atualizar o status",
+        description: "Não foi possível atualizar o status",
         variant: "destructive",
       });
     }
@@ -132,6 +160,8 @@ const AdminReservas = () => {
     switch (status) {
       case "pendente":
         return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">Pendente</span>;
+      case "aprovado":
+        return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Aprovado</span>;
       case "confirmado":
         return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">Confirmado</span>;
       case "cancelado":
