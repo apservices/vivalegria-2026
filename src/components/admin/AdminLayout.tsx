@@ -1,20 +1,25 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Calendar, Users, LogOut, Home, UserCheck } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, LogOut, Home, UserCheck, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
+
 interface AdminLayoutProps {
   children: ReactNode;
 }
+
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const { signOut } = useAuth();
+
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/reservas", label: "Reservas", icon: Calendar },
     { href: "/admin/casting", label: "Casting", icon: UserCheck },
-    { href: "/admin/candidaturas", label: "Candidaturas", icon: Users }];
+    { href: "/admin/candidaturas", label: "Candidaturas", icon: Users },
+    { href: "/admin/avaliacoes", label: "Avaliações", icon: Star },
+  ];
   const isActive = (href: string) => {
     if (href === "/admin") {
       return location.pathname === "/admin";
