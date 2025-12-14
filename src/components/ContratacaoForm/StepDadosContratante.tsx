@@ -83,7 +83,7 @@ export const StepDadosContratante = ({
       {/* Confirmação de Email */}
       <div className="space-y-2">
         <Label htmlFor="emailConfirmacao" className="text-base font-medium">
-          ConfirmaÃ§Ã£o de E-mail *
+          Confirmação de E-mail *
         </Label>
         <Input
           id="emailConfirmacao"
@@ -138,7 +138,7 @@ export const StepDadosContratante = ({
           type="text"
           value={formData.endereco}
           onChange={(e) => updateFormData({ endereco: e.target.value })}
-          placeholder="Rua, nÃºmero"
+          placeholder="Rua, número"
         />
       </div>
 
