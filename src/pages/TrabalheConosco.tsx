@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import { maskPhone } from "@/utils/inputMasks";
+import { trackFormSubmit } from "@/utils/tracking";
 
 const TrabalheConosco = () => {
   const { toast } = useToast();
@@ -105,6 +106,9 @@ const TrabalheConosco = () => {
       });
 
       if (error) throw error;
+
+      // Track successful form submission (respects consent)
+      trackFormSubmit('candidatura');
 
       toast({
         title: "Candidatura enviada!",

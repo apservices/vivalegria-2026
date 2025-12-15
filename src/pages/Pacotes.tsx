@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { Check, Star, Sparkles, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
 import Mascote from "@/components/Mascote";
+import { trackLPView, trackContratarClick } from "@/utils/tracking";
 
 type PremiumPackage = {
   name: string;
@@ -74,6 +76,15 @@ const premiumPackages: PremiumPackage[] = [
 ];
 
 const Pacotes = () => {
+  // Track landing page view on mount (respects consent)
+  useEffect(() => {
+    trackLPView('pacotes');
+  }, []);
+
+  const handleContratarClick = (packageName: string) => {
+    trackContratarClick(`Contratar ${packageName}`);
+  };
+
   return (
     <>
       <SEO

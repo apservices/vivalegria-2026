@@ -34,15 +34,46 @@
 
     <meta name="theme-color" content="#FF731D" />
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17048161741"></script>
+    <!-- Google Consent Mode v2 - MUST be first before any Google tags -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      
+      // CONSENT MODE v2: Default state is DENIED for LGPD compliance
+      // This ensures NO tracking before explicit user consent
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'denied',
+        'security_storage': 'granted',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'wait_for_update': 500
+      });
+      
+      // Check for existing consent from localStorage
+      (function() {
+        var consent = localStorage.getItem('cookie-consent');
+        if (consent === 'accepted') {
+          gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted',
+            'functionality_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted'
+          });
+        }
+      })();
+    </script>
 
+    <!-- Google Ads Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17048161741"></script>
+    <script>
+      gtag('js', new Date());
       gtag('config', 'AW-17048161741');
     </script>
 
+    <!-- Google Ads Conversion Function (legacy support) -->
     <script>
       function gtag_report_conversion(url) {
         var callback = function () {
@@ -50,7 +81,6 @@
             window.location = url;
           }
         };
-        // Rótulo de conversão inserido abaixo:
         gtag('event', 'conversion', {
             'send_to': 'AW-17048161741/01bMCNXdiNEbEM2bmcE_',
             'event_callback': callback
@@ -59,12 +89,14 @@
       }
     </script>
 
+    <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
 
+    <!-- Meta Pixel with Consent Mode -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -74,8 +106,20 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Initialize with consent check
     fbq('init', 'YOUR_PIXEL_ID');
-    fbq('track', 'PageView');
+    
+    // Only track PageView if consent already granted
+    (function() {
+      var consent = localStorage.getItem('cookie-consent');
+      if (consent === 'accepted') {
+        fbq('consent', 'grant');
+        fbq('track', 'PageView');
+      } else {
+        fbq('consent', 'revoke');
+      }
+    })();
     </script>
   </head>
   <body>
