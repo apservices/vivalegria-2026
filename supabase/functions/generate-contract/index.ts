@@ -1,6 +1,26 @@
+/**
+ * VIVALEGRIA CONTRACT PDF GENERATION
+ * 
+ * Production-ready contract generation system.
+ * VERSION 1.0 - Foundation Layer
+ * 
+ * Features:
+ * - PDF generation using jsPDF (Deno-compatible)
+ * - Duplicate prevention (checks if contract already exists)
+ * - Dynamic field mapping from reservation data
+ * - Company signature placeholder
+ * - Audit trail (generated_at, status)
+ * 
+ * EXTENDING THIS SYSTEM:
+ * - Add digital signature: Use DocuSign/HelloSign API integration
+ * - Add custom templates: Create separate template files
+ * - Add PDF storage: Upload to Supabase Storage bucket
+ * - Add versioning: Track contract versions with revision history
+ */
+
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-import { encode as base64Encode } from "https://deno.land/std@0.190.0/encoding/base64.ts";
+import { jsPDF } from "https://esm.sh/jspdf@2.5.1";
 
 const RESEND_API_URL = "https://api.resend.com/emails";
 
@@ -9,11 +29,57 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// ============================================
+// TYPE DEFINITIONS
+// ============================================
+
 interface ContractRequest {
   reserva_id: string;
+  force_regenerate?: boolean; // Optional: force regeneration even if exists
 }
 
-const formatDate = (dateStr: string): string => {
+interface ReservaData {
+  id: string;
+  codigo: string;
+  nome_completo: string;
+  cpf_cnpj: string;
+  tipo_cadastro: "pf" | "pj";
+  telefone: string;
+  email: string;
+  data_evento: string;
+  hora_inicio: string;
+  local_evento: string;
+  endereco?: string;
+  cidade?: string;
+  cep?: string;
+  pacote_tipo: string;
+  numero_criancas: number;
+  total_calculado: number;
+  oficinas_selecionadas?: string[];
+  extras_selecionados?: string[];
+  contrato_gerado_em?: string;
+  contrato_url?: string;
+  status: string;
+}
+
+interface ContractResult {
+  success: boolean;
+  message: string;
+  codigo?: string;
+  contract_url?: string;
+  generated_at?: string;
+  was_duplicate?: boolean;
+}
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+/**
+ * Format date for display in contract
+ * Example: "sábado, 15 de março de 2025"
+ */
+const formatDateLong = (dateStr: string): string => {
   const date = new Date(dateStr + "T00:00:00");
   return date.toLocaleDateString("pt-BR", {
     weekday: "long",
@@ -23,6 +89,19 @@ const formatDate = (dateStr: string): string => {
   });
 };
 
+/**
+ * Format date short for filename
+ * Example: "15/03/2025"
+ */
+const formatDateShort = (dateStr: string): string => {
+  const date = new Date(dateStr + "T00:00:00");
+  return date.toLocaleDateString("pt-BR");
+};
+
+/**
+ * Format currency in BRL
+ * Example: "R$ 1.590,00"
+ */
 const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -30,185 +109,328 @@ const formatCurrency = (value: number): string => {
   }).format(value);
 };
 
-const generateContractHTML = (reserva: any): string => {
-  const isClassic = reserva.pacote_tipo?.toLowerCase() === "classic" || reserva.pacote_tipo?.toLowerCase() === "clássico";
-  const packageName = isClassic ? "Clássico" : "Select";
-  const duration = "4 horas";
-  const numRecreadores = isClassic ? 1 : 2;
-
-  const oficinas = reserva.oficinas_selecionadas?.length > 0 
-    ? reserva.oficinas_selecionadas.join(", ") 
-    : "Nenhuma oficina adicional";
+/**
+ * Generate safe filename from reservation data
+ */
+const generateFileName = (reserva: ReservaData): string => {
+  const sanitizedName = reserva.nome_completo
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove accents
+    .replace(/[^a-zA-Z0-9]/g, "-")
+    .substring(0, 30);
   
-  const extras = reserva.extras_selecionados?.length > 0 
-    ? reserva.extras_selecionados.join(", ") 
-    : "Nenhum extra selecionado";
-
-  return `
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contrato Vivalegria - ${reserva.codigo}</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #fff; }
-    .container { max-width: 800px; margin: 0 auto; padding: 40px; }
-    .header { text-align: center; border-bottom: 3px solid #FFD836; padding-bottom: 20px; margin-bottom: 30px; }
-    .logo { font-size: 32px; font-weight: bold; color: #FF731D; }
-    .logo span { color: #FFD836; }
-    .contract-code { background: #FF731D; color: white; padding: 8px 20px; border-radius: 20px; display: inline-block; margin-top: 10px; font-weight: bold; }
-    .section { margin-bottom: 25px; }
-    .section-title { background: linear-gradient(90deg, #FFD836, #FF731D); color: white; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; margin-bottom: 15px; }
-    .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-    .info-item { padding: 10px; background: #FFF8E6; border-radius: 5px; }
-    .info-label { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 3px; }
-    .info-value { font-size: 14px; font-weight: 600; color: #333; }
-    .full-width { grid-column: span 2; }
-    .highlight-box { background: linear-gradient(135deg, #FFD836 0%, #FF731D 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 20px 0; }
-    .highlight-box .amount { font-size: 32px; font-weight: bold; }
-    .terms { font-size: 12px; color: #666; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
-    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #FFD836; }
-    .signature-area { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 60px; }
-    .signature-line { border-top: 1px solid #333; padding-top: 10px; text-align: center; font-size: 12px; }
-    @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">Viva<span>legria</span></div>
-      <p style="color: #666; margin-top: 5px;">Recreação e Entretenimento Infantil</p>
-      <div class="contract-code">${reserva.codigo}</div>
-    </div>
-
-    <h2 style="text-align: center; margin-bottom: 30px; color: #FF731D;">CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2>
-
-    <div class="section">
-      <div class="section-title">📋 DADOS DO CONTRATANTE</div>
-      <div class="info-grid">
-        <div class="info-item">
-          <div class="info-label">Nome Completo</div>
-          <div class="info-value">${reserva.nome_completo}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">${reserva.tipo_cadastro === 'pf' ? 'CPF' : 'CNPJ'}</div>
-          <div class="info-value">${reserva.cpf_cnpj}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">Telefone</div>
-          <div class="info-value">${reserva.telefone}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">E-mail</div>
-          <div class="info-value">${reserva.email}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">🎉 DADOS DO EVENTO</div>
-      <div class="info-grid">
-        <div class="info-item">
-          <div class="info-label">Data do Evento</div>
-          <div class="info-value">${formatDate(reserva.data_evento)}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">Horário de Início</div>
-          <div class="info-value">${reserva.hora_inicio}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">Duração</div>
-          <div class="info-value">${duration}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">Quantidade de Crianças</div>
-          <div class="info-value">${reserva.numero_criancas} crianças</div>
-        </div>
-        <div class="info-item full-width">
-          <div class="info-label">Local do Evento</div>
-          <div class="info-value">${reserva.local_evento}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">🎁 SERVIÇOS CONTRATADOS</div>
-      <div class="info-grid">
-        <div class="info-item">
-          <div class="info-label">Pacote</div>
-          <div class="info-value">Pacote ${packageName}</div>
-        </div>
-        <div class="info-item">
-          <div class="info-label">Recreadores</div>
-          <div class="info-value">${numRecreadores} profissional(is)</div>
-        </div>
-        <div class="info-item full-width">
-          <div class="info-label">Oficinas Adicionais</div>
-          <div class="info-value">${oficinas}</div>
-        </div>
-        <div class="info-item full-width">
-          <div class="info-label">Extras</div>
-          <div class="info-value">${extras}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="highlight-box">
-      <p style="font-size: 14px; margin-bottom: 5px;">VALOR TOTAL DO CONTRATO</p>
-      <div class="amount">${formatCurrency(reserva.total_calculado)}</div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">📝 TERMOS E CONDIÇÕES</div>
-      <p style="font-size: 13px; color: #666; text-align: justify;">
-        Este contrato está sujeito aos Termos e Condições disponíveis em: 
-        <strong>https://www.vivalegria.com.br/termos-e-condicoes</strong>
-      </p>
-      <p style="font-size: 13px; color: #666; margin-top: 10px; text-align: justify;">
-        Ao confirmar esta contratação, o CONTRATANTE declara estar ciente e de acordo com todos os termos, 
-        incluindo políticas de cancelamento, reagendamento e condições de pagamento.
-      </p>
-    </div>
-
-    <div class="signature-area">
-      <div>
-        <div class="signature-line">
-          <strong>CONTRATANTE</strong><br>
-          ${reserva.nome_completo}
-        </div>
-      </div>
-      <div>
-        <div class="signature-line">
-          <strong>CONTRATADA</strong><br>
-          Vivalegria Recreação e Entretenimento
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <p style="font-size: 12px; color: #666;">
-        Contrato gerado em ${new Date().toLocaleDateString("pt-BR")} às ${new Date().toLocaleTimeString("pt-BR")}<br>
-        Vivalegria Recreação e Entretenimento Infantil<br>
-        São Paulo, SP | contato@vivalegria.com.br | (11) 96598-2251
-      </p>
-    </div>
-  </div>
-</body>
-</html>
-  `;
+  const eventDate = reserva.data_evento.replace(/-/g, "");
+  return `Vivalegria-Contrato-${reserva.codigo}-${sanitizedName}-${eventDate}.pdf`;
 };
 
-const generateEmailHTML = (reserva: any): string => {
-  const formatDateSimple = (dateStr: string): string => {
-    const date = new Date(dateStr + "T00:00:00");
-    return date.toLocaleDateString("pt-BR");
-  };
+// ============================================
+// CONTRACT DATA MAPPING
+// ============================================
 
-  const oficinas = reserva.oficinas_selecionadas?.length > 0 
-    ? reserva.oficinas_selecionadas.join(", ") 
-    : "Pacote base";
+/**
+ * Map reservation data to contract fields
+ * This centralizes all field mapping for easy maintenance
+ */
+const mapContractData = (reserva: ReservaData) => {
+  const isClassic = reserva.pacote_tipo?.toLowerCase() === "classic" || 
+                    reserva.pacote_tipo?.toLowerCase() === "clássico";
+  
+  return {
+    // Company Info (CONTRATADA)
+    company: {
+      name: "VIVALEGRIA RECREAÇÃO E ENTRETENIMENTO LTDA",
+      cnpj: "XX.XXX.XXX/0001-XX", // PLACEHOLDER: Add real CNPJ
+      address: "São Paulo, SP",
+      phone: "(11) 96598-2251",
+      email: "contato@vivalegria.com.br",
+      website: "www.vivalegria.com.br",
+    },
+    
+    // Client Info (CONTRATANTE)
+    client: {
+      name: reserva.nome_completo,
+      document: reserva.cpf_cnpj,
+      documentType: reserva.tipo_cadastro === "pf" ? "CPF" : "CNPJ",
+      phone: reserva.telefone,
+      email: reserva.email,
+    },
+    
+    // Event Info
+    event: {
+      code: reserva.codigo,
+      date: formatDateLong(reserva.data_evento),
+      dateShort: formatDateShort(reserva.data_evento),
+      time: reserva.hora_inicio,
+      duration: "4 horas",
+      location: reserva.local_evento,
+      address: [reserva.endereco, reserva.cidade, reserva.cep]
+        .filter(Boolean)
+        .join(", ") || reserva.local_evento,
+      childrenCount: reserva.numero_criancas,
+    },
+    
+    // Services
+    services: {
+      packageName: isClassic ? "Clássico" : "Select",
+      packageType: reserva.pacote_tipo,
+      recreatorsCount: isClassic ? 1 : 2,
+      workshops: reserva.oficinas_selecionadas?.length 
+        ? reserva.oficinas_selecionadas.join(", ") 
+        : "Pacote base (sem oficinas adicionais)",
+      extras: reserva.extras_selecionados?.length 
+        ? reserva.extras_selecionados.join(", ") 
+        : "Nenhum extra selecionado",
+    },
+    
+    // Financial
+    financial: {
+      totalValue: formatCurrency(reserva.total_calculado),
+      totalValueRaw: reserva.total_calculado,
+    },
+    
+    // Metadata
+    meta: {
+      generatedAt: new Date().toISOString(),
+      generatedAtFormatted: new Date().toLocaleDateString("pt-BR") + " às " + 
+                           new Date().toLocaleTimeString("pt-BR"),
+      termsUrl: "https://www.vivalegria.com.br/termos-e-condicoes",
+    },
+  };
+};
+
+// ============================================
+// PDF GENERATION
+// ============================================
+
+/**
+ * Generate contract PDF using jsPDF
+ * 
+ * Returns base64-encoded PDF content
+ * 
+ * EXTENDING:
+ * - Add company logo: doc.addImage(logoBase64, "PNG", x, y, w, h)
+ * - Add digital signature: Integrate with signing API
+ * - Add watermark: doc.setGState(new doc.GState({opacity: 0.1}))
+ */
+const generateContractPDF = (reserva: ReservaData): string => {
+  const data = mapContractData(reserva);
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
+  });
+
+  // Colors (Vivalegria brand)
+  const orange = "#FF731D";
+  const yellow = "#FFD836";
+  const darkGray = "#333333";
+  const lightGray = "#666666";
+
+  let y = 20; // Current Y position
+
+  // ---- HEADER ----
+  doc.setFontSize(24);
+  doc.setTextColor(orange);
+  doc.text("VIVALEGRIA", 105, y, { align: "center" });
+  
+  y += 8;
+  doc.setFontSize(10);
+  doc.setTextColor(lightGray);
+  doc.text("Recreação e Entretenimento Infantil", 105, y, { align: "center" });
+
+  // Contract code badge
+  y += 10;
+  doc.setFillColor(orange);
+  doc.roundedRect(75, y - 5, 60, 10, 3, 3, "F");
+  doc.setTextColor("#FFFFFF");
+  doc.setFontSize(11);
+  doc.text(data.event.code, 105, y + 1, { align: "center" });
+
+  // ---- TITLE ----
+  y += 18;
+  doc.setFontSize(16);
+  doc.setTextColor(darkGray);
+  doc.text("CONTRATO DE PRESTAÇÃO DE SERVIÇOS", 105, y, { align: "center" });
+
+  // ---- SECTION: CONTRATANTE ----
+  y += 15;
+  doc.setFillColor(orange);
+  doc.rect(15, y - 5, 180, 8, "F");
+  doc.setTextColor("#FFFFFF");
+  doc.setFontSize(11);
+  doc.text("DADOS DO CONTRATANTE", 20, y);
+
+  y += 12;
+  doc.setTextColor(darkGray);
+  doc.setFontSize(10);
+  
+  const clientInfo = [
+    ["Nome Completo:", data.client.name],
+    [`${data.client.documentType}:`, data.client.document],
+    ["Telefone:", data.client.phone],
+    ["E-mail:", data.client.email],
+  ];
+
+  clientInfo.forEach(([label, value]) => {
+    doc.setFont("helvetica", "bold");
+    doc.text(label, 20, y);
+    doc.setFont("helvetica", "normal");
+    doc.text(value || "-", 55, y);
+    y += 6;
+  });
+
+  // ---- SECTION: EVENTO ----
+  y += 8;
+  doc.setFillColor(orange);
+  doc.rect(15, y - 5, 180, 8, "F");
+  doc.setTextColor("#FFFFFF");
+  doc.setFontSize(11);
+  doc.text("DADOS DO EVENTO", 20, y);
+
+  y += 12;
+  doc.setTextColor(darkGray);
+  doc.setFontSize(10);
+  
+  const eventInfo = [
+    ["Data:", data.event.date],
+    ["Horário:", data.event.time],
+    ["Duração:", data.event.duration],
+    ["Local:", data.event.location],
+    ["Endereço:", data.event.address],
+    ["Crianças:", `${data.event.childrenCount} crianças`],
+  ];
+
+  eventInfo.forEach(([label, value]) => {
+    doc.setFont("helvetica", "bold");
+    doc.text(label, 20, y);
+    doc.setFont("helvetica", "normal");
+    
+    // Handle long text wrapping
+    const maxWidth = 130;
+    const lines = doc.splitTextToSize(value || "-", maxWidth);
+    doc.text(lines, 55, y);
+    y += 6 * lines.length;
+  });
+
+  // ---- SECTION: SERVIÇOS ----
+  y += 8;
+  doc.setFillColor(orange);
+  doc.rect(15, y - 5, 180, 8, "F");
+  doc.setTextColor("#FFFFFF");
+  doc.setFontSize(11);
+  doc.text("SERVIÇOS CONTRATADOS", 20, y);
+
+  y += 12;
+  doc.setTextColor(darkGray);
+  doc.setFontSize(10);
+  
+  const servicesInfo = [
+    ["Pacote:", `Pacote ${data.services.packageName}`],
+    ["Recreadores:", `${data.services.recreatorsCount} profissional(is)`],
+    ["Oficinas:", data.services.workshops],
+    ["Extras:", data.services.extras],
+  ];
+
+  servicesInfo.forEach(([label, value]) => {
+    doc.setFont("helvetica", "bold");
+    doc.text(label, 20, y);
+    doc.setFont("helvetica", "normal");
+    
+    const maxWidth = 130;
+    const lines = doc.splitTextToSize(value || "-", maxWidth);
+    doc.text(lines, 55, y);
+    y += 6 * lines.length;
+  });
+
+  // ---- TOTAL VALUE BOX ----
+  y += 10;
+  doc.setFillColor(yellow);
+  doc.roundedRect(15, y - 2, 180, 20, 3, 3, "F");
+  doc.setTextColor(darkGray);
+  doc.setFontSize(12);
+  doc.text("VALOR TOTAL DO CONTRATO", 105, y + 5, { align: "center" });
+  doc.setFontSize(18);
+  doc.setFont("helvetica", "bold");
+  doc.text(data.financial.totalValue, 105, y + 14, { align: "center" });
+
+  // ---- LEGAL CLAUSES ----
+  y += 30;
+  doc.setFillColor(orange);
+  doc.rect(15, y - 5, 180, 8, "F");
+  doc.setTextColor("#FFFFFF");
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.text("TERMOS E CONDIÇÕES", 20, y);
+
+  y += 12;
+  doc.setTextColor(lightGray);
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "normal");
+  
+  // PLACEHOLDER: Legal clauses - expand as needed
+  const legalClauses = [
+    "Este contrato está sujeito aos Termos e Condições Gerais disponíveis em:",
+    data.meta.termsUrl,
+    "",
+    "Ao confirmar esta contratação, o CONTRATANTE declara estar ciente e de acordo com:",
+    "• Políticas de cancelamento e reagendamento",
+    "• Condições de pagamento (50% na reserva, 50% até 7 dias antes)",
+    "• Responsabilidades das partes conforme termos completos",
+    "",
+    "A CONTRATADA compromete-se a prestar os serviços com profissionalismo,",
+    "segurança e qualidade, conforme especificações deste contrato.",
+  ];
+
+  legalClauses.forEach((line) => {
+    doc.text(line, 20, y);
+    y += 5;
+  });
+
+  // ---- SIGNATURES ----
+  y += 15;
+  
+  // Left: Client signature
+  doc.setDrawColor(darkGray);
+  doc.line(20, y + 15, 90, y + 15);
+  doc.setFontSize(9);
+  doc.setTextColor(darkGray);
+  doc.text("CONTRATANTE", 55, y + 20, { align: "center" });
+  doc.setFontSize(8);
+  doc.text(data.client.name, 55, y + 25, { align: "center" });
+
+  // Right: Company signature (PLACEHOLDER for image)
+  doc.line(110, y + 15, 190, y + 15);
+  doc.setFontSize(9);
+  doc.text("CONTRATADA", 150, y + 20, { align: "center" });
+  doc.setFontSize(8);
+  doc.text("Vivalegria Recreação e Entretenimento", 150, y + 25, { align: "center" });
+  
+  // EXTENDING: Add signature image
+  // const signatureBase64 = "data:image/png;base64,..."
+  // doc.addImage(signatureBase64, "PNG", 130, y, 40, 15);
+
+  // ---- FOOTER ----
+  doc.setFontSize(8);
+  doc.setTextColor(lightGray);
+  doc.text(
+    `Contrato gerado em ${data.meta.generatedAtFormatted}`,
+    105, 280, { align: "center" }
+  );
+  doc.text(
+    `${data.company.name} | ${data.company.phone} | ${data.company.email}`,
+    105, 285, { align: "center" }
+  );
+
+  // Return base64-encoded PDF
+  return doc.output("datauristring").split(",")[1];
+};
+
+// ============================================
+// EMAIL HTML TEMPLATE
+// ============================================
+
+const generateEmailHTML = (reserva: ReservaData): string => {
+  const data = mapContractData(reserva);
 
   return `
 <!DOCTYPE html>
@@ -239,7 +461,7 @@ const generateEmailHTML = (reserva: any): string => {
     <div style="padding: 0 30px 30px;">
       <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 25px;">
         <h3 style="margin: 0 0 5px; font-size: 20px;">✅ Evento Confirmado!</h3>
-        <p style="margin: 0; opacity: 0.9;">Código: <strong>${reserva.codigo}</strong></p>
+        <p style="margin: 0; opacity: 0.9;">Código: <strong>${data.event.code}</strong></p>
       </div>
 
       <!-- Event Details -->
@@ -252,7 +474,7 @@ const generateEmailHTML = (reserva: any): string => {
               <strong style="color: #666;">👤 Contratante:</strong>
             </td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">
-              ${reserva.nome_completo}
+              ${data.client.name}
             </td>
           </tr>
           <tr>
@@ -260,7 +482,7 @@ const generateEmailHTML = (reserva: any): string => {
               <strong style="color: #666;">📅 Data:</strong>
             </td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">
-              ${formatDateSimple(reserva.data_evento)}
+              ${data.event.dateShort}
             </td>
           </tr>
           <tr>
@@ -268,7 +490,7 @@ const generateEmailHTML = (reserva: any): string => {
               <strong style="color: #666;">⏰ Horário:</strong>
             </td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">
-              ${reserva.hora_inicio}
+              ${data.event.time}
             </td>
           </tr>
           <tr>
@@ -276,7 +498,15 @@ const generateEmailHTML = (reserva: any): string => {
               <strong style="color: #666;">📦 Pacote:</strong>
             </td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">
-              ${reserva.pacote_tipo}
+              Pacote ${data.services.packageName}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
+              <strong style="color: #666;">💰 Valor:</strong>
+            </td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">
+              <strong>${data.financial.totalValue}</strong>
             </td>
           </tr>
           <tr>
@@ -284,7 +514,7 @@ const generateEmailHTML = (reserva: any): string => {
               <strong style="color: #666;">🎨 Serviços:</strong>
             </td>
             <td style="padding: 8px 0; text-align: right;">
-              ${oficinas}
+              ${data.services.workshops}
             </td>
           </tr>
         </table>
@@ -293,7 +523,7 @@ const generateEmailHTML = (reserva: any): string => {
       <!-- Contract Notice -->
       <div style="background: #e3f2fd; border-left: 4px solid #2196F3; padding: 15px 20px; border-radius: 0 10px 10px 0; margin-bottom: 25px;">
         <p style="margin: 0; color: #1565C0;">
-          📎 <strong>Anexo:</strong> Seu contrato completo está em anexo para sua segurança e tranquilidade.
+          📎 <strong>Anexo:</strong> Seu contrato em PDF está anexo a este e-mail.
         </p>
       </div>
 
@@ -316,8 +546,8 @@ const generateEmailHTML = (reserva: any): string => {
     <!-- Footer -->
     <div style="padding: 20px; text-align: center; background: #222;">
       <p style="color: #888; font-size: 12px; margin: 0;">
-        Vivalegria Recreação e Entretenimento<br>
-        São Paulo, SP | contato@vivalegria.com.br
+        ${data.company.name}<br>
+        ${data.company.address} | ${data.company.email}
       </p>
     </div>
   </div>
@@ -326,8 +556,12 @@ const generateEmailHTML = (reserva: any): string => {
   `;
 };
 
+// ============================================
+// MAIN HANDLER
+// ============================================
+
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS
+  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -342,16 +576,15 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    const { reserva_id }: ContractRequest = await req.json();
+    const { reserva_id, force_regenerate = false }: ContractRequest = await req.json();
 
     if (!reserva_id) {
       throw new Error("reserva_id is required");
     }
 
-    console.log("Generating contract for reserva:", reserva_id);
+    console.log("[Contract] Starting generation for reserva:", reserva_id);
 
-    // Fetch reserva
+    // ---- FETCH RESERVATION ----
     const { data: reserva, error: fetchError } = await supabase
       .from("reservas")
       .select("*")
@@ -362,31 +595,39 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Reserva not found: " + fetchError?.message);
     }
 
-    console.log("Reserva found:", reserva.codigo);
+    console.log("[Contract] Reserva found:", reserva.codigo);
 
-    // Generate contract HTML
-    const contractHTML = generateContractHTML(reserva);
+    // ---- DUPLICATE PREVENTION ----
+    // Check if contract already exists and skip if not forcing regeneration
+    if (reserva.contrato_gerado_em && !force_regenerate) {
+      console.log("[Contract] Contract already exists, skipping generation");
+      return new Response(
+        JSON.stringify({
+          success: true,
+          message: "Contrato já existe para esta reserva",
+          codigo: reserva.codigo,
+          contract_url: reserva.contrato_url,
+          generated_at: reserva.contrato_gerado_em,
+          was_duplicate: true,
+        } as ContractResult),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // ---- GENERATE PDF ----
+    console.log("[Contract] Generating PDF...");
+    const pdfBase64 = generateContractPDF(reserva as ReservaData);
+    const fileName = generateFileName(reserva as ReservaData);
+
+    console.log("[Contract] PDF generated, filename:", fileName);
+
+    // ---- SEND EMAIL ----
+    console.log("[Contract] Sending email to:", reserva.email);
     
-    // Generate email HTML
-    const emailHTML = generateEmailHTML(reserva);
-
-    // Format filename
-    const sanitizedName = reserva.nome_completo
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9]/g, "-")
-      .substring(0, 30);
-    
-    const eventDate = reserva.data_evento.replace(/-/g, "");
-    const eventTime = reserva.hora_inicio.replace(/:/g, "");
-    const fileName = `Vivalegria-Contrato-${reserva.codigo}-${sanitizedName}-${eventDate}-${eventTime}.html`;
-
-    console.log("Sending email to:", reserva.email);
-
-    // Send email with Resend API directly
-    const encoder = new TextEncoder();
-    const contractBytes = encoder.encode(contractHTML);
-    const contractBase64 = base64Encode(contractBytes.buffer);
+    const emailHTML = generateEmailHTML(reserva as ReservaData);
     
     const emailPayload = {
       from: "Vivalegria <contato@vivalegria.com.br>",
@@ -396,7 +637,7 @@ const handler = async (req: Request): Promise<Response> => {
       attachments: [
         {
           filename: fileName,
-          content: contractBase64,
+          content: pdfBase64,
         },
       ],
     };
@@ -413,44 +654,57 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await emailRes.json();
     
     if (!emailRes.ok) {
-      console.error("Email send error:", emailResponse);
+      console.error("[Contract] Email send error:", emailResponse);
       throw new Error(`Failed to send email: ${emailResponse.message || "Unknown error"}`);
     }
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("[Contract] Email sent successfully:", emailResponse);
 
-    // Update reserva with contract info
+    // ---- UPDATE RESERVATION ----
     const now = new Date().toISOString();
+    const contractUrl = `contract://${reserva.codigo}/${fileName}`;
+    
     const { error: updateError } = await supabase
       .from("reservas")
       .update({
         status: "aprovado",
-        contrato_url: `contract://${reserva.codigo}`,
+        contrato_url: contractUrl,
         contrato_gerado_em: now,
         email_enviado_em: now,
       })
       .eq("id", reserva_id);
 
     if (updateError) {
-      console.error("Error updating reserva:", updateError);
+      console.error("[Contract] Error updating reserva:", updateError);
+      // Don't throw - email was sent successfully
     }
+
+    console.log("[Contract] Generation complete for:", reserva.codigo);
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Contrato gerado e enviado com sucesso",
+        message: "Contrato PDF gerado e enviado com sucesso",
         codigo: reserva.codigo,
-        email_sent_to: reserva.email,
-      }),
+        contract_url: contractUrl,
+        generated_at: now,
+        was_duplicate: false,
+      } as ContractResult),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
-  } catch (error: any) {
-    console.error("Error in generate-contract:", error);
+
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("[Contract] Error:", errorMessage);
+    
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ 
+        success: false, 
+        error: errorMessage,
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
