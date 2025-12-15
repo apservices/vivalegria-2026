@@ -6,8 +6,8 @@ export default function FestaInfantil() {
   return (
     <>
       <HeadSEO
-        title="Festa Infantil em S„o Paulo | RecreaÁ„o Infantil Profissional"
-        description="Festa infantil com recreaÁ„o profissional em S„o Paulo. SeguranÁa, alegria e divers„o para crianÁas. Fale com a Vivalegria."
+        title="Festa Infantil em S√£o Paulo | Recrea√ß√£o Infantil Profissional"
+        description="Festa infantil com recrea√ß√£o profissional em S√£o Paulo. Seguran√ßa, alegria e divers√£o para crian√ßas. Fale com a Vivalegria."
         path="/festa-infantil"
       />
 
@@ -19,12 +19,15 @@ export default function FestaInfantil() {
           </h1>
 
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            RecreaÁ„o infantil com profissionais treinados, atividades criativas
-            e total seguranÁa para a sua tranquilidade.
+            Recrea√ß√£o infantil com profissionais treinados, atividades criativas
+            e total seguran√ßa para a sua tranquilidade.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 px-8 py-6 text-lg">
+            <Button
+              size="lg"
+              className="bg-orange-500 hover:bg-orange-600 px-8 py-6 text-lg"
+            >
               <Calculator className="mr-2 h-5 w-5" />
               Simular minha festa
             </Button>
@@ -34,7 +37,11 @@ export default function FestaInfantil() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button size="lg" variant="outline" className="px-8 py-6 text-lg">
+              <Button
+                size="lg"
+                variant="outline"
+                className="px-8 py-6 text-lg"
+              >
                 <Sparkles className="mr-2 h-5 w-5" />
                 Falar no WhatsApp
               </Button>
@@ -44,7 +51,7 @@ export default function FestaInfantil() {
           <div className="flex justify-center gap-10 mt-12">
             <div className="flex items-center gap-2">
               <Star className="text-yellow-500 fill-yellow-500" />
-              <span className="font-semibold">5.0 (180+ avaliaÁıes)</span>
+              <span className="font-semibold">5.0 (180+ avalia√ß√µes)</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -54,30 +61,36 @@ export default function FestaInfantil() {
           </div>
         </section>
 
-        {/* BENEFÕCIOS */}
+        {/* BENEF√çCIOS */}
         <section className="py-20 px-4 bg-white">
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center">
             <div>
               <ShieldCheck className="mx-auto h-12 w-12 text-orange-500 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">SeguranÁa Total</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Seguran√ßa Total
+              </h3>
               <p className="text-gray-600">
-                Equipe treinada, processos claros e cuidado com cada crianÁa.
+                Equipe treinada, processos claros e cuidado com cada crian√ßa.
               </p>
             </div>
 
             <div>
               <Sparkles className="mx-auto h-12 w-12 text-orange-500 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Divers„o Garantida</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Divers√£o Garantida
+              </h3>
               <p className="text-gray-600">
-                Atividades l˙dicas, oficinas criativas e muita interaÁ„o.
+                Atividades l√∫dicas, oficinas criativas e muita intera√ß√£o.
               </p>
             </div>
 
             <div>
               <Heart className="mx-auto h-12 w-12 text-orange-500 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Tranquilidade para os pais</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Tranquilidade para os pais
+              </h3>
               <p className="text-gray-600">
-                VocÍ aproveita a festa enquanto cuidamos de tudo.
+                Voc√™ aproveita a festa enquanto cuidamos de tudo.
               </p>
             </div>
           </div>
@@ -86,7 +99,7 @@ export default function FestaInfantil() {
         {/* CTA FINAL */}
         <section className="bg-orange-500 py-20 px-4 text-center text-white">
           <h2 className="text-4xl font-bold mb-6">
-            Pronto para uma festa inesquecÌvel?
+            Pronto para uma festa inesquec√≠vel?
           </h2>
 
           <a
@@ -94,7 +107,10 @@ export default function FestaInfantil() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-100 px-10 py-6 text-lg">
+            <Button
+              size="lg"
+              className="bg-white text-orange-600 hover:bg-orange-100 px-10 py-6 text-lg"
+            >
               Falar com a Vivalegria no WhatsApp
             </Button>
           </a>
