@@ -1,4 +1,5 @@
-import HeadSEO from "@/components/HeadSEO";
+// ADICIONE AS CHAVES {} AQUI NO IMPORT
+import { HeadSEO } from "@/components/HeadSEO"; 
 import { Button } from "@/components/ui/button";
 import { Calculator, Heart, ShieldCheck, Sparkles, Star } from "lucide-react";
 
