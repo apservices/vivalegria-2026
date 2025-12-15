@@ -5,16 +5,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Users, Phone, Mail, CheckCircle2 } from "lucide-react";
 
-// O FIX PRINCIPAL ESTÁ AQUI: export default function
+// --- AQUI ESTÁ A CORREÇÃO IMPORTANTE: "export default" ---
 export default function OrcamentoLP() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica de envio ou redirecionamento para WhatsApp
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const nome = formData.get("nome");
     
-    // Exemplo: Redirecionar para WhatsApp com os dados
     const text = `Olá! Me chamo ${nome} e gostaria de um orçamento para minha festa.`;
     window.open(`https://wa.me/5511965982251?text=${encodeURIComponent(text)}`, '_blank');
   };
@@ -30,14 +28,13 @@ export default function OrcamentoLP() {
       <main className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-12 px-4">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           
-          {/* Coluna da Esquerda: Texto e Benefícios */}
           <div className="space-y-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold text-orange-600 mb-4">
                 Vamos planejar a festa perfeita?
               </h1>
               <p className="text-lg text-gray-700">
-                Preencha o formulário e receba uma proposta personalizada com as melhores opções de recreação para o perfil do seu evento.
+                Preencha o formulário e receba uma proposta personalizada com as melhores opções de recreação.
               </p>
             </div>
 
@@ -52,16 +49,11 @@ export default function OrcamentoLP() {
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle2 className="text-green-500 h-6 w-6" />
-                <span className="text-gray-700 font-medium">Atividades adequadas para cada idade</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-green-500 h-6 w-6" />
                 <span className="text-gray-700 font-medium">Pontualidade e compromisso</span>
               </div>
             </div>
           </div>
 
-          {/* Coluna da Direita: Formulário */}
           <Card className="shadow-lg border-t-4 border-t-orange-500">
             <CardHeader className="text-center pb-2">
               <CardTitle className="text-2xl text-gray-800">Solicitar Proposta</CardTitle>
