@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import React, { useState, ChangeEvent } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -12,7 +12,7 @@ import {
   Calendar,
   MapPin,
   DollarSign,
-  UserCheck
+  UserCheck,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -71,13 +71,12 @@ interface Reserva {
   casting?: EventoCasting[];
 }
 
-const Casting = () => {
+const Casting: React.FC = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [profissionalSearch, setProfissionalSearch] = useState("");
-  const [selectedReserva, setSelectedReserva] = useState<string | null>(null);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
 
   // Fetch reservas with casting
@@ -113,10 +112,12 @@ const Casting = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("evento_casting")
-        .select(`
+        .select(
+          `
           *,
           profissional:profissionais(*)
-        `);
+        `
+        );
       if (error) throw error;
       return data as EventoCasting[];
     },
@@ -129,7 +130,7 @@ const Casting = () => {
       profissionalId,
       nomeManual,
       cache,
-      funcao
+      funcao,
     }: {
       reservaId: string;
       profissionalId?: string;
@@ -141,7 +142,7 @@ const Casting = () => {
         reserva_id: reservaId,
         profissional_id: profissionalId || null,
         profissional_nome_manual: nomeManual || null,
-        cache: cache || null,
+        cache: cache ?? null,
         funcao: funcao || "Recreador",
       });
       if (error) throw error;
@@ -151,7 +152,10 @@ const Casting = () => {
       toast({ title: "Profissional adicionado ao evento!" });
     },
     onError: () => {
-      toast({ title: "Erro ao adicionar profissional", variant: "destructive" });
+      toast({
+        title: "Erro ao adicionar profissional",
+        variant: "destructive",
+      });
     },
   });
 
@@ -172,7 +176,13 @@ const Casting = () => {
 
   // Toggle confirmation mutation
   const toggleConfirmMutation = useMutation({
-    mutationFn: async ({ id, confirmado }: { id: string; confirmado: boolean }) => {
+    mutationFn: async ({
+      id,
+      confirmado,
+    }: {
+      id: string;
+      confirmado: boolean;
+    }) => {
       const { error } = await supabase
         .from("evento_casting")
         .update({ confirmado })
@@ -199,35 +209,50 @@ const Casting = () => {
   });
 
   // Import CSV function
-  const handleImportCSV = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportCSV = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
-        const text = e.target?.result as string;
-        const lines = text.split('\n');
-        const headers = lines[0].split(',');
-        const profissionaisToInsert = [];
+        const text = (e.target?.result || "") as string;
+        const lines = text.split("\n");
+        const headers = lines[0].split(",");
+        const profissionaisToInsert: {
+          nome_completo: string;
+          apelido: string | null;
+          telefone: string | null;
+          email: string | null;
+          registro: string | null;
+        }[] = [];
 
         for (let i = 1; i < lines.length; i++) {
-          const values = lines[i].split(',');
+          const values = lines[i].split(",");
           if (values.length < 5) continue;
 
-          const nomeIndex = headers.findIndex(h => h.includes('Nome completo'));
-          const apelidoIndex = headers.findIndex(h => h.includes('Apelido'));
-          const telefoneIndex = headers.findIndex(h => h.includes('Telefone'));
-          const emailIndex = headers.findIndex(h => h.includes('mail'));
-          const registroIndex = headers.findIndex(h => h.includes('Registro'));
+          const nomeIndex = headers.findIndex((h) =>
+            h.includes("Nome completo")
+          );
+          const apelidoIndex = headers.findIndex((h) => h.includes("Apelido"));
+          const telefoneIndex = headers.findIndex((h) =>
+            h.includes("Telefone")
+          );
+          const emailIndex = headers.findIndex((h) => h.includes("mail"));
+          const registroIndex = headers.findIndex((h) =>
+            h.includes("Registro")
+          );
 
           if (nomeIndex >= 0 && values[nomeIndex]?.trim()) {
             profissionaisToInsert.push({
-              nome_completo: values[nomeIndex]?.trim().replace(/"/g, ''),
-              apelido: values[apelidoIndex]?.trim().replace(/"/g, '') || null,
-              telefone: values[telefoneIndex]?.trim().replace(/"/g, '') || null,
-              email: values[emailIndex]?.trim().replace(/"/g, '') || null,
-              registro: values[registroIndex]?.trim().replace(/"/g, '') || null,
+              nome_completo: values[nomeIndex]?.trim().replace(/"/g, ""),
+              apelido:
+                values[apelidoIndex]?.trim().replace(/"/g, "") || null,
+              telefone:
+                values[telefoneIndex]?.trim().replace(/"/g, "") || null,
+              email: values[emailIndex]?.trim().replace(/"/g, "") || null,
+              registro:
+                values[registroIndex]?.trim().replace(/"/g, "") || null,
             });
           }
         }
@@ -236,18 +261,20 @@ const Casting = () => {
           const { error } = await supabase
             .from("profissionais")
             .upsert(profissionaisToInsert, {
-              onConflict: 'registro',
-              ignoreDuplicates: true
+              onConflict: "registro",
+              ignoreDuplicates: true,
             });
 
           if (error) throw error;
 
           queryClient.invalidateQueries({ queryKey: ["profissionais"] });
-          toast({ title: `${profissionaisToInsert.length} profissionais importados!` });
+          toast({
+            title: `${profissionaisToInsert.length} profissionais importados!`,
+          });
           setIsImportDialogOpen(false);
         }
       } catch (error) {
-        console.error('Import error:', error);
+        console.error("Import error:", error);
         toast({ title: "Erro ao importar CSV", variant: "destructive" });
       }
     };
@@ -256,36 +283,45 @@ const Casting = () => {
 
   // Get required professionals count based on package
   const getRequiredProfessionals = (pacoteTipo: string) => {
-    if (pacoteTipo.toLowerCase().includes('select')) return 2;
+    if (pacoteTipo.toLowerCase().includes("select")) return 2;
     return 1;
   };
 
   // Filter reservas
-  const filteredReservas = reservas?.filter(r => {
-    const matchesSearch = r.nome_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredReservas = reservas?.filter((r) => {
+    const matchesSearch =
+      r.nome_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       r.local_evento.toLowerCase().includes(searchTerm.toLowerCase());
 
     if (statusFilter === "all") return matchesSearch;
 
-    const casting = allCasting?.filter(c => c.reserva_id === r.id) || [];
+    const casting = allCasting?.filter((c) => c.reserva_id === r.id) || [];
     const required = getRequiredProfessionals(r.pacote_tipo);
     const isCastingComplete = casting.length >= required;
 
     if (statusFilter === "complete") return matchesSearch && isCastingComplete;
-    if (statusFilter === "incomplete") return matchesSearch && !isCastingComplete;
+    if (statusFilter === "incomplete")
+      return matchesSearch && !isCastingComplete;
 
     return matchesSearch;
   });
 
   // Filter profissionais for autocomplete
-  const filteredProfissionais = profissionais?.filter(p =>
-    p.nome_completo.toLowerCase().includes(profissionalSearch.toLowerCase()) ||
-    p.apelido?.toLowerCase().includes(profissionalSearch.toLowerCase())
-  ).slice(0, 10);
+  const filteredProfissionais =
+    profissionais
+      ?.filter(
+        (p) =>
+          p.nome_completo
+            .toLowerCase()
+            .includes(profissionalSearch.toLowerCase()) ||
+          p.apelido?.toLowerCase().includes(profissionalSearch.toLowerCase())
+      )
+      .slice(0, 10) || [];
 
   return (
     <AdminLayout>
       <div className="space-y-6">
+        {/* Header + Import */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold">Casting</h1>
@@ -308,13 +344,10 @@ const Casting = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
-                <Input
-                  type="file"
-                  accept=".csv"
-                  onChange={handleImportCSV}
-                />
+                <Input type="file" accept=".csv" onChange={handleImportCSV} />
                 <p className="text-sm text-muted-foreground">
-                  O CSV deve conter as colunas: Nome completo, Apelido, Telefone, Email, Registro
+                  O CSV deve conter as colunas: Nome completo, Apelido,
+                  Telefone, Email, Registro
                 </p>
               </div>
             </DialogContent>
@@ -329,11 +362,17 @@ const Casting = () => {
                 <Calendar className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Eventos Pendentes</p>
+                <p className="text-sm text-muted-foreground">
+                  Eventos Pendentes
+                </p>
                 <p className="text-2xl font-bold">
-                  {reservas?.filter(r => {
-                    const casting = allCasting?.filter(c => c.reserva_id === r.id) || [];
-                    return casting.length < getRequiredProfessionals(r.pacote_tipo);
+                  {reservas?.filter((r) => {
+                    const casting =
+                      allCasting?.filter((c) => c.reserva_id === r.id) || [];
+                    return (
+                      casting.length <
+                      getRequiredProfessionals(r.pacote_tipo)
+                    );
                   }).length || 0}
                 </p>
               </div>
@@ -345,8 +384,12 @@ const Casting = () => {
                 <UserCheck className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Profissionais Ativos</p>
-                <p className="text-2xl font-bold">{profissionais?.length || 0}</p>
+                <p className="text-sm text-muted-foreground">
+                  Profissionais Ativos
+                </p>
+                <p className="text-2xl font-bold">
+                  {profissionais?.length || 0}
+                </p>
               </div>
             </div>
           </Card>
@@ -356,9 +399,17 @@ const Casting = () => {
                 <DollarSign className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Cachês (Mês)</p>
+                <p className="text-sm text-muted-foreground">
+                  Total Cachês (Mês)
+                </p>
                 <p className="text-2xl font-bold">
-                  R$ {(allCasting?.reduce((acc, c) => acc + (c.cache || 0), 0) || 0).toLocaleString('pt-BR')}
+                  R${" "}
+                  {(
+                    allCasting?.reduce(
+                      (acc, c) => acc + (c.cache || 0),
+                      0
+                    ) || 0
+                  ).toLocaleString("pt-BR")}
                 </p>
               </div>
             </div>
@@ -399,28 +450,50 @@ const Casting = () => {
             </Card>
           ) : (
             filteredReservas?.map((reserva) => {
-              const eventCasting = allCasting?.filter(c => c.reserva_id === reserva.id) || [];
-              const requiredProfessionals = getRequiredProfessionals(reserva.pacote_tipo);
-              const isCastingComplete = eventCasting.length >= requiredProfessionals;
-              
-              // Aqui estava o problema: precisamos RETORNAR o JSX do card
-              const totalCache = eventCasting.reduce((acc, curr) => acc + (curr.cache || 0), 0);
-              
+              const eventCasting =
+                allCasting?.filter((c) => c.reserva_id === reserva.id) || [];
+              const requiredProfessionals = getRequiredProfessionals(
+                reserva.pacote_tipo
+              );
+              const isCastingComplete =
+                eventCasting.length >= requiredProfessionals;
+              const totalCache = eventCasting.reduce(
+                (acc, curr) => acc + (curr.cache || 0),
+                0
+              );
+
               return (
                 <Card key={reserva.id} className="p-4">
                   <div className="flex flex-col md:flex-row justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-bold text-lg">{reserva.nome_completo}</h3>
-                        <Badge variant={isCastingComplete ? "default" : "secondary"} className={!isCastingComplete ? "bg-yellow-500 text-white" : ""}>
-                          {eventCasting.length}/{requiredProfessionals} Profissionais
+                        <h3 className="font-bold text-lg">
+                          {reserva.nome_completo}
+                        </h3>
+                        <Badge
+                          variant={
+                            isCastingComplete ? "default" : "secondary"
+                          }
+                          className={
+                            !isCastingComplete
+                              ? "bg-yellow-500 text-white"
+                              : ""
+                          }
+                        >
+                          {eventCasting.length}/{requiredProfessionals}{" "}
+                          Profissionais
                         </Badge>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground mb-4">
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
-                          {format(new Date(reserva.data_evento), "dd 'de' MMMM, yyyy", { locale: ptBR })} - {reserva.hora_inicio}
+                          {format(
+                            new Date(reserva.data_evento),
+                            "dd 'de' MMMM, yyyy",
+                            { locale: ptBR }
+                          )}{" "}
+                          - {reserva.hora_inicio}
                         </div>
                         <div className="flex items-center gap-2">
                           <MapPin className="w-4 h-4" />
@@ -428,20 +501,26 @@ const Casting = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <Users className="w-4 h-4" />
-                          {reserva.numero_criancas} crianças ({reserva.pacote_tipo})
+                          {reserva.numero_criancas} crianças (
+                          {reserva.pacote_tipo})
                         </div>
                         <div className="flex items-center gap-2">
                           <DollarSign className="w-4 h-4" />
-                          Cachê Total: R$ {totalCache.toLocaleString('pt-BR')}
+                          Cachê Total: R${" "}
+                          {totalCache.toLocaleString("pt-BR")}
                         </div>
                       </div>
 
                       <div className="space-y-2">
                         {eventCasting.map((casting) => (
-                          <div key={casting.id} className="flex items-center justify-between bg-muted/30 p-2 rounded-md">
+                          <div
+                            key={casting.id}
+                            className="flex items-center justify-between bg-muted/30 p-2 rounded-md"
+                          >
                             <div className="flex items-center gap-2">
                               <span className="font-medium">
-                                {casting.profissional?.nome_completo || casting.profissional_nome_manual}
+                                {casting.profissional?.nome_completo ||
+                                  casting.profissional_nome_manual}
                               </span>
                               <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
                                 {casting.funcao}
@@ -449,124 +528,37 @@ const Casting = () => {
                             </div>
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-1">
-                                <span className="text-sm text-muted-foreground">R$</span>
-                                <Input 
+                                <span className="text-sm text-muted-foreground">
+                                  R$
+                                </span>
+                                <Input
                                   className="w-20 h-8 text-right"
                                   type="number"
                                   defaultValue={casting.cache || 0}
-                                  onBlur={(e) => updateCacheMutation.mutate({ 
-                                    id: casting.id, 
-                                    cache: Number(e.target.value) 
-                                  })}
+                                  onBlur={(e) =>
+                                    updateCacheMutation.mutate({
+                                      id: casting.id,
+                                      cache: Number(e.target.value),
+                                    })
+                                  }
                                 />
                               </div>
                               <Button
                                 size="icon"
-                                variant={casting.confirmado ? "default" : "outline"}
-                                className={casting.confirmado ? "bg-green-600 hover:bg-green-700" : ""}
-                                onClick={() => toggleConfirmMutation.mutate({ 
-                                  id: casting.id, 
-                                  confirmado: !casting.confirmado 
-                                })}
+                                variant={
+                                  casting.confirmado ? "default" : "outline"
+                                }
+                                className={
+                                  casting.confirmado
+                                    ? "bg-green-600 hover:bg-green-700"
+                                    : ""
+                                }
+                                onClick={() =>
+                                  toggleConfirmMutation.mutate({
+                                    id: casting.id,
+                                    confirmado: !casting.confirmado,
+                                  })
+                                }
                               >
                                 <Check className="w-4 h-4" />
                               </Button>
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                className="text-destructive hover:text-destructive/90"
-                                onClick={() => removeCastingMutation.mutate(casting.id)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col justify-center">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" className="w-full md:w-auto" onClick={() => setSelectedReserva(reserva.id)}>
-                            <Plus className="w-4 h-4 mr-2" />
-                            Adicionar Profissional
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Adicionar ao Casting</DialogTitle>
-                            <DialogDescription>
-                              Selecione um profissional para o evento de {reserva.nome_completo}
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="space-y-4 pt-4">
-                            <div className="space-y-2">
-                              <label className="text-sm font-medium">Buscar Profissional</label>
-                              <Input
-                                placeholder="Digite o nome..."
-                                value={profissionalSearch}
-                                onChange={(e) => setProfissionalSearch(e.target.value)}
-                              />
-                            </div>
-                            <div className="max-h-[200px] overflow-y-auto space-y-2">
-                              {filteredProfissionais?.map((prof) => (
-                                <div
-                                  key={prof.id}
-                                  className="flex items-center justify-between p-2 hover:bg-muted rounded-md cursor-pointer border"
-                                  onClick={() => {
-                                    addCastingMutation.mutate({
-                                      reservaId: reserva.id,
-                                      profissionalId: prof.id,
-                                      funcao: "Recreador",
-                                      cache: 150 // Valor padrão
-                                    });
-                                    setProfissionalSearch("");
-                                  }}
-                                >
-                                  <div>
-                                    <p className="font-medium">{prof.nome_completo}</p>
-                                    <p className="text-xs text-muted-foreground">{prof.apelido}</p>
-                                  </div>
-                                  <Plus className="w-4 h-4 text-muted-foreground" />
-                                </div>
-                              ))}
-                            </div>
-                            <div className="border-t pt-4">
-                              <p className="text-sm text-muted-foreground mb-2">Ou adicione manualmente:</p>
-                              <div className="flex gap-2">
-                                <Input placeholder="Nome do profissional externo" id="manual-name" />
-                                <Button 
-                                  onClick={() => {
-                                    const input = document.getElementById("manual-name") as HTMLInputElement;
-                                    if (input.value) {
-                                      addCastingMutation.mutate({
-                                        reservaId: reserva.id,
-                                        nomeManual: input.value,
-                                        funcao: "Recreador",
-                                        cache: 150
-                                      });
-                                      input.value = "";
-                                    }
-                                  }}
-                                >
-                                  Adicionar
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })
-          )}
-        </div>
-      </div>
-    </AdminLayout>
-  );
-};
-
-export default Casting;
