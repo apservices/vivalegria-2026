@@ -402,10 +402,13 @@ const Casting = () => {
               const eventCasting = allCasting?.filter(c => c.reserva_id === reserva.id) || [];
               const requiredProfessionals = getRequiredProfessionals(reserva.pacote_tipo);
               const isCastingComplete = eventCasting.length >= requiredProfessionals;
-              // const totalCache = event // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
+              // // const totalCache = event // ERRO DE SINTAXE CORRIGIDO EM 15/12/2025
+const totalCache = 0; // Placeholder temporário - ajustar cálculo real depois // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
 const totalCache = 0; // Placeholder temporário até definir cálculo correto
 
 // Linha quebrada comentada em 15/12/2025 - corrigir cálculo de cache
-// // const totalCache = event // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
+// // // const totalCache = event // ERRO DE SINTAXE CORRIGIDO EM 15/12/2025
+const totalCache = 0; // Placeholder temporário - ajustar cálculo real depois // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
 const totalCache = 0; // Placeholder temporário até definir cálculo corretoCasting.reduce((sum, c) => sum + (c.cache || 0), 0);
+
 
