@@ -403,3 +403,6 @@ const Casting = () => {
               const requiredProfessionals = getRequiredProfessionals(reserva.pacote_tipo);
               const isCastingComplete = eventCasting.length >= requiredProfessionals;
               const totalCache = event
+
+// Linha quebrada comentada em 15/12/2025 - corrigir cálculo de cache
+// const totalCache = eventCasting.reduce((sum, c) => sum + (c.cache || 0), 0);
