@@ -238,7 +238,7 @@ const Corporativo = () => {
               </p>
 
               <Button asChild size="lg" className="rounded-full px-10 text-lg h-14 shadow-premium">
-                <a href="https://wa.me/5511992049001" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/5511965982251" target="_blank" rel="noopener noreferrer">
                   Solicitar proposta corporativa
                   <ArrowRight className="ml-2" />
                 </a>
