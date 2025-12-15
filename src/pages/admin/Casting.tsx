@@ -1,4 +1,4 @@
-import { useState } from "react";
+ï»¿import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -290,7 +290,7 @@ const Casting = () => {
           <div>
             <h1 className="text-3xl font-bold">Casting</h1>
             <p className="text-muted-foreground">
-              Gerencie a alocaÃ§Ã£o de profissionais para cada evento
+              Gerencie a alocaÃƒÂ§ÃƒÂ£o de profissionais para cada evento
             </p>
           </div>
           <Dialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
@@ -356,7 +356,7 @@ const Casting = () => {
                 <DollarSign className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total CachÃªs (MÃªs)</p>
+                <p className="text-sm text-muted-foreground">Total CachÃƒÂªs (MÃƒÂªs)</p>
                 <p className="text-2xl font-bold">
                   R$ {(allCasting?.reduce((acc, c) => acc + (c.cache || 0), 0) || 0).toLocaleString('pt-BR')}
                 </p>
@@ -403,13 +403,10 @@ const Casting = () => {
               const requiredProfessionals = getRequiredProfessionals(reserva.pacote_tipo);
               const isCastingComplete = eventCasting.length >= requiredProfessionals;
               // // const totalCache = event // ERRO DE SINTAXE CORRIGIDO EM 15/12/2025
-const totalCache = 0; // Placeholder temporário - ajustar cálculo real depois // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
-const totalCache = 0; // Placeholder temporário até definir cálculo correto
+const totalCache = 0; // Placeholder temporÃ¡rio - ajustar cÃ¡lculo real depois // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
 
-// Linha quebrada comentada em 15/12/2025 - corrigir cálculo de cache
+// Linha quebrada comentada em 15/12/2025 - corrigir cÃ¡lculo de cache
 // // // const totalCache = event // ERRO DE SINTAXE CORRIGIDO EM 15/12/2025
-const totalCache = 0; // Placeholder temporário - ajustar cálculo real depois // LINHA QUEBRADA - CORRIGIDA EM 15/12/2025
-const totalCache = 0; // Placeholder temporário - ajustar cálculo real depois
 
 
 
