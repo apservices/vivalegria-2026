@@ -12,6 +12,7 @@ import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { trackFormSubmit } from "@/utils/tracking";
 
 const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
 
@@ -195,6 +196,9 @@ export const ContratacaoForm = () => {
 
       const { error } = await supabase.from("reservas").insert(reservaData);
       if (error) throw error;
+
+      // Track successful form submission (respects consent)
+      trackFormSubmit('contratar');
 
       toast.success("Reserva enviada com sucesso! Entraremos em contato em breve.");
 

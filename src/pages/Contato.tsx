@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
+import { trackFormSubmit, trackWhatsAppClick } from "@/utils/tracking";
 
 const Contato = () => {
   const { toast } = useToast();
@@ -35,6 +36,11 @@ const Contato = () => {
     // Send to WhatsApp
     const message = `*Novo Contato - Vivalegria*\n\n*Nome:* ${formData.name}\n*Email:* ${formData.email}\n*Telefone:* ${formData.phone}\n*Tipo de Evento:* ${formData.eventType}\n*Mensagem:* ${formData.message}`;
     const whatsappUrl = `https://wa.me/5511965982251?text=${encodeURIComponent(message)}`;
+    
+    // Track form submission and WhatsApp click (respects consent)
+    trackFormSubmit('contato');
+    trackWhatsAppClick('form');
+    
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
     toast({

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
+import { trackContratarClick } from "@/utils/tracking";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -80,6 +81,7 @@ const Header = () => {
               asChild
               size="lg"
               className="rounded-full shadow-soft hover:shadow-hover"
+              onClick={() => trackContratarClick('Contratar Agora - Header')}
             >
               <Link to="/contratar">Contratar Agora</Link>
             </Button>
@@ -114,7 +116,12 @@ const Header = () => {
             ))}
 
             <div className="px-4 pt-4 pb-2">
-              <Button asChild size="lg" className="w-full rounded-full">
+              <Button 
+                asChild 
+                size="lg" 
+                className="w-full rounded-full"
+                onClick={() => trackContratarClick('Contratar Agora - Mobile Menu')}
+              >
                 <Link to="/contratar">Contratar Agora</Link>
               </Button>
             </div>

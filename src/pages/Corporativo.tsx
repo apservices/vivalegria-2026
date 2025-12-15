@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { Building2, Hotel, School, Store, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
+import { trackLPView } from "@/utils/tracking";
 
 const Corporativo = () => {
+  // Track landing page view on mount (respects consent)
+  useEffect(() => {
+    trackLPView('corporativo');
+  }, []);
   const formats = [
     {
       icon: Store,

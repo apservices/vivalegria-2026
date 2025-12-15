@@ -1,19 +1,19 @@
 import { MessageCircle } from "lucide-react";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { useLocation } from "react-router-dom";
+import { trackWhatsAppClick } from "@/utils/tracking";
 
-// Adicionamos isso para o TypeScript reconhecer a função que está no index.html
-declare global {
-  interface Window {
-    gtag_report_conversion?: (url?: string) => boolean;
-  }
-}
-
+/**
+ * Floating WhatsApp CTA Button
+ * 
+ * Tracking:
+ * - Fires "whatsapp_click" event with source "floating_button"
+ * - Only tracks after user consent (handled in trackWhatsAppClick)
+ */
 const WhatsAppButton = () => {
   const location = useLocation();
   const isContratarPage = location.pathname === "/contratar";
 
-  // Use configurator context if on contratar page, otherwise default link
   const { getWhatsAppMessage } = useConfigurator();
 
   const href = isContratarPage 
@@ -21,12 +21,8 @@ const WhatsAppButton = () => {
     : "https://wa.me/5511965982251";
 
   const handleClick = () => {
-    // Verifica se a função de conversão existe e dispara o evento.
-    // Passamos 'undefined' para que o script do Google APENAS registre a conversão
-    // e não tente redirecionar a página, deixando o target="_blank" funcionar.
-    if (typeof window.gtag_report_conversion === 'function') {
-      window.gtag_report_conversion(undefined);
-    }
+    // Track WhatsApp click - respects consent automatically
+    trackWhatsAppClick('floating_button');
   };
 
   return (
