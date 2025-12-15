@@ -1,60 +1,103 @@
-import { HeadSEO } from "../../components/HeadSEO";
+import HeadSEO from "../../components/HeadSEO";
 import { Button } from "@/components/ui/button";
-import { Calculator, Heart, Sparkles, Star } from "lucide-react";
+import { Calculator, Heart, ShieldCheck, Sparkles, Star } from "lucide-react";
 
 export default function FestaInfantil() {
   return (
     <>
       <HeadSEO
-        title="Festa Infantil em São Paulo | Vivalegria"
-        description="Recreação infantil profissional para festas inesquecíveis. Mais de 500 famílias atendidas em São Paulo."
-        canonical="https://www.vivalegria.com.br/festa-infantil"
+        title="Festa Infantil em São Paulo | Recreação Infantil Profissional"
+        description="Festa infantil com recreação profissional em São Paulo. Segurança, alegria e diversão para crianças. Fale com a Vivalegria."
+        path="/festa-infantil"
       />
 
       <main className="min-h-screen">
-        {/* Hero Emocional */}
-        <section className="relative bg-gradient-to-b from-orange-50 to-white py-20 px-4">
-          <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-orange-600 mb-6">
-              A festa que seu filho vai lembrar para sempre
-            </h1>
+        {/* HERO */}
+        <section className="bg-gradient-to-b from-orange-50 to-white py-20 px-4 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-orange-600 mb-6">
+            A festa que seu filho vai lembrar para sempre
+          </h1>
 
-            <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-4xl mx-auto">
-              Recreação infantil com carinho, segurança e profissionalismo.
-              Mais de 500 famílias felizes em São Paulo.
-            </p>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+            Recreação infantil com profissionais treinados, atividades criativas
+            e total segurança para a sua tranquilidade.
+          </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-orange-500 hover:bg-orange-600 text-lg px-8 py-6"
-              >
-                <Calculator className="mr-2 h-5 w-5" />
-                Simular minha festa
-              </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" className="bg-orange-500 hover:bg-orange-600 px-8 py-6 text-lg">
+              <Calculator className="mr-2 h-5 w-5" />
+              Simular minha festa
+            </Button>
 
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg px-8 py-6"
-              >
+            <a
+              href="https://wa.me/5511965982251"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button size="lg" variant="outline" className="px-8 py-6 text-lg">
                 <Sparkles className="mr-2 h-5 w-5" />
-                Ver pacotes
+                Falar no WhatsApp
               </Button>
+            </a>
+          </div>
+
+          <div className="flex justify-center gap-10 mt-12">
+            <div className="flex items-center gap-2">
+              <Star className="text-yellow-500 fill-yellow-500" />
+              <span className="font-semibold">5.0 (180+ avaliações)</span>
             </div>
 
-            <div className="flex items-center justify-center gap-8 mt-12">
-              <div className="flex items-center gap-2">
-                <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
-                <span className="font-semibold">5.0 (187 avaliações)</span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Heart className="h-6 w-6 text-red-500 fill-red-500" />
-                <span className="font-semibold">+500 festas realizadas</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <Heart className="text-red-500 fill-red-500" />
+              <span className="font-semibold">+500 festas realizadas</span>
             </div>
           </div>
+        </section>
+
+        {/* BENEFÍCIOS */}
+        <section className="py-20 px-4 bg-white">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center">
+            <div>
+              <ShieldCheck className="mx-auto h-12 w-12 text-orange-500 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Segurança Total</h3>
+              <p className="text-gray-600">
+                Equipe treinada, processos claros e cuidado com cada criança.
+              </p>
+            </div>
+
+            <div>
+              <Sparkles className="mx-auto h-12 w-12 text-orange-500 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Diversão Garantida</h3>
+              <p className="text-gray-600">
+                Atividades lúdicas, oficinas criativas e muita interação.
+              </p>
+            </div>
+
+            <div>
+              <Heart className="mx-auto h-12 w-12 text-orange-500 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Tranquilidade para os pais</h3>
+              <p className="text-gray-600">
+                Você aproveita a festa enquanto cuidamos de tudo.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA FINAL */}
+        <section className="bg-orange-500 py-20 px-4 text-center text-white">
+          <h2 className="text-4xl font-bold mb-6">
+            Pronto para uma festa inesquecível?
+          </h2>
+
+          <a
+            href="https://wa.me/5511965982251"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-100 px-10 py-6 text-lg">
+              Falar com a Vivalegria no WhatsApp
+            </Button>
+          </a>
         </section>
       </main>
     </>
