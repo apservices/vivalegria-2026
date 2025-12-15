@@ -1,29 +1,28 @@
-// ADICIONE AS CHAVES {} AQUI NO IMPORT
-import { HeadSEO } from "@/components/HeadSEO"; 
+import { HeadSEO } from "@/components/HeadSEO";
 import { Button } from "@/components/ui/button";
 import { Calculator, Heart, ShieldCheck, Sparkles, Star } from "lucide-react";
 
 export default function FestaInfantil() {
-  const whatsappLink = "https://wa.me/5511965982251?text=Ol√°,%20gostaria%20de%20saber%20mais%20sobre%20recrea√ß√£o%20para%20festa%20infantil!";
+  const whatsappLink = "https://wa.me/5511965982251?text=Ol·,%20gostaria%20de%20saber%20mais%20sobre%20recreaÁ„o%20para%20festa%20infantil!";
 
   return (
     <>
       <HeadSEO
-        title="Festa Infantil em S√£o Paulo | Recrea√ß√£o Infantil Profissional"
-        description="Festa infantil com recrea√ß√£o profissional em S√£o Paulo. Seguran√ßa, alegria e divers√£o para crian√ßas. Fale com a Vivalegria."
+        title="Festa Infantil em S„o Paulo | RecreaÁ„o Infantil Profissional"
+        description="Festa infantil com recreaÁ„o profissional em S„o Paulo. SeguranÁa, alegria e divers„o para crianÁas. Fale com a Vivalegria."
         path="/festa-infantil"
       />
 
       <main className="min-h-screen">
-        {/* HERO */}
-        <section className="bg-gradient-to-b from-orange-50 to-white py-20 px-4 text-center">
+        {/* HERO - CORRE«√O AQUI: Alterado de py-20 para pt-40 pb-20 */}
+        <section className="bg-gradient-to-b from-orange-50 to-white pt-40 pb-20 px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-orange-600 mb-6">
             A festa que seu filho vai lembrar para sempre
           </h1>
 
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Recrea√ß√£o infantil com profissionais treinados, atividades criativas
-            e total seguran√ßa para a sua tranquilidade.
+            RecreaÁ„o infantil com profissionais treinados, atividades criativas
+            e total seguranÁa para a sua tranquilidade.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -60,7 +59,7 @@ export default function FestaInfantil() {
           <div className="flex flex-col sm:flex-row justify-center gap-6 sm:gap-10 mt-12 text-gray-600">
             <div className="flex items-center justify-center gap-2">
               <Star className="text-yellow-500 fill-yellow-500" />
-              <span className="font-semibold">5.0 (180+ avalia√ß√µes)</span>
+              <span className="font-semibold">5.0 (180+ avaliaÁıes)</span>
             </div>
 
             <div className="flex items-center justify-center gap-2">
@@ -70,26 +69,26 @@ export default function FestaInfantil() {
           </div>
         </section>
 
-        {/* BENEF√çCIOS */}
+        {/* BENEFÕCIOS */}
         <section className="py-20 px-4 bg-white">
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center">
             <div className="p-6 rounded-lg hover:bg-orange-50 transition-colors">
               <ShieldCheck className="mx-auto h-12 w-12 text-orange-500 mb-4" />
               <h3 className="text-xl font-semibold mb-2">
-                Seguran√ßa Total
+                SeguranÁa Total
               </h3>
               <p className="text-gray-600">
-                Equipe treinada, processos claros e cuidado com cada crian√ßa.
+                Equipe treinada, processos claros e cuidado com cada crianÁa.
               </p>
             </div>
 
             <div className="p-6 rounded-lg hover:bg-orange-50 transition-colors">
               <Sparkles className="mx-auto h-12 w-12 text-orange-500 mb-4" />
               <h3 className="text-xl font-semibold mb-2">
-                Divers√£o Garantida
+                Divers„o Garantida
               </h3>
               <p className="text-gray-600">
-                Atividades l√∫dicas, oficinas criativas e muita intera√ß√£o.
+                Atividades l˙dicas, oficinas criativas e muita interaÁ„o.
               </p>
             </div>
 
@@ -99,7 +98,7 @@ export default function FestaInfantil() {
                 Tranquilidade para os pais
               </h3>
               <p className="text-gray-600">
-                Voc√™ aproveita a festa enquanto cuidamos de tudo.
+                VocÍ aproveita a festa enquanto cuidamos de tudo.
               </p>
             </div>
           </div>
@@ -108,7 +107,7 @@ export default function FestaInfantil() {
         {/* CTA FINAL */}
         <section className="bg-orange-500 py-20 px-4 text-center text-white">
           <h2 className="text-4xl font-bold mb-6">
-            Pronto para uma festa inesquec√≠vel?
+            Pronto para uma festa inesquecÌvel?
           </h2>
 
           <a
