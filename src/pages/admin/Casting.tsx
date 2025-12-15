@@ -290,7 +290,7 @@ const Casting = () => {
           <div>
             <h1 className="text-3xl font-bold">Casting</h1>
             <p className="text-muted-foreground">
-              Gerencie a alocaÃ§Ã£o de profissionais para cada evento
+              Gerencie a alocação de profissionais para cada evento
             </p>
           </div>
           <Dialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
@@ -356,7 +356,7 @@ const Casting = () => {
                 <DollarSign className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total CachÃªs (MÃªs)</p>
+                <p className="text-sm text-muted-foreground">Total Cachês (Mês)</p>
                 <p className="text-2xl font-bold">
                   R$ {(allCasting?.reduce((acc, c) => acc + (c.cache || 0), 0) || 0).toLocaleString('pt-BR')}
                 </p>
@@ -402,10 +402,171 @@ const Casting = () => {
               const eventCasting = allCasting?.filter(c => c.reserva_id === reserva.id) || [];
               const requiredProfessionals = getRequiredProfessionals(reserva.pacote_tipo);
               const isCastingComplete = eventCasting.length >= requiredProfessionals;
-              // // const totalCache = event // ERRO DE SINTAXE CORRIGIDO EM 15/12/2025
-const totalCache = 0; // TODO: implementar cálculo real do cache
-// // // const totalCache = event // ERRO DE SINTAXE CORRIGIDO EM 15/12/2025
+              
+              // Aqui estava o problema: precisamos RETORNAR o JSX do card
+              const totalCache = eventCasting.reduce((acc, curr) => acc + (curr.cache || 0), 0);
+              
+              return (
+                <Card key={reserva.id} className="p-4">
+                  <div className="flex flex-col md:flex-row justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-bold text-lg">{reserva.nome_completo}</h3>
+                        <Badge variant={isCastingComplete ? "default" : "secondary"} className={!isCastingComplete ? "bg-yellow-500 text-white" : ""}>
+                          {eventCasting.length}/{requiredProfessionals} Profissionais
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          {format(new Date(reserva.data_evento), "dd 'de' MMMM, yyyy", { locale: ptBR })} - {reserva.hora_inicio}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4" />
+                          {reserva.local_evento}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4" />
+                          {reserva.numero_criancas} crianças ({reserva.pacote_tipo})
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <DollarSign className="w-4 h-4" />
+                          Cachê Total: R$ {totalCache.toLocaleString('pt-BR')}
+                        </div>
+                      </div>
 
+                      <div className="space-y-2">
+                        {eventCasting.map((casting) => (
+                          <div key={casting.id} className="flex items-center justify-between bg-muted/30 p-2 rounded-md">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">
+                                {casting.profissional?.nome_completo || casting.profissional_nome_manual}
+                              </span>
+                              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                                {casting.funcao}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1">
+                                <span className="text-sm text-muted-foreground">R$</span>
+                                <Input 
+                                  className="w-20 h-8 text-right"
+                                  type="number"
+                                  defaultValue={casting.cache || 0}
+                                  onBlur={(e) => updateCacheMutation.mutate({ 
+                                    id: casting.id, 
+                                    cache: Number(e.target.value) 
+                                  })}
+                                />
+                              </div>
+                              <Button
+                                size="icon"
+                                variant={casting.confirmado ? "default" : "outline"}
+                                className={casting.confirmado ? "bg-green-600 hover:bg-green-700" : ""}
+                                onClick={() => toggleConfirmMutation.mutate({ 
+                                  id: casting.id, 
+                                  confirmado: !casting.confirmado 
+                                })}
+                              >
+                                <Check className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="text-destructive hover:text-destructive/90"
+                                onClick={() => removeCastingMutation.mutate(casting.id)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
+                    <div className="flex flex-col justify-center">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="w-full md:w-auto" onClick={() => setSelectedReserva(reserva.id)}>
+                            <Plus className="w-4 h-4 mr-2" />
+                            Adicionar Profissional
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Adicionar ao Casting</DialogTitle>
+                            <DialogDescription>
+                              Selecione um profissional para o evento de {reserva.nome_completo}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4 pt-4">
+                            <div className="space-y-2">
+                              <label className="text-sm font-medium">Buscar Profissional</label>
+                              <Input
+                                placeholder="Digite o nome..."
+                                value={profissionalSearch}
+                                onChange={(e) => setProfissionalSearch(e.target.value)}
+                              />
+                            </div>
+                            <div className="max-h-[200px] overflow-y-auto space-y-2">
+                              {filteredProfissionais?.map((prof) => (
+                                <div
+                                  key={prof.id}
+                                  className="flex items-center justify-between p-2 hover:bg-muted rounded-md cursor-pointer border"
+                                  onClick={() => {
+                                    addCastingMutation.mutate({
+                                      reservaId: reserva.id,
+                                      profissionalId: prof.id,
+                                      funcao: "Recreador",
+                                      cache: 150 // Valor padrão
+                                    });
+                                    setProfissionalSearch("");
+                                  }}
+                                >
+                                  <div>
+                                    <p className="font-medium">{prof.nome_completo}</p>
+                                    <p className="text-xs text-muted-foreground">{prof.apelido}</p>
+                                  </div>
+                                  <Plus className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                              ))}
+                            </div>
+                            <div className="border-t pt-4">
+                              <p className="text-sm text-muted-foreground mb-2">Ou adicione manualmente:</p>
+                              <div className="flex gap-2">
+                                <Input placeholder="Nome do profissional externo" id="manual-name" />
+                                <Button 
+                                  onClick={() => {
+                                    const input = document.getElementById("manual-name") as HTMLInputElement;
+                                    if (input.value) {
+                                      addCastingMutation.mutate({
+                                        reservaId: reserva.id,
+                                        nomeManual: input.value,
+                                        funcao: "Recreador",
+                                        cache: 150
+                                      });
+                                      input.value = "";
+                                    }
+                                  }}
+                                >
+                                  Adicionar
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })
+          )}
+        </div>
+      </div>
+    </AdminLayout>
+  );
+};
 
-
+export default Casting;
