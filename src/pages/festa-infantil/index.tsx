@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Calculator, Heart, ShieldCheck, Sparkles, Star } from "lucide-react";
 
 export default function FestaInfantil() {
-  // Corrigi também o texto do link do WhatsApp para ficar legível
-  const whatsappLink = "https://wa.me/5511965982251?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20recreação%20para%20festa%20infantil!";
+  // CORREÇÃO TÉCNICA: Usando encodeURIComponent para garantir que o link funcione 100%
+  const phoneNumber = "5511965982251";
+  const message = "Olá, gostaria de saber mais sobre recreação para festa infantil!";
+  const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
     <>
