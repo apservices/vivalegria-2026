@@ -79,7 +79,7 @@ const Casting: React.FC = () => {
   const [profissionalSearch, setProfissionalSearch] = useState("");
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
 
-  // Fetch reservas with casting
+  // Fetch reservas com casting
   const { data: reservas, isLoading: loadingReservas } = useQuery({
     queryKey: ["reservas-casting"],
     queryFn: async () => {
@@ -106,7 +106,7 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Fetch casting for each reserva
+  // Fetch casting
   const { data: allCasting } = useQuery({
     queryKey: ["evento-casting"],
     queryFn: async () => {
@@ -123,7 +123,7 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Add casting mutation
+  // Add casting
   const addCastingMutation = useMutation({
     mutationFn: async ({
       reservaId,
@@ -159,7 +159,7 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Remove casting mutation
+  // Remove casting
   const removeCastingMutation = useMutation({
     mutationFn: async (castingId: string) => {
       const { error } = await supabase
@@ -174,7 +174,7 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Toggle confirmation mutation
+  // Toggle confirmação
   const toggleConfirmMutation = useMutation({
     mutationFn: async ({
       id,
@@ -194,7 +194,7 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Update cache mutation
+  // Update cachê
   const updateCacheMutation = useMutation({
     mutationFn: async ({ id, cache }: { id: string; cache: number }) => {
       const { error } = await supabase
@@ -208,7 +208,7 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Import CSV function
+  // Import CSV
   const handleImportCSV = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -281,13 +281,13 @@ const Casting: React.FC = () => {
     reader.readAsText(file);
   };
 
-  // Get required professionals count based on package
+  // Quantidade necessária de profissionais por pacote
   const getRequiredProfessionals = (pacoteTipo: string) => {
     if (pacoteTipo.toLowerCase().includes("select")) return 2;
     return 1;
   };
 
-  // Filter reservas
+  // Filtrar reservas
   const filteredReservas = reservas?.filter((r) => {
     const matchesSearch =
       r.nome_completo.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -306,7 +306,7 @@ const Casting: React.FC = () => {
     return matchesSearch;
   });
 
-  // Filter profissionais for autocomplete
+  // Filtrar profissionais para autocomplete
   const filteredProfissionais =
     profissionais
       ?.filter(
@@ -403,7 +403,7 @@ const Casting: React.FC = () => {
                   Total Cachês (Mês)
                 </p>
                 <p className="text-2xl font-bold">
-                  R${" "}
+                  R{"$ "}
                   {(
                     allCasting?.reduce(
                       (acc, c) => acc + (c.cache || 0),
@@ -416,7 +416,7 @@ const Casting: React.FC = () => {
           </Card>
         </div>
 
-        {/* Filters */}
+        {/* Filtros */}
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -439,7 +439,7 @@ const Casting: React.FC = () => {
           </Select>
         </div>
 
-        {/* Events List */}
+        {/* Lista de eventos */}
         <div className="space-y-4">
           {loadingReservas ? (
             <div className="text-center py-8">Carregando...</div>
@@ -506,7 +506,7 @@ const Casting: React.FC = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <DollarSign className="w-4 h-4" />
-                          Cachê Total: R${" "}
+                          Cachê Total: R{"$ "}
                           {totalCache.toLocaleString("pt-BR")}
                         </div>
                       </div>
@@ -529,7 +529,7 @@ const Casting: React.FC = () => {
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-1">
                                 <span className="text-sm text-muted-foreground">
-                                  R$
+                                  R{"$"}
                                 </span>
                                 <Input
                                   className="w-20 h-8 text-right"
@@ -562,3 +562,123 @@ const Casting: React.FC = () => {
                               >
                                 <Check className="w-4 h-4" />
                               </Button>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="text-destructive hover:text-destructive/90"
+                                onClick={() =>
+                                  removeCastingMutation.mutate(casting.id)
+                                }
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col justify-center">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="w-full md:w-auto"
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Adicionar Profissional
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Adicionar ao Casting</DialogTitle>
+                            <DialogDescription>
+                              Selecione um profissional para o evento de{" "}
+                              {reserva.nome_completo}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4 pt-4">
+                            <div className="space-y-2">
+                              <label className="text-sm font-medium">
+                                Buscar Profissional
+                              </label>
+                              <Input
+                                placeholder="Digite o nome..."
+                                value={profissionalSearch}
+                                onChange={(e) =>
+                                  setProfissionalSearch(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="max-h-[200px] overflow-y-auto space-y-2">
+                              {filteredProfissionais.map((prof) => (
+                                <div
+                                  key={prof.id}
+                                  className="flex items-center justify-between p-2 hover:bg-muted rounded-md cursor-pointer border"
+                                  onClick={() => {
+                                    addCastingMutation.mutate({
+                                      reservaId: reserva.id,
+                                      profissionalId: prof.id,
+                                      funcao: "Recreador",
+                                      cache: 150,
+                                    });
+                                    setProfissionalSearch("");
+                                  }}
+                                >
+                                  <div>
+                                    <p className="font-medium">
+                                      {prof.nome_completo}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      {prof.apelido}
+                                    </p>
+                                  </div>
+                                  <Plus className="w-4 h-4 text-muted-foreground" />
+                                </div>
+                              ))}
+                            </div>
+                            <div className="border-t pt-4">
+                              <p className="text-sm text-muted-foreground mb-2">
+                                Ou adicione manualmente:
+                              </p>
+                              <div className="flex gap-2">
+                                <Input
+                                  placeholder="Nome do profissional externo"
+                                  id="manual-name"
+                                />
+                                <Button
+                                  onClick={() => {
+                                    const input = document.getElementById(
+                                      "manual-name"
+                                    ) as HTMLInputElement | null;
+                                    if (input && input.value) {
+                                      addCastingMutation.mutate({
+                                        reservaId: reserva.id,
+                                        nomeManual: input.value,
+                                        funcao: "Recreador",
+                                        cache: 150,
+                                      });
+                                      input.value = "";
+                                    }
+                                  }}
+                                >
+                                  Adicionar
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })
+          )}
+        </div>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default Casting;
