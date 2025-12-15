@@ -14,12 +14,14 @@ export default function FestaInfantil() {
       />
 
       <main className="min-h-screen">
-        {/* HERO - CORREÇÃO AQUI: Alterado de py-20 para pt-40 pb-20 */}
+        {/* HERO */}
+        {/* CORREÇÃO DE LAYOUT: pt-40 para o menu não ficar por cima */}
         <section className="bg-gradient-to-b from-orange-50 to-white pt-40 pb-20 px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-orange-600 mb-6">
             A festa que seu filho vai lembrar para sempre
           </h1>
 
+          {/* CORREÇÃO DE TEXTO: Caracteres acentuados corrigidos */}
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
             Recreação infantil com profissionais treinados, atividades criativas
             e total segurança para a sua tranquilidade.
