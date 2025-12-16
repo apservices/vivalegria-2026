@@ -1,42 +1,27 @@
 // ConfigComunicacoes.tsx — VERSÃO FINAL LIMPA E ESTÁVEL
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/use-auth";
-import { useToast } from "@/hooks/use-toast";
-import AdminLayout from "@/components/admin/AdminLayout";
+import { Mail, FileText, Save, Eye, Info } from "lucide-react";
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-import { Mail, FileText, Save, Eye, Info } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 /* =======================
    Interfaces
 ======================= */
 interface EmailTemplate {
   id: string;
+  tipo: string;
   nome: string;
   subject: string;
   body: string;
@@ -44,13 +29,14 @@ interface EmailTemplate {
 
 interface ContractTemplate {
   id: string;
+  tipo: string;
   nome: string;
   body_html: string;
   footer_html: string | null;
 }
 
 /* =======================
-   Placeholders
+   Placeholders (SEM DUPLICAÇÃO)
 ======================= */
 const PLACEHOLDERS = [
   { key: "{{nome_cliente}}", desc: "Nome completo do cliente" },
@@ -67,7 +53,7 @@ const PLACEHOLDERS = [
   { key: "{{oficinas}}", desc: "Oficinas contratadas" },
   { key: "{{extras}}", desc: "Extras contratados" },
   { key: "{{valor_total}}", desc: "Valor total" },
-  { key: "{{data_geracao}}", desc: "Data de geração" },
+  { key: "{{data_geracao}}", desc: "Data de geração do contrato" },
 ];
 
 /* =======================
@@ -94,22 +80,18 @@ const PREVIEW_DATA: Record<string, string> = {
 const replaceWithPreview = (html: string) => {
   let result = html;
   Object.entries(PREVIEW_DATA).forEach(([key, value]) => {
-    result = result.replace(
-      new RegExp(key.replace(/[{}]/g, "\\$&"), "g"),
-      value
-    );
+    result = result.replace(new RegExp(key.replace(/[{}]/g, "\\$&"), "g"), value);
   });
   return result;
 };
 
-const buildContractPreview = (body: string, footer?: string | null) => {
-  return replaceWithPreview(`
-    <div style="max-width:900px;margin:0 auto;font-family:Arial">
+const buildContractPreview = (body: string, footer?: string | null) =>
+  replaceWithPreview(`
+    <div style="max-width:900px;margin:0 auto;background:#fff;font-family:Arial">
       ${body}
       ${footer || ""}
     </div>
   `);
-};
 
 /* =======================
    Component
@@ -123,34 +105,28 @@ export default function ConfigComunicacoes() {
   const [contractTemplates, setContractTemplates] = useState<ContractTemplate[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<EmailTemplate | null>(null);
   const [selectedContract, setSelectedContract] = useState<ContractTemplate | null>(null);
-
   const [saving, setSaving] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewType, setPreviewType] = useState<"email" | "contract">("email");
   const [previewHTML, setPreviewHTML] = useState("");
 
   useEffect(() => {
-    if (!isLoading && (!user || !isAdmin)) navigate("/");
+    if (!isLoading && (!user || !isAdmin)) navigate("/admin/login");
   }, [user, isAdmin, isLoading, navigate]);
 
   useEffect(() => {
-    if (user && isAdmin) fetchTemplates();
+    if (!user || !isAdmin) return;
+    (async () => {
+      const [emailRes, contractRes] = await Promise.all([
+        supabase.from("email_templates").select("*").order("nome"),
+        supabase.from("contract_templates").select("*").order("nome"),
+      ]);
+      setEmailTemplates(emailRes.data || []);
+      setContractTemplates(contractRes.data || []);
+      setSelectedEmail(emailRes.data?.[0] || null);
+      setSelectedContract(contractRes.data?.[0] || null);
+    })();
   }, [user, isAdmin]);
-
-  const fetchTemplates = async () => {
-    const [emailRes, contractRes] = await Promise.all([
-      supabase.from("email_templates").select("*").order("nome"),
-      supabase.from("contract_templates").select("*").order("nome"),
-    ]);
-
-    if (emailRes.data) {
-      setEmailTemplates(emailRes.data);
-      setSelectedEmail(emailRes.data[0] || null);
-    }
-    if (contractRes.data) {
-      setContractTemplates(contractRes.data);
-      setSelectedContract(contractRes.data[0] || null);
-    }
-  };
 
   const saveEmail = async () => {
     if (!selectedEmail) return;
@@ -162,7 +138,7 @@ export default function ConfigComunicacoes() {
     setSaving(false);
     toast({
       title: error ? "Erro" : "Salvo",
-      description: error ? "Falha ao salvar" : "Template atualizado",
+      description: error ? "Falha ao salvar template" : "Template atualizado",
       variant: error ? "destructive" : "default",
     });
   };
@@ -177,72 +153,81 @@ export default function ConfigComunicacoes() {
     setSaving(false);
     toast({
       title: error ? "Erro" : "Salvo",
-      description: error ? "Falha ao salvar" : "Contrato atualizado",
+      description: error ? "Falha ao salvar contrato" : "Contrato atualizado",
       variant: error ? "destructive" : "default",
     });
+  };
+
+  const openPreview = (type: "email" | "contract") => {
+    setPreviewType(type);
+    if (type === "email" && selectedEmail) {
+      setPreviewHTML(replaceWithPreview(selectedEmail.body));
+    }
+    if (type === "contract" && selectedContract) {
+      setPreviewHTML(
+        buildContractPreview(
+          selectedContract.body_html,
+          selectedContract.footer_html
+        )
+      );
+    }
+    setPreviewOpen(true);
   };
 
   if (isLoading) return null;
 
   return (
     <AdminLayout>
-      <Tabs defaultValue="email" className="space-y-6">
-        <TabsList className="grid grid-cols-2 max-w-md">
-          <TabsTrigger value="email"><Mail className="w-4 h-4 mr-2" />E-mails</TabsTrigger>
-          <TabsTrigger value="contract"><FileText className="w-4 h-4 mr-2" />Contratos</TabsTrigger>
-        </TabsList>
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold">Configurações de Comunicação</h1>
 
-        <TabsContent value="email" className="grid lg:grid-cols-3 gap-6">
-          <PlaceholderCard />
-          <EditorEmail
-            selected={selectedEmail}
-            setSelected={setSelectedEmail}
-            onSave={saveEmail}
-            saving={saving}
-            onPreview={() => {
-              if (selectedEmail) {
-                setPreviewHTML(replaceWithPreview(selectedEmail.body));
-                setPreviewOpen(true);
-              }
-            }}
-          />
-        </TabsContent>
+        <Tabs defaultValue="email">
+          <TabsList className="grid grid-cols-2 max-w-md">
+            <TabsTrigger value="email"><Mail className="w-4 h-4 mr-2" />E-mails</TabsTrigger>
+            <TabsTrigger value="contract"><FileText className="w-4 h-4 mr-2" />Contratos</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="contract" className="grid lg:grid-cols-3 gap-6">
-          <PlaceholderCard />
-          <EditorContract
-            selected={selectedContract}
-            setSelected={setSelectedContract}
-            onSave={saveContract}
-            saving={saving}
-            onPreview={() => {
-              if (selectedContract) {
-                setPreviewHTML(
-                  buildContractPreview(
-                    selectedContract.body_html,
-                    selectedContract.footer_html
-                  )
-                );
-                setPreviewOpen(true);
-              }
-            }}
-          />
-        </TabsContent>
-      </Tabs>
-
-      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="max-w-5xl max-h-[85vh] overflow-auto">
-          <DialogHeader>
-            <DialogTitle>Pré-visualização</DialogTitle>
-          </DialogHeader>
-          <div className="bg-muted p-6 flex justify-center">
-            <div
-              className="bg-white shadow-lg rounded w-full max-w-[900px]"
-              dangerouslySetInnerHTML={{ __html: previewHTML }}
+          <TabsContent value="email" className="grid lg:grid-cols-3 gap-6">
+            <PlaceholderCard />
+            <EditorEmail
+              selected={selectedEmail}
+              setSelected={setSelectedEmail}
+              onSave={saveEmail}
+              saving={saving}
+              onPreview={() => openPreview("email")}
             />
-          </div>
-        </DialogContent>
-      </Dialog>
+          </TabsContent>
+
+          <TabsContent value="contract" className="grid lg:grid-cols-3 gap-6">
+            <PlaceholderCard />
+            <EditorContract
+              selected={selectedContract}
+              setSelected={setSelectedContract}
+              onSave={saveContract}
+              saving={saving}
+              onPreview={() => openPreview("contract")}
+            />
+          </TabsContent>
+        </Tabs>
+
+        <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+          <DialogContent className="max-w-5xl max-h-[85vh] overflow-auto">
+            <DialogHeader>
+              <DialogTitle>Pré-visualização</DialogTitle>
+            </DialogHeader>
+            {previewType === "email" ? (
+              <div className="bg-muted p-6 rounded whitespace-pre-wrap">{previewHTML}</div>
+            ) : (
+              <div className="bg-muted p-6 flex justify-center">
+                <div
+                  className="bg-white shadow-lg rounded w-full max-w-[900px]"
+                  dangerouslySetInnerHTML={{ __html: previewHTML }}
+                />
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
     </AdminLayout>
   );
 }
@@ -253,7 +238,9 @@ export default function ConfigComunicacoes() {
 const PlaceholderCard = () => (
   <Card>
     <CardHeader>
-      <CardTitle className="flex items-center gap-2"><Info className="w-4 h-4" /> Placeholders</CardTitle>
+      <CardTitle className="flex items-center gap-2">
+        <Info className="w-4 h-4" /> Placeholders
+      </CardTitle>
     </CardHeader>
     <CardContent className="space-y-2 text-sm max-h-[400px] overflow-y-auto">
       {PLACEHOLDERS.map(p => (
