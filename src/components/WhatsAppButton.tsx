@@ -6,11 +6,11 @@ import { trackWhatsAppClick } from "@/utils/tracking";
 /**
  * Floating WhatsApp CTA Button
  *
- * Rules:
- * - NEVER use api.whatsapp.com
- * - ALWAYS use wa.me
- * - Message must be URL encoded
- * - Tracking must not block navigation
+ * Regras:
+ * - NUNCA usar api.whatsapp.com
+ * - SEMPRE usar wa.me
+ * - Mensagem deve ser URL encoded
+ * - Tracking não pode bloquear a navegação
  */
 const WHATSAPP_BASE = "https://wa.me/5511965982251";
 
@@ -21,32 +21,41 @@ const WhatsAppButton = () => {
   const { getWhatsAppMessage } = useConfigurator();
 
   /**
-   * Builds a safe WhatsApp URL
+   * Monta uma URL segura do WhatsApp
    */
   const buildWhatsAppUrl = () => {
-    if (isContratarPage) {
-      try {
+    try {
+      if (isContratarPage && typeof getWhatsAppMessage === "function") {
         const message = getWhatsAppMessage();
 
-        if (message && message.trim().length > 0) {
+        if (message && typeof message === "string" && message.trim().length > 0) {
           return `${WHATSAPP_BASE}?text=${encodeURIComponent(message)}`;
         }
-      } catch {
-        // fallback silencioso
       }
+    } catch (error) {
+      // fallback silencioso, sem quebrar o botão
+      console.error("Erro ao montar mensagem do WhatsApp:", error);
     }
 
     return WHATSAPP_BASE;
   };
 
   const handleClick = () => {
-    // Tracking LGPD-safe (não bloqueia navegação)
-    trackWhatsAppClick("floating_button");
+    try {
+      // Tracking LGPD-safe (não bloqueia navegação)
+      // Não deve chamar preventDefault, nem ser async bloqueante
+      trackWhatsAppClick?.("floating_button");
+    } catch (error) {
+      // Nunca deixar tracking quebrar o fluxo do usuário
+      console.error("Erro no tracking de WhatsApp:", error);
+    }
   };
+
+  const whatsappUrl = buildWhatsAppUrl();
 
   return (
     <a
-      href={buildWhatsAppUrl()}
+      href={whatsappUrl}
       onClick={handleClick}
       target="_blank"
       rel="noopener noreferrer"
