@@ -8,7 +8,8 @@ export type AdminAction =
   | 'cache_pago'
   | 'profissional_alocado'
   | 'profissional_confirmado'
-  | 'dados_alterados';
+  | 'dados_alterados'
+  | 'status_recreador_alterado';
 
 type LogDetails = Record<string, string | number | boolean | null>;
 
