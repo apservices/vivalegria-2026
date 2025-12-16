@@ -154,7 +154,41 @@ const AdminReservas = () => {
 
   const updateStatus = async (id: string, newStatus: string) => {
     try {
-      // Melhor prática: separar claramente contrato da simples mudança de status.[web:163][web:176]
+      // Buscar dados da reserva para criar/atualizar cliente
+      const reserva = reservas.find(r => r.id === id);
+      
+      // Se aprovando, criar/vincular cliente antes
+      if (newStatus === "aprovado" || newStatus === "confirmado") {
+        if (reserva && !reserva.cliente_id) {
+          // Chamar função get_or_create_cliente para criar/atualizar cliente
+          const { data: clienteResult, error: clienteError } = await supabase
+            .rpc('get_or_create_cliente', {
+              p_cpf_cnpj: reserva.cpf_cnpj,
+              p_tipo_cadastro: reserva.tipo_cadastro,
+              p_nome_completo: reserva.nome_completo,
+              p_telefone: reserva.telefone || null,
+              p_email: reserva.email || null,
+              p_cep: reserva.cep || null,
+              p_endereco: reserva.endereco || null,
+              p_complemento: reserva.complemento || null,
+              p_cidade: reserva.cidade || null
+            });
+
+          if (clienteError) {
+            console.error("Error creating client:", clienteError);
+          } else if (clienteResult) {
+            const result = clienteResult as { cliente?: { id?: string } };
+            if (result.cliente?.id) {
+              // Vincular cliente à reserva
+              await supabase
+                .from("reservas")
+                .update({ cliente_id: result.cliente.id })
+                .eq("id", id);
+            }
+          }
+        }
+      }
+
       if (newStatus === "aprovado") {
         toast({
           title: "Gerando contrato...",
@@ -184,7 +218,6 @@ const AdminReservas = () => {
           description: `E-mail com contrato enviado para o cliente (${data?.codigo})`,
         });
 
-        // opcionalmente, marcar status como "aprovado"
         const { error: updateError } = await supabase
           .from("reservas")
           .update({ status: "aprovado" })
