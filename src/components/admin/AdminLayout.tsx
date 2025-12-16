@@ -12,7 +12,8 @@ import {
   Settings,
   Kanban,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Upload
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -44,6 +45,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin/candidaturas", label: "Candidaturas", icon: Users, roles: ['admin'] },
     { href: "/admin/avaliacoes", label: "Avaliações", icon: Star, roles: ['admin'] },
     { href: "/admin/reclamacoes", label: "Reclamações", icon: AlertTriangle, roles: ['admin'] },
+    { href: "/admin/importar-dados", label: "Importar Dados", icon: Upload, roles: ['admin'] },
     { href: "/admin/logs", label: "Auditoria", icon: Clock, roles: ['admin'] },
     { href: "/admin/config-comunicacoes", label: "Comunicação", icon: Settings, roles: ['admin'] },
   ];
