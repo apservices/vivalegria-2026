@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
@@ -11,7 +12,6 @@ import { StepDadosContratante } from "./StepDadosContratante";
 import { StepDadosEvento } from "./StepDadosEvento";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ArrowLeft, ArrowRight, Send, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { trackFormSubmit } from "@/utils/tracking";
 
 const STEP_LABELS = ["Identificação", "Dados Pessoais", "Dados do Evento"];
@@ -31,6 +31,12 @@ const initialFormData: ContratacaoFormData = {
   dataEvento: "",
   horaInicio: "",
   localEvento: "",
+  // Campos de Negócio
+  enderecoResidencial: "",
+  enderecoEventoCompleto: "",
+  tipoEspaco: "",
+  faixaEtaria: "",
+  observacoesEvento: "",
 };
 
 export const ContratacaoForm = () => {
@@ -39,11 +45,9 @@ export const ContratacaoForm = () => {
   const [formData, setFormData] = useState<ContratacaoFormData>(initialFormData);
   const [errors, setErrors] = useState<Partial<Record<keyof ContratacaoFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastReservaId, setLastReservaId] = useState<string | null>(null);
 
-  // ✅ Âncora: garante que a tela fique sempre no formulário (não volta pro topo da Home)
   const formTopRef = useRef<HTMLDivElement | null>(null);
-
-  // ✅ Evita scroll "desnecessário" quando resetamos após submit
   const skipNextScrollRef = useRef(false);
 
   useLayoutEffect(() => {
@@ -55,11 +59,8 @@ export const ContratacaoForm = () => {
     const el = formTopRef.current;
     if (!el) return;
 
-    // Header fixo e variável: calcula altura real
     const headerEl = document.querySelector("header");
     const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
-
-    // margem extra (respiro)
     const offset = headerH + 16;
 
     const y = el.getBoundingClientRect().top + window.scrollY - offset;
@@ -136,6 +137,9 @@ export const ContratacaoForm = () => {
     if (!formData.dataEvento) newErrors.dataEvento = "Data do evento é obrigatória";
     if (!formData.horaInicio) newErrors.horaInicio = "Hora de início é obrigatória";
     if (!formData.localEvento.trim()) newErrors.localEvento = "Local do evento é obrigatório";
+    if (!formData.enderecoEventoCompleto.trim()) newErrors.enderecoEventoCompleto = "Endereço do evento é obrigatório";
+    if (!formData.tipoEspaco) newErrors.tipoEspaco = "Tipo de espaço é obrigatório";
+    if (!formData.faixaEtaria) newErrors.faixaEtaria = "Faixa etária é obrigatória";
 
     if (!packageType) {
       toast.error("Selecione um pacote antes de continuar");
@@ -154,14 +158,12 @@ export const ContratacaoForm = () => {
 
     if (isValid && currentStep < 3) {
       setCurrentStep((prev) => prev + 1);
-      // ✅ sem window.scrollTo aqui — o useLayoutEffect cuida
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => prev - 1);
-      // ✅ sem window.scrollTo aqui — o useLayoutEffect cuida
     }
   };
 
@@ -192,21 +194,23 @@ export const ContratacaoForm = () => {
         oficinas_selecionadas: selectedWorkshops,
         extras_selecionados: selectedExtras,
         total_calculado: total,
+        // Campos de Negócio
+        endereco_residencial: formData.enderecoResidencial || null,
+        endereco_evento_completo: formData.enderecoEventoCompleto.trim(),
+        tipo_espaco: formData.tipoEspaco || null,
+        faixa_etaria: formData.faixaEtaria || null,
+        observacoes_evento: formData.observacoesEvento || null,
       };
 
-      const { error } = await supabase.from("reservas").insert(reservaData);
+      const { data, error } = await supabase.from("reservas").insert(reservaData).select("id, codigo").single();
       if (error) throw error;
 
-      // Track successful form submission (respects consent)
+      // Track successful form submission
       trackFormSubmit('contratar');
 
-      toast.success("Reserva enviada com sucesso! Entraremos em contato em breve.");
+      // Redirecionar para página de obrigado com código do evento
+      navigate(`/obrigado?codigo=${data.codigo}&nome=${encodeURIComponent(formData.nomeCompleto)}`);
 
-      setFormData(initialFormData);
-
-      // ✅ Reset sem “forçar” scroll (se quiser que role, remova essas 2 linhas)
-      skipNextScrollRef.current = true;
-      setCurrentStep(1);
     } catch (error) {
       console.error("Erro ao enviar reserva:", error);
       toast.error("Erro ao enviar reserva. Tente novamente.");
@@ -218,7 +222,6 @@ export const ContratacaoForm = () => {
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg border-viva-yellow/20">
       <CardContent className="p-6 md:p-8">
-        {/* ✅ âncora do topo do formulário */}
         <div ref={formTopRef} className="h-1" />
 
         <ProgressIndicator

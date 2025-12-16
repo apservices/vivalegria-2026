@@ -1,16 +1,30 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
-import { StepProps } from "./types";
-import { Calendar, Clock, MapPin, Package } from "lucide-react";
+import { StepProps, TipoEspaco, FaixaEtaria } from "./types";
+import { Calendar, Clock, MapPin, Package, Home, Users, AlertCircle } from "lucide-react";
+
+const tipoEspacoOptions: { value: TipoEspaco; label: string }[] = [
+  { value: "aberto", label: "Espaço Aberto (área externa, quintal, parque)" },
+  { value: "fechado", label: "Espaço Fechado (salão, apartamento, buffet)" },
+  { value: "misto", label: "Misto (área coberta + externa)" },
+];
+
+const faixaEtariaOptions: { value: FaixaEtaria; label: string }[] = [
+  { value: "0-3", label: "0 a 3 anos (bebês)" },
+  { value: "4-6", label: "4 a 6 anos" },
+  { value: "7-10", label: "7 a 10 anos" },
+  { value: "misto", label: "Misto (várias idades)" },
+];
 
 export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps) => {
   const { packageType, numChildren, selectedWorkshops, selectedExtras, calculateTotal } = useConfigurator();
   const total = calculateTotal();
 
   const packageNames: Record<string, string> = {
-    classic: 'Classic',
+    classic: 'Clássico',
     select: 'Select',
   };
 
@@ -93,23 +107,128 @@ export const StepDadosEvento = ({ formData, updateFormData, errors }: StepProps)
         )}
       </div>
 
-      {/* Local do Evento */}
+      {/* Tipo de Espaço */}
+      <div className="space-y-2">
+        <Label className="text-base font-medium flex items-center gap-2">
+          <Home className="h-4 w-4 text-viva-orange" />
+          Tipo de Espaço *
+        </Label>
+        <Select
+          value={formData.tipoEspaco}
+          onValueChange={(value: TipoEspaco) => updateFormData({ tipoEspaco: value })}
+        >
+          <SelectTrigger className={errors.tipoEspaco ? 'border-destructive' : ''}>
+            <SelectValue placeholder="Selecione o tipo de espaço" />
+          </SelectTrigger>
+          <SelectContent>
+            {tipoEspacoOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.tipoEspaco && (
+          <p className="text-sm text-destructive">{errors.tipoEspaco}</p>
+        )}
+      </div>
+
+      {/* Faixa Etária */}
+      <div className="space-y-2">
+        <Label className="text-base font-medium flex items-center gap-2">
+          <Users className="h-4 w-4 text-viva-orange" />
+          Faixa Etária das Crianças *
+        </Label>
+        <Select
+          value={formData.faixaEtaria}
+          onValueChange={(value: FaixaEtaria) => updateFormData({ faixaEtaria: value })}
+        >
+          <SelectTrigger className={errors.faixaEtaria ? 'border-destructive' : ''}>
+            <SelectValue placeholder="Selecione a faixa etária" />
+          </SelectTrigger>
+          <SelectContent>
+            {faixaEtariaOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.faixaEtaria && (
+          <p className="text-sm text-destructive">{errors.faixaEtaria}</p>
+        )}
+      </div>
+
+      {/* Endereço Residencial */}
+      <div className="space-y-2">
+        <Label htmlFor="enderecoResidencial" className="text-base font-medium flex items-center gap-2">
+          <Home className="h-4 w-4 text-viva-orange" />
+          Endereço Residencial
+        </Label>
+        <Input
+          id="enderecoResidencial"
+          value={formData.enderecoResidencial}
+          onChange={(e) => updateFormData({ enderecoResidencial: e.target.value })}
+          placeholder="Seu endereço residencial (se diferente do evento)"
+        />
+        <p className="text-xs text-muted-foreground">
+          Opcional. Preencha se diferente do local do evento.
+        </p>
+      </div>
+
+      {/* Endereço Completo do Evento */}
+      <div className="space-y-2">
+        <Label htmlFor="enderecoEventoCompleto" className="text-base font-medium flex items-center gap-2">
+          <MapPin className="h-4 w-4 text-viva-orange" />
+          Endereço Completo do Evento *
+        </Label>
+        <Textarea
+          id="enderecoEventoCompleto"
+          value={formData.enderecoEventoCompleto}
+          onChange={(e) => updateFormData({ enderecoEventoCompleto: e.target.value })}
+          placeholder="Rua, número, bairro, cidade, CEP, ponto de referência"
+          rows={2}
+          className={errors.enderecoEventoCompleto ? 'border-destructive' : ''}
+        />
+        {errors.enderecoEventoCompleto && (
+          <p className="text-sm text-destructive">{errors.enderecoEventoCompleto}</p>
+        )}
+      </div>
+
+      {/* Local do Evento (nome do espaço) */}
       <div className="space-y-2">
         <Label htmlFor="localEvento" className="text-base font-medium flex items-center gap-2">
           <MapPin className="h-4 w-4 text-viva-orange" />
-          Local do Evento *
+          Nome do Local *
         </Label>
-        <Textarea
+        <Input
           id="localEvento"
           value={formData.localEvento}
           onChange={(e) => updateFormData({ localEvento: e.target.value })}
-          placeholder="Endereço completo onde será realizado o evento"
-          rows={3}
+          placeholder="Ex: Salão de Festas do Condomínio, Buffet Kids, Minha Casa"
           className={errors.localEvento ? 'border-destructive' : ''}
         />
         {errors.localEvento && (
           <p className="text-sm text-destructive">{errors.localEvento}</p>
         )}
+      </div>
+
+      {/* Observações do Evento */}
+      <div className="space-y-2">
+        <Label htmlFor="observacoesEvento" className="text-base font-medium flex items-center gap-2">
+          <AlertCircle className="h-4 w-4 text-viva-orange" />
+          Observações Importantes
+        </Label>
+        <Textarea
+          id="observacoesEvento"
+          value={formData.observacoesEvento}
+          onChange={(e) => updateFormData({ observacoesEvento: e.target.value })}
+          placeholder="Informe alergias, regras do local, necessidades especiais, restrições, tema da festa, etc."
+          rows={3}
+        />
+        <p className="text-xs text-muted-foreground">
+          Opcional. Informações que ajudem nossa equipe a preparar o evento.
+        </p>
       </div>
     </div>
   );
