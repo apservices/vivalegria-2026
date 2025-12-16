@@ -2,20 +2,14 @@
  * VIVALEGRIA CONTRACT PDF GENERATION
  * 
  * Production-ready contract generation system.
- * VERSION 1.0 - Foundation Layer
+ * VERSION 2.0 - Templates from Database
  * 
  * Features:
  * - PDF generation using jsPDF (Deno-compatible)
+ * - Templates fetched from email_templates and contract_templates tables
+ * - Dynamic placeholder replacement
  * - Duplicate prevention (checks if contract already exists)
- * - Dynamic field mapping from reservation data
- * - Company signature placeholder
  * - Audit trail (generated_at, status)
- * 
- * EXTENDING THIS SYSTEM:
- * - Add digital signature: Use DocuSign/HelloSign API integration
- * - Add custom templates: Create separate template files
- * - Add PDF storage: Upload to Supabase Storage bucket
- * - Add versioning: Track contract versions with revision history
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -35,7 +29,7 @@ const corsHeaders = {
 
 interface ContractRequest {
   reserva_id: string;
-  force_regenerate?: boolean; // Optional: force regeneration even if exists
+  force_regenerate?: boolean;
 }
 
 interface ReservaData {
@@ -62,6 +56,22 @@ interface ReservaData {
   status: string;
 }
 
+interface EmailTemplate {
+  id: string;
+  tipo: string;
+  nome: string;
+  subject: string;
+  body: string;
+}
+
+interface ContractTemplate {
+  id: string;
+  tipo: string;
+  nome: string;
+  body_html: string;
+  footer_html?: string;
+}
+
 interface ContractResult {
   success: boolean;
   message: string;
@@ -75,10 +85,6 @@ interface ContractResult {
 // HELPER FUNCTIONS
 // ============================================
 
-/**
- * Format date for display in contract
- * Example: "sábado, 15 de março de 2025"
- */
 const formatDateLong = (dateStr: string): string => {
   const date = new Date(dateStr + "T00:00:00");
   return date.toLocaleDateString("pt-BR", {
@@ -89,19 +95,11 @@ const formatDateLong = (dateStr: string): string => {
   });
 };
 
-/**
- * Format date short for filename
- * Example: "15/03/2025"
- */
 const formatDateShort = (dateStr: string): string => {
   const date = new Date(dateStr + "T00:00:00");
   return date.toLocaleDateString("pt-BR");
 };
 
-/**
- * Format currency in BRL
- * Example: "R$ 1.590,00"
- */
 const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -109,13 +107,10 @@ const formatCurrency = (value: number): string => {
   }).format(value);
 };
 
-/**
- * Generate safe filename from reservation data
- */
 const generateFileName = (reserva: ReservaData): string => {
   const sanitizedName = reserva.nome_completo
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // Remove accents
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]/g, "-")
     .substring(0, 30);
   
@@ -124,29 +119,94 @@ const generateFileName = (reserva: ReservaData): string => {
 };
 
 // ============================================
-// CONTRACT DATA MAPPING
+// PLACEHOLDER REPLACEMENT
 // ============================================
 
 /**
- * Map reservation data to contract fields
- * This centralizes all field mapping for easy maintenance
+ * Replace all placeholders in template with actual values
+ * Supported placeholders:
+ * {{nome_cliente}}, {{cpf_cnpj}}, {{telefone}}, {{email_cliente}}
+ * {{data_evento}}, {{data_evento_extenso}}, {{hora_inicio}}, {{local_evento}}
+ * {{endereco_completo}}, {{cidade}}, {{numero_criancas}}
+ * {{pacote_tipo}}, {{pacote_nome}}, {{numero_recreadores}}
+ * {{oficinas}}, {{extras}}, {{valor_total}}
+ * {{codigo_contrato}}, {{data_geracao}}, {{link_termos}}
  */
+const replacePlaceholders = (template: string, reserva: ReservaData): string => {
+  const isClassic = reserva.pacote_tipo?.toLowerCase() === "classic" || 
+                    reserva.pacote_tipo?.toLowerCase() === "clássico";
+  
+  const placeholders: Record<string, string> = {
+    // Client data
+    "{{nome_cliente}}": reserva.nome_completo || "",
+    "{{cpf_cnpj}}": reserva.cpf_cnpj || "",
+    "{{tipo_documento}}": reserva.tipo_cadastro === "pf" ? "CPF" : "CNPJ",
+    "{{telefone}}": reserva.telefone || "",
+    "{{email_cliente}}": reserva.email || "",
+    
+    // Event data
+    "{{data_evento}}": formatDateShort(reserva.data_evento),
+    "{{data_evento_extenso}}": formatDateLong(reserva.data_evento),
+    "{{hora_inicio}}": reserva.hora_inicio || "",
+    "{{local_evento}}": reserva.local_evento || "",
+    "{{endereco_completo}}": [reserva.endereco, reserva.cidade, reserva.cep]
+      .filter(Boolean)
+      .join(", ") || reserva.local_evento || "",
+    "{{cidade}}": reserva.cidade || "",
+    "{{numero_criancas}}": String(reserva.numero_criancas || 0),
+    
+    // Service data
+    "{{pacote_tipo}}": reserva.pacote_tipo || "",
+    "{{pacote_nome}}": isClassic ? "Clássico" : "Select",
+    "{{numero_recreadores}}": isClassic ? "1" : "2",
+    "{{oficinas}}": reserva.oficinas_selecionadas?.length 
+      ? reserva.oficinas_selecionadas.join(", ") 
+      : "Pacote base (sem oficinas adicionais)",
+    "{{extras}}": reserva.extras_selecionados?.length 
+      ? reserva.extras_selecionados.join(", ") 
+      : "Nenhum extra selecionado",
+    
+    // Financial
+    "{{valor_total}}": formatCurrency(reserva.total_calculado || 0),
+    
+    // Metadata
+    "{{codigo_contrato}}": reserva.codigo || "",
+    "{{data_geracao}}": new Date().toLocaleDateString("pt-BR") + " às " + 
+                        new Date().toLocaleTimeString("pt-BR"),
+    "{{link_termos}}": "https://www.vivalegria.com.br/termos-e-condicoes",
+    
+    // Company
+    "{{empresa_nome}}": "VIVALEGRIA RECREAÇÃO E ENTRETENIMENTO LTDA",
+    "{{empresa_telefone}}": "(11) 96598-2251",
+    "{{empresa_email}}": "contato@vivalegria.com.br",
+    "{{empresa_site}}": "www.vivalegria.com.br",
+  };
+  
+  let result = template;
+  for (const [placeholder, value] of Object.entries(placeholders)) {
+    result = result.replace(new RegExp(placeholder.replace(/[{}]/g, "\\$&"), "g"), value);
+  }
+  
+  return result;
+};
+
+// ============================================
+// CONTRACT DATA MAPPING (for PDF)
+// ============================================
+
 const mapContractData = (reserva: ReservaData) => {
   const isClassic = reserva.pacote_tipo?.toLowerCase() === "classic" || 
                     reserva.pacote_tipo?.toLowerCase() === "clássico";
   
   return {
-    // Company Info (CONTRATADA)
     company: {
       name: "VIVALEGRIA RECREAÇÃO E ENTRETENIMENTO LTDA",
-      cnpj: "XX.XXX.XXX/0001-XX", // PLACEHOLDER: Add real CNPJ
+      cnpj: "XX.XXX.XXX/0001-XX",
       address: "São Paulo, SP",
       phone: "(11) 96598-2251",
       email: "contato@vivalegria.com.br",
       website: "www.vivalegria.com.br",
     },
-    
-    // Client Info (CONTRATANTE)
     client: {
       name: reserva.nome_completo,
       document: reserva.cpf_cnpj,
@@ -154,8 +214,6 @@ const mapContractData = (reserva: ReservaData) => {
       phone: reserva.telefone,
       email: reserva.email,
     },
-    
-    // Event Info
     event: {
       code: reserva.codigo,
       date: formatDateLong(reserva.data_evento),
@@ -168,8 +226,6 @@ const mapContractData = (reserva: ReservaData) => {
         .join(", ") || reserva.local_evento,
       childrenCount: reserva.numero_criancas,
     },
-    
-    // Services
     services: {
       packageName: isClassic ? "Clássico" : "Select",
       packageType: reserva.pacote_tipo,
@@ -181,14 +237,10 @@ const mapContractData = (reserva: ReservaData) => {
         ? reserva.extras_selecionados.join(", ") 
         : "Nenhum extra selecionado",
     },
-    
-    // Financial
     financial: {
       totalValue: formatCurrency(reserva.total_calculado),
       totalValueRaw: reserva.total_calculado,
     },
-    
-    // Metadata
     meta: {
       generatedAt: new Date().toISOString(),
       generatedAtFormatted: new Date().toLocaleDateString("pt-BR") + " às " + 
@@ -202,17 +254,7 @@ const mapContractData = (reserva: ReservaData) => {
 // PDF GENERATION
 // ============================================
 
-/**
- * Generate contract PDF using jsPDF
- * 
- * Returns base64-encoded PDF content
- * 
- * EXTENDING:
- * - Add company logo: doc.addImage(logoBase64, "PNG", x, y, w, h)
- * - Add digital signature: Integrate with signing API
- * - Add watermark: doc.setGState(new doc.GState({opacity: 0.1}))
- */
-const generateContractPDF = (reserva: ReservaData): string => {
+const generateContractPDF = (reserva: ReservaData, contractTemplate?: ContractTemplate | null): string => {
   const data = mapContractData(reserva);
   const doc = new jsPDF({
     orientation: "portrait",
@@ -220,13 +262,12 @@ const generateContractPDF = (reserva: ReservaData): string => {
     format: "a4",
   });
 
-  // Colors (Vivalegria brand)
   const orange = "#FF731D";
   const yellow = "#FFD836";
   const darkGray = "#333333";
   const lightGray = "#666666";
 
-  let y = 20; // Current Y position
+  let y = 20;
 
   // ---- HEADER ----
   doc.setFontSize(24);
@@ -238,7 +279,6 @@ const generateContractPDF = (reserva: ReservaData): string => {
   doc.setTextColor(lightGray);
   doc.text("Recreação e Entretenimento Infantil", 105, y, { align: "center" });
 
-  // Contract code badge
   y += 10;
   doc.setFillColor(orange);
   doc.roundedRect(75, y - 5, 60, 10, 3, 3, "F");
@@ -305,7 +345,6 @@ const generateContractPDF = (reserva: ReservaData): string => {
     doc.text(label, 20, y);
     doc.setFont("helvetica", "normal");
     
-    // Handle long text wrapping
     const maxWidth = 130;
     const lines = doc.splitTextToSize(value || "-", maxWidth);
     doc.text(lines, 55, y);
@@ -353,7 +392,7 @@ const generateContractPDF = (reserva: ReservaData): string => {
   doc.setFont("helvetica", "bold");
   doc.text(data.financial.totalValue, 105, y + 14, { align: "center" });
 
-  // ---- LEGAL CLAUSES ----
+  // ---- LEGAL CLAUSES (from template or default) ----
   y += 30;
   doc.setFillColor(orange);
   doc.rect(15, y - 5, 180, 8, "F");
@@ -367,29 +406,55 @@ const generateContractPDF = (reserva: ReservaData): string => {
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   
-  // PLACEHOLDER: Legal clauses - expand as needed
-  const legalClauses = [
-    "Este contrato está sujeito aos Termos e Condições Gerais disponíveis em:",
-    data.meta.termsUrl,
-    "",
-    "Ao confirmar esta contratação, o CONTRATANTE declara estar ciente e de acordo com:",
-    "• Políticas de cancelamento e reagendamento",
-    "• Condições de pagamento (50% na reserva, 50% até 7 dias antes)",
-    "• Responsabilidades das partes conforme termos completos",
-    "",
-    "A CONTRATADA compromete-se a prestar os serviços com profissionalismo,",
-    "segurança e qualidade, conforme especificações deste contrato.",
-  ];
+  // Use template from DB or default
+  let legalClauses: string[];
+  if (contractTemplate?.body_html) {
+    // Parse HTML to plain text for PDF (basic strip)
+    const plainText = contractTemplate.body_html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .trim();
+    
+    // Replace placeholders in the template text
+    const processedText = replacePlaceholders(plainText, reserva);
+    legalClauses = processedText.split("\n").filter(line => line.trim());
+  } else {
+    legalClauses = [
+      "Este contrato está sujeito aos Termos e Condições Gerais disponíveis em:",
+      data.meta.termsUrl,
+      "",
+      "Ao confirmar esta contratação, o CONTRATANTE declara estar ciente e de acordo com:",
+      "• Políticas de cancelamento e reagendamento",
+      "• Condições de pagamento (50% na reserva, 50% até 7 dias antes)",
+      "• Responsabilidades das partes conforme termos completos",
+      "",
+      "A CONTRATADA compromete-se a prestar os serviços com profissionalismo,",
+      "segurança e qualidade, conforme especificações deste contrato.",
+    ];
+  }
 
   legalClauses.forEach((line) => {
-    doc.text(line, 20, y);
+    if (y > 260) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line.substring(0, 95), 20, y);
     y += 5;
   });
 
   // ---- SIGNATURES ----
-  y += 15;
+  if (y > 240) {
+    doc.addPage();
+    y = 20;
+  } else {
+    y += 15;
+  }
   
-  // Left: Client signature
   doc.setDrawColor(darkGray);
   doc.line(20, y + 15, 90, y + 15);
   doc.setFontSize(9);
@@ -398,16 +463,11 @@ const generateContractPDF = (reserva: ReservaData): string => {
   doc.setFontSize(8);
   doc.text(data.client.name, 55, y + 25, { align: "center" });
 
-  // Right: Company signature (PLACEHOLDER for image)
   doc.line(110, y + 15, 190, y + 15);
   doc.setFontSize(9);
   doc.text("CONTRATADA", 150, y + 20, { align: "center" });
   doc.setFontSize(8);
   doc.text("Vivalegria Recreação e Entretenimento", 150, y + 25, { align: "center" });
-  
-  // EXTENDING: Add signature image
-  // const signatureBase64 = "data:image/png;base64,..."
-  // doc.addImage(signatureBase64, "PNG", 130, y, 40, 15);
 
   // ---- FOOTER ----
   doc.setFontSize(8);
@@ -421,17 +481,22 @@ const generateContractPDF = (reserva: ReservaData): string => {
     105, 285, { align: "center" }
   );
 
-  // Return base64-encoded PDF
   return doc.output("datauristring").split(",")[1];
 };
 
 // ============================================
-// EMAIL HTML TEMPLATE
+// EMAIL HTML GENERATION
 // ============================================
 
-const generateEmailHTML = (reserva: ReservaData): string => {
+const generateEmailHTML = (reserva: ReservaData, emailTemplate?: EmailTemplate | null): string => {
   const data = mapContractData(reserva);
 
+  // If we have a template from DB, use it with placeholder replacement
+  if (emailTemplate?.body) {
+    return replacePlaceholders(emailTemplate.body, reserva);
+  }
+
+  // Default template (fallback)
   return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -561,7 +626,6 @@ const generateEmailHTML = (reserva: ReservaData): string => {
 // ============================================
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -598,7 +662,6 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("[Contract] Reserva found:", reserva.codigo);
 
     // ---- DUPLICATE PREVENTION ----
-    // Check if contract already exists and skip if not forcing regeneration
     if (reserva.contrato_gerado_em && !force_regenerate) {
       console.log("[Contract] Contract already exists, skipping generation");
       return new Response(
@@ -617,9 +680,40 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    // ---- FETCH TEMPLATES FROM DATABASE ----
+    console.log("[Contract] Fetching templates from database...");
+    
+    const [emailTemplateResult, contractTemplateResult] = await Promise.all([
+      supabase
+        .from("email_templates")
+        .select("*")
+        .eq("tipo", "contrato_reserva")
+        .maybeSingle(),
+      supabase
+        .from("contract_templates")
+        .select("*")
+        .eq("tipo", "contrato_evento_infantil")
+        .maybeSingle(),
+    ]);
+
+    const emailTemplate = emailTemplateResult.data as EmailTemplate | null;
+    const contractTemplate = contractTemplateResult.data as ContractTemplate | null;
+
+    if (emailTemplate) {
+      console.log("[Contract] Email template found:", emailTemplate.nome);
+    } else {
+      console.log("[Contract] No email template found, using default");
+    }
+
+    if (contractTemplate) {
+      console.log("[Contract] Contract template found:", contractTemplate.nome);
+    } else {
+      console.log("[Contract] No contract template found, using default");
+    }
+
     // ---- GENERATE PDF ----
     console.log("[Contract] Generating PDF...");
-    const pdfBase64 = generateContractPDF(reserva as ReservaData);
+    const pdfBase64 = generateContractPDF(reserva as ReservaData, contractTemplate);
     const fileName = generateFileName(reserva as ReservaData);
 
     console.log("[Contract] PDF generated, filename:", fileName);
@@ -627,12 +721,17 @@ const handler = async (req: Request): Promise<Response> => {
     // ---- SEND EMAIL ----
     console.log("[Contract] Sending email to:", reserva.email);
     
-    const emailHTML = generateEmailHTML(reserva as ReservaData);
+    const emailHTML = generateEmailHTML(reserva as ReservaData, emailTemplate);
+    
+    // Use subject from template if available
+    const emailSubject = emailTemplate?.subject 
+      ? replacePlaceholders(emailTemplate.subject, reserva as ReservaData)
+      : `Contratação Vivalegria – Evento confirmado 🎉 [${reserva.codigo}]`;
     
     const emailPayload = {
       from: "Vivalegria <contato@vivalegria.com.br>",
       to: [reserva.email],
-      subject: `Contratação Vivalegria – Evento confirmado 🎉 [${reserva.codigo}]`,
+      subject: emailSubject,
       html: emailHTML,
       attachments: [
         {
@@ -676,7 +775,6 @@ const handler = async (req: Request): Promise<Response> => {
 
     if (updateError) {
       console.error("[Contract] Error updating reserva:", updateError);
-      // Don't throw - email was sent successfully
     }
 
     console.log("[Contract] Generation complete for:", reserva.codigo);
