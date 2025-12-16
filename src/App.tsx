@@ -39,6 +39,9 @@ import NotFound from "./pages/NotFound";
 // NOVAS LANDING PAGES
 import FestaInfantil from "./pages/festa-infantil/index";
 import OrcamentoLP from "./pages/orcamento-lp/index";
+import RecreacaoInfantilSP from "./pages/recreacao-infantil-sp/index";
+import EventosCorporativosInfantis from "./pages/eventos-corporativos-infantis/index";
+import Obrigado from "./pages/Obrigado";
 
 const queryClient = new QueryClient();
 
@@ -96,6 +99,9 @@ const App = () => (
               {/* NOVAS LANDING PAGES */}
               <Route path="/festa-infantil" element={<PublicLayout><FestaInfantil /></PublicLayout>} />
               <Route path="/orcamento" element={<PublicLayout><OrcamentoLP /></PublicLayout>} />
+              <Route path="/recreacao-infantil-sp" element={<PublicLayout><RecreacaoInfantilSP /></PublicLayout>} />
+              <Route path="/eventos-corporativos-infantis" element={<PublicLayout><EventosCorporativosInfantis /></PublicLayout>} />
+              <Route path="/obrigado" element={<PublicLayout><Obrigado /></PublicLayout>} />
 
               <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
             </Routes>

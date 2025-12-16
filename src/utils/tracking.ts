@@ -23,10 +23,10 @@ interface ConsentState {
   ad_personalization: ConsentStatus;
 }
 
-type PageType = 'home' | 'landing_page' | 'admin' | 'page' | 'form';
-type FormType = 'orcamento' | 'contratar' | 'contato' | 'candidatura' | 'avaliacao' | 'pesquisa';
-type WhatsAppSource = 'header' | 'footer' | 'floating_button' | 'landing_page' | 'form' | 'page';
-type LandingPageName = 'festa-infantil' | 'recreacao-infantil-sp' | 'corporativo' | 'orcamento' | 'pacotes' | 'oficinas';
+export type PageType = 'home' | 'landing_page' | 'admin' | 'page' | 'form';
+export type FormType = 'orcamento' | 'contratar' | 'contato' | 'candidatura' | 'avaliacao' | 'pesquisa';
+export type WhatsAppSource = 'header' | 'footer' | 'floating_button' | 'landing_page' | 'form' | 'page' | 'obrigado_page';
+export type LandingPageName = 'festa-infantil' | 'recreacao-infantil-sp' | 'corporativo' | 'orcamento' | 'pacotes' | 'oficinas';
 
 interface WhatsAppClickPayload {
   page_path: string;
