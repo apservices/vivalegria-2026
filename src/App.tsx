@@ -23,7 +23,7 @@ import TrabalheConosco from "./pages/TrabalheConosco";
 import AvaliacaoEvento from "./pages/AvaliacaoEvento";
 import PesquisaSatisfacao from "./pages/PesquisaSatisfacao";
 import AdminLogin from "./pages/admin/Login";
-import AdminDashboard from "./pages/admin/Dashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminReservas from "./pages/admin/Reservas";
 import AdminCandidaturas from "./pages/admin/Candidaturas";
 import AdminCasting from "./pages/admin/Casting";
