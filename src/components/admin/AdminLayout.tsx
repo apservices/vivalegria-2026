@@ -1,6 +1,16 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Calendar, Users, LogOut, Home, UserCheck, Star } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  Calendar, 
+  Users, 
+  LogOut, 
+  Home, 
+  UserCheck, 
+  Star, 
+  DollarSign,
+  Settings
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
@@ -17,8 +27,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/reservas", label: "Reservas", icon: Calendar },
     { href: "/admin/casting", label: "Casting", icon: UserCheck },
+    { href: "/admin/financeiro", label: "Financeiro", icon: DollarSign },
     { href: "/admin/candidaturas", label: "Candidaturas", icon: Users },
     { href: "/admin/avaliacoes", label: "Avaliações", icon: Star },
+    { href: "/admin/config-comunicacoes", label: "Comunicação", icon: Settings },
   ];
 
   const isActive = (href: string) => {

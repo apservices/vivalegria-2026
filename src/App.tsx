@@ -28,6 +28,8 @@ import AdminReservas from "./pages/admin/Reservas";
 import AdminCandidaturas from "./pages/admin/Candidaturas";
 import AdminCasting from "./pages/admin/Casting";
 import AdminAvaliacoes from "./pages/admin/Avaliacoes";
+import AdminFinanceiro from "./pages/admin/Financeiro";
+import AdminConfigComunicacoes from "./pages/admin/ConfigComunicacoes";
 import NotFound from "./pages/NotFound";
 
 // NOVAS LANDING PAGES
@@ -61,8 +63,10 @@ const App = () => (
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/reservas" element={<AdminReservas />} />
               <Route path="/admin/casting" element={<AdminCasting />} />
+              <Route path="/admin/financeiro" element={<AdminFinanceiro />} />
               <Route path="/admin/candidaturas" element={<AdminCandidaturas />} />
               <Route path="/admin/avaliacoes" element={<AdminAvaliacoes />} />
+              <Route path="/admin/config-comunicacoes" element={<AdminConfigComunicacoes />} />
 
               <Route path="/avaliacao-evento" element={<AvaliacaoEvento />} />
               <Route path="/pesquisa-satisfacao" element={<PesquisaSatisfacao />} />

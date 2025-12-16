@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_logs: {
+        Row: {
+          acao: string
+          created_at: string | null
+          detalhes: Json | null
+          id: string
+          reserva_id: string | null
+          usuario_admin: string | null
+        }
+        Insert: {
+          acao: string
+          created_at?: string | null
+          detalhes?: Json | null
+          id?: string
+          reserva_id?: string | null
+          usuario_admin?: string | null
+        }
+        Update: {
+          acao?: string
+          created_at?: string | null
+          detalhes?: Json | null
+          id?: string
+          reserva_id?: string | null
+          usuario_admin?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_logs_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "reservas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       avaliacoes_evento: {
         Row: {
           created_at: string
@@ -143,6 +178,66 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_templates: {
+        Row: {
+          body_html: string
+          created_at: string | null
+          footer_html: string | null
+          id: string
+          nome: string
+          tipo: string
+          updated_at: string | null
+        }
+        Insert: {
+          body_html: string
+          created_at?: string | null
+          footer_html?: string | null
+          id?: string
+          nome: string
+          tipo: string
+          updated_at?: string | null
+        }
+        Update: {
+          body_html?: string
+          created_at?: string | null
+          footer_html?: string | null
+          id?: string
+          nome?: string
+          tipo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      email_templates: {
+        Row: {
+          body: string
+          created_at: string | null
+          id: string
+          nome: string
+          subject: string
+          tipo: string
+          updated_at: string | null
+        }
+        Insert: {
+          body: string
+          created_at?: string | null
+          id?: string
+          nome: string
+          subject: string
+          tipo: string
+          updated_at?: string | null
+        }
+        Update: {
+          body?: string
+          created_at?: string | null
+          id?: string
+          nome?: string
+          subject?: string
+          tipo?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       evento_casting: {
         Row: {
           cache: number | null
@@ -151,6 +246,9 @@ export type Database = {
           funcao: string | null
           id: string
           observacoes: string | null
+          observacoes_pagamento: string | null
+          pago: boolean | null
+          pago_em: string | null
           profissional_id: string | null
           profissional_nome_manual: string | null
           reserva_id: string | null
@@ -162,6 +260,9 @@ export type Database = {
           funcao?: string | null
           id?: string
           observacoes?: string | null
+          observacoes_pagamento?: string | null
+          pago?: boolean | null
+          pago_em?: string | null
           profissional_id?: string | null
           profissional_nome_manual?: string | null
           reserva_id?: string | null
@@ -173,6 +274,9 @@ export type Database = {
           funcao?: string | null
           id?: string
           observacoes?: string | null
+          observacoes_pagamento?: string | null
+          pago?: boolean | null
+          pago_em?: string | null
           profissional_id?: string | null
           profissional_nome_manual?: string | null
           reserva_id?: string | null

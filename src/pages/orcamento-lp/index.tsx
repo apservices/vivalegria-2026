@@ -22,7 +22,7 @@ export default function OrcamentoLP() {
       <HeadSEO
         title="Solicite seu Orçamento | Vivalegria Recreação"
         description="Receba uma proposta personalizada para a festa do seu filho. Recreação, oficinas e muita diversão."
-        path="/orcamento-lp"
+        canonical="https://www.vivalegria.com.br/orcamento-lp"
       />
 
       <main className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-12 px-4">
