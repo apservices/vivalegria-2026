@@ -14,7 +14,7 @@ import {
   hasTrackingConsent,
 } from '@/utils/tracking';
 
-type WhatsAppSource = 'header' | 'footer' | 'floating_button' | 'landing_page' | 'form' | 'page';
+type WhatsAppSource = 'header' | 'footer' | 'floating_button' | 'landing_page' | 'form' | 'page' | 'obrigado_page';
 type FormType = 'orcamento' | 'contratar' | 'contato' | 'candidatura' | 'avaliacao' | 'pesquisa';
 type LandingPageName = 'festa-infantil' | 'recreacao-infantil-sp' | 'corporativo' | 'orcamento' | 'pacotes' | 'oficinas';
 
