@@ -14,7 +14,7 @@ import logoVivalegria from "@/assets/logo-vivalegria-new.png";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { user, isAdmin, isLoading, signIn } = useAuth();
+  const { user, isAdmin, isCasting, isRecreador, isLoading, needsMFA, mfaVerified, signIn, checkMFAStatus } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,10 +22,34 @@ const AdminLogin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && user && isAdmin) {
-      navigate("/admin");
-    }
-  }, [user, isAdmin, isLoading, navigate]);
+    const handleRedirect = async () => {
+      if (isLoading) return;
+      
+      if (user) {
+        // Check if user needs MFA verification
+        if ((isAdmin || isCasting) && needsMFA && !mfaVerified) {
+          const mfaStatus = await checkMFAStatus();
+          if (mfaStatus.needsSetup) {
+            navigate("/admin/setup-2fa");
+            return;
+          }
+          if (mfaStatus.needsVerify) {
+            navigate("/admin/verify-2fa");
+            return;
+          }
+        }
+
+        // Redirect based on role
+        if (isAdmin || isCasting) {
+          navigate("/admin");
+        } else if (isRecreador) {
+          navigate("/recreador");
+        }
+      }
+    };
+
+    handleRedirect();
+  }, [user, isAdmin, isCasting, isRecreador, isLoading, needsMFA, mfaVerified, navigate, checkMFAStatus]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,12 +65,11 @@ const AdminLogin = () => {
     setIsSubmitting(true);
 
     try {
-      const { error: signInError } = await signIn(cleanEmail, password);
+      const { error: signInError, needsMFASetup, needsMFAVerify } = await signIn(cleanEmail, password);
 
       if (signInError) {
         const msg = signInError.message?.toLowerCase?.() || "";
 
-        // Ajuste se quiser cobrir mais casos de erro do Supabase/Auth provider
         if (msg.includes("invalid login") || msg.includes("invalid") || msg.includes("credentials")) {
           setError("E-mail ou senha incorretos.");
         } else {
@@ -55,7 +78,18 @@ const AdminLogin = () => {
         return;
       }
 
-      // O AuthContext deve atualizar user/isAdmin e o useEffect fará o redirect.
+      // Handle MFA redirects
+      if (needsMFASetup) {
+        navigate("/admin/setup-2fa");
+        return;
+      }
+
+      if (needsMFAVerify) {
+        navigate("/admin/verify-2fa");
+        return;
+      }
+
+      // The AuthContext will update user/isAdmin and the useEffect will handle redirect
     } catch (err) {
       setError("Erro ao fazer login. Tente novamente.");
     } finally {
@@ -71,14 +105,14 @@ const AdminLogin = () => {
     );
   }
 
-  if (user && !isAdmin) {
+  if (user && !isAdmin && !isCasting && !isRecreador) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
         <Card className="p-8 max-w-md w-full text-center">
           <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
           <h1 className="text-xl font-bold mb-2">Acesso negado</h1>
           <p className="text-muted-foreground mb-4">
-            Sua conta não possui permissões de administrador.
+            Sua conta não possui permissões de acesso.
           </p>
           <Button onClick={() => navigate("/")} variant="outline">
             Voltar para o site
