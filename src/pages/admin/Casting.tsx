@@ -1,4 +1,4 @@
-﻿import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -15,6 +15,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,6 +74,7 @@ interface Reserva {
 
 const Casting: React.FC = () => {
   const { toast } = useToast();
+  const { isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -142,7 +144,7 @@ const Casting: React.FC = () => {
         reserva_id: reservaId,
         profissional_id: profissionalId || null,
         profissional_nome_manual: nomeManual || null,
-        cache: cache ?? null,
+        cache: isAdmin ? (cache ?? null) : null, // Only admins can set cache
         funcao: funcao || "Recreador",
       });
       if (error) throw error;
@@ -194,9 +196,10 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Update cachê
+  // Update cachê - only for admins
   const updateCacheMutation = useMutation({
     mutationFn: async ({ id, cache }: { id: string; cache: number }) => {
+      if (!isAdmin) throw new Error("Apenas admins podem editar cachês");
       const { error } = await supabase
         .from("evento_casting")
         .update({ cache })
@@ -208,8 +211,9 @@ const Casting: React.FC = () => {
     },
   });
 
-  // Import CSV
+  // Import CSV - only for admins
   const handleImportCSV = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!isAdmin) return;
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -329,33 +333,36 @@ const Casting: React.FC = () => {
               Gerencie a alocação de profissionais para cada evento
             </p>
           </div>
-          <Dialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Upload className="w-4 h-4 mr-2" />
-                Importar Profissionais
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Importar Profissionais</DialogTitle>
-                <DialogDescription>
-                  Selecione um arquivo CSV com os dados dos profissionais
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4">
-                <Input type="file" accept=".csv" onChange={handleImportCSV} />
-                <p className="text-sm text-muted-foreground">
-                  O CSV deve conter as colunas: Nome completo, Apelido,
-                  Telefone, Email, Registro
-                </p>
-              </div>
-            </DialogContent>
-          </Dialog>
+          {/* Import button - only for admins */}
+          {isAdmin && (
+            <Dialog open={isImportDialogOpen} onOpenChange={setIsImportDialogOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Importar Profissionais
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Importar Profissionais</DialogTitle>
+                  <DialogDescription>
+                    Selecione um arquivo CSV com os dados dos profissionais
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <Input type="file" accept=".csv" onChange={handleImportCSV} />
+                  <p className="text-sm text-muted-foreground">
+                    O CSV deve conter as colunas: Nome completo, Apelido,
+                    Telefone, Email, Registro
+                  </p>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className={`grid grid-cols-1 gap-4 ${isAdmin ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           <Card className="p-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -393,27 +400,30 @@ const Casting: React.FC = () => {
               </div>
             </div>
           </Card>
-          <Card className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <DollarSign className="w-5 h-5 text-blue-600" />
+          {/* Financial stats - only for admins */}
+          {isAdmin && (
+            <Card className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <DollarSign className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">
+                    Total Cachês (Mês)
+                  </p>
+                  <p className="text-2xl font-bold">
+                    R{"$ "}
+                    {(
+                      allCasting?.reduce(
+                        (acc, c) => acc + (c.cache || 0),
+                        0
+                      ) || 0
+                    ).toLocaleString("pt-BR")}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">
-                  Total Cachês (Mês)
-                </p>
-                <p className="text-2xl font-bold">
-                  R{"$ "}
-                  {(
-                    allCasting?.reduce(
-                      (acc, c) => acc + (c.cache || 0),
-                      0
-                    ) || 0
-                  ).toLocaleString("pt-BR")}
-                </p>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          )}
         </div>
 
         {/* Filtros */}
@@ -485,7 +495,7 @@ const Casting: React.FC = () => {
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground mb-4">
+                      <div className={`grid grid-cols-1 gap-2 text-sm text-muted-foreground mb-4 ${isAdmin ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           {format(
@@ -504,11 +514,14 @@ const Casting: React.FC = () => {
                           {reserva.numero_criancas} crianças (
                           {reserva.pacote_tipo})
                         </div>
-                        <div className="flex items-center gap-2">
-                          <DollarSign className="w-4 h-4" />
-                          Cachê Total: R{"$ "}
-                          {totalCache.toLocaleString("pt-BR")}
-                        </div>
+                        {/* Financial info - only for admins */}
+                        {isAdmin && (
+                          <div className="flex items-center gap-2">
+                            <DollarSign className="w-4 h-4" />
+                            Cachê Total: R{"$ "}
+                            {totalCache.toLocaleString("pt-BR")}
+                          </div>
+                        )}
                       </div>
 
                       <div className="space-y-2">
@@ -527,22 +540,25 @@ const Casting: React.FC = () => {
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <div className="flex items-center gap-1">
-                                <span className="text-sm text-muted-foreground">
-                                  R{"$"}
-                                </span>
-                                <Input
-                                  className="w-20 h-8 text-right"
-                                  type="number"
-                                  defaultValue={casting.cache || 0}
-                                  onBlur={(e) =>
-                                    updateCacheMutation.mutate({
-                                      id: casting.id,
-                                      cache: Number(e.target.value),
-                                    })
-                                  }
-                                />
-                              </div>
+                              {/* Cache edit - only for admins */}
+                              {isAdmin && (
+                                <div className="flex items-center gap-1">
+                                  <span className="text-sm text-muted-foreground">
+                                    R{"$"}
+                                  </span>
+                                  <Input
+                                    className="w-20 h-8 text-right"
+                                    type="number"
+                                    defaultValue={casting.cache || 0}
+                                    onBlur={(e) =>
+                                      updateCacheMutation.mutate({
+                                        id: casting.id,
+                                        cache: Number(e.target.value),
+                                      })
+                                    }
+                                  />
+                                </div>
+                              )}
                               <Button
                                 size="icon"
                                 variant={
@@ -620,7 +636,7 @@ const Casting: React.FC = () => {
                                       reservaId: reserva.id,
                                       profissionalId: prof.id,
                                       funcao: "Recreador",
-                                      cache: 150,
+                                      cache: isAdmin ? 150 : undefined,
                                     });
                                     setProfissionalSearch("");
                                   }}
@@ -656,7 +672,7 @@ const Casting: React.FC = () => {
                                         reservaId: reserva.id,
                                         nomeManual: input.value,
                                         funcao: "Recreador",
-                                        cache: 150,
+                                        cache: isAdmin ? 150 : undefined,
                                       });
                                       input.value = "";
                                     }

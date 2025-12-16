@@ -417,6 +417,82 @@ export type Database = {
         }
         Relationships: []
       }
+      profissional_auth: {
+        Row: {
+          created_at: string | null
+          id: string
+          profissional_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          profissional_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          profissional_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profissional_auth_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: true
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reclamacoes: {
+        Row: {
+          categoria: string
+          created_at: string | null
+          created_by: string | null
+          descricao: string
+          id: string
+          protocolo: string
+          reserva_id: string
+          status: string
+          tratativa_interna: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          categoria: string
+          created_at?: string | null
+          created_by?: string | null
+          descricao: string
+          id?: string
+          protocolo: string
+          reserva_id: string
+          status?: string
+          tratativa_interna?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          categoria?: string
+          created_at?: string | null
+          created_by?: string | null
+          descricao?: string
+          id?: string
+          protocolo?: string
+          reserva_id?: string
+          status?: string
+          tratativa_interna?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reclamacoes_reserva_id_fkey"
+            columns: ["reserva_id"]
+            isOneToOne: false
+            referencedRelation: "reservas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reservas: {
         Row: {
           cep: string | null
@@ -432,18 +508,23 @@ export type Database = {
           email: string
           email_enviado_em: string | null
           endereco: string | null
+          endereco_evento_completo: string | null
+          endereco_residencial: string | null
           extras_selecionados: string[] | null
+          faixa_etaria: string | null
           hora_inicio: string
           id: string
           local_evento: string
           nome_completo: string
           numero_criancas: number
+          observacoes_evento: string | null
           oficinas_selecionadas: string[] | null
           pacote_tipo: string
           status: string
           telefone: string
           tipo_cadastro: Database["public"]["Enums"]["tipo_cadastro"]
           tipo_cliente: Database["public"]["Enums"]["tipo_cliente"]
+          tipo_espaco: string | null
           total_calculado: number
           updated_at: string
         }
@@ -461,18 +542,23 @@ export type Database = {
           email: string
           email_enviado_em?: string | null
           endereco?: string | null
+          endereco_evento_completo?: string | null
+          endereco_residencial?: string | null
           extras_selecionados?: string[] | null
+          faixa_etaria?: string | null
           hora_inicio: string
           id?: string
           local_evento: string
           nome_completo: string
           numero_criancas?: number
+          observacoes_evento?: string | null
           oficinas_selecionadas?: string[] | null
           pacote_tipo: string
           status?: string
           telefone: string
           tipo_cadastro: Database["public"]["Enums"]["tipo_cadastro"]
           tipo_cliente: Database["public"]["Enums"]["tipo_cliente"]
+          tipo_espaco?: string | null
           total_calculado: number
           updated_at?: string
         }
@@ -490,18 +576,23 @@ export type Database = {
           email?: string
           email_enviado_em?: string | null
           endereco?: string | null
+          endereco_evento_completo?: string | null
+          endereco_residencial?: string | null
           extras_selecionados?: string[] | null
+          faixa_etaria?: string | null
           hora_inicio?: string
           id?: string
           local_evento?: string
           nome_completo?: string
           numero_criancas?: number
+          observacoes_evento?: string | null
           oficinas_selecionadas?: string[] | null
           pacote_tipo?: string
           status?: string
           telefone?: string
           tipo_cadastro?: Database["public"]["Enums"]["tipo_cadastro"]
           tipo_cliente?: Database["public"]["Enums"]["tipo_cliente"]
+          tipo_espaco?: string | null
           total_calculado?: number
           updated_at?: string
         }
@@ -598,6 +689,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_casting_or_admin: { Args: { _user_id: string }; Returns: boolean }
       lookup_cliente_by_cpf_cnpj: {
         Args: { p_cpf_cnpj: string }
         Returns: Json
@@ -609,7 +701,7 @@ export type Database = {
       validate_pesquisa_token: { Args: { p_token: string }; Returns: Json }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "casting" | "recreador"
       tipo_cadastro: "pf" | "pj"
       tipo_cliente: "existente" | "novo"
     }
@@ -739,7 +831,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "casting", "recreador"],
       tipo_cadastro: ["pf", "pj"],
       tipo_cliente: ["existente", "novo"],
     },
