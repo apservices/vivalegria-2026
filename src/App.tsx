@@ -38,6 +38,7 @@ import AdminRecreadores from "./pages/admin/recreadores";
 import AdminReservasKanban from "./pages/admin/ReservasKanban";
 import AdminLogs from "./pages/admin/Logs";
 import AdminReclamacoes from "./pages/admin/Reclamacoes";
+import AdminImportarDados from "./pages/admin/ImportarDados";
 import NotFound from "./pages/NotFound";
 
 // NOVAS LANDING PAGES
@@ -94,6 +95,7 @@ const App = () => (
               <Route path="/admin/avaliacoes" element={<RoleGuard allowedRoles={['admin']}><AdminAvaliacoes /></RoleGuard>} />
               <Route path="/admin/logs" element={<RoleGuard allowedRoles={['admin']}><AdminLogs /></RoleGuard>} />
               <Route path="/admin/reclamacoes" element={<RoleGuard allowedRoles={['admin']}><AdminReclamacoes /></RoleGuard>} />
+              <Route path="/admin/importar-dados" element={<RoleGuard allowedRoles={['admin']}><AdminImportarDados /></RoleGuard>} />
               <Route path="/admin/config-comunicacoes" element={<RoleGuard allowedRoles={['admin']}><AdminConfigComunicacoes /></RoleGuard>} />
 
               {/* CADASTRO RECREADOR - Público */}
