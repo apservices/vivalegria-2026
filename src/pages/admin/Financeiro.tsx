@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DollarSign, Calendar, User, CheckCircle, Clock, Filter } from "lucide-react";
+import { DollarSign, Calendar, User, CheckCircle, Clock, Filter, Download } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,6 +18,8 @@ import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { format, startOfMonth, endOfMonth, subMonths, isWithinInterval, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { logAdminAction } from "@/utils/adminLogs";
+import { exportFinanceiroEventos, exportFinanceiroRecreadores } from "@/utils/exportCSV";
 
 interface CastingComEvento {
   id: string;
@@ -181,7 +183,7 @@ const Financeiro = () => {
   const totalPagoGeral = filteredCastings.filter((c) => c.pago).reduce((sum, c) => sum + (Number(c.cache) || 0), 0);
   const saldoGeral = totalCacheGeral - totalPagoGeral;
 
-  const togglePago = async (castingId: string, currentPago: boolean) => {
+  const togglePago = async (castingId: string, currentPago: boolean, casting: CastingComEvento) => {
     try {
       const newPago = !currentPago;
       const { error } = await supabase
@@ -193,6 +195,14 @@ const Financeiro = () => {
         .eq("id", castingId);
 
       if (error) throw error;
+
+      // Registrar log
+      const profissionalNome = casting.profissional?.apelido || casting.profissional?.nome_completo || casting.profissional_nome_manual || 'Desconhecido';
+      await logAdminAction('CACHE_PAGO', casting.reserva_id, {
+        profissional: profissionalNome,
+        valor: Number(casting.cache || 0),
+        status: newPago ? 'pago' : 'pendente',
+      });
 
       setCastings((prev) =>
         prev.map((c) =>
@@ -216,6 +226,14 @@ const Financeiro = () => {
     }
   };
 
+  const handleExportEventos = () => {
+    exportFinanceiroEventos(eventosAgrupados);
+  };
+
+  const handleExportRecreadores = () => {
+    exportFinanceiroRecreadores(recreadoresAgrupados);
+  };
+
   if (isLoading || !user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -235,17 +253,19 @@ const Financeiro = () => {
             </p>
           </div>
 
-          <Select value={periodo} onValueChange={setPeriodo}>
-            <SelectTrigger className="w-[200px]">
-              <Filter className="w-4 h-4 mr-2" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="mes_atual">Mês Atual</SelectItem>
-              <SelectItem value="mes_anterior">Mês Anterior</SelectItem>
-              <SelectItem value="trimestre">Último Trimestre</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2">
+            <Select value={periodo} onValueChange={setPeriodo}>
+              <SelectTrigger className="w-[200px]">
+                <Filter className="w-4 h-4 mr-2" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mes_atual">Mês Atual</SelectItem>
+                <SelectItem value="mes_anterior">Mês Anterior</SelectItem>
+                <SelectItem value="trimestre">Último Trimestre</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* KPIs */}
@@ -305,6 +325,13 @@ const Financeiro = () => {
           {/* Por Evento */}
           <TabsContent value="eventos">
             <Card>
+              <CardHeader className="pb-2 flex flex-row items-center justify-between">
+                <CardTitle className="text-lg">Eventos do Período</CardTitle>
+                <Button variant="outline" size="sm" onClick={handleExportEventos}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Exportar CSV
+                </Button>
+              </CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -348,7 +375,7 @@ const Financeiro = () => {
                                   <div key={c.id} className="flex items-center gap-2 text-sm">
                                     <Checkbox
                                       checked={c.pago || false}
-                                      onCheckedChange={() => togglePago(c.id, c.pago || false)}
+                                      onCheckedChange={() => togglePago(c.id, c.pago || false, c)}
                                     />
                                     <span className={c.pago ? "line-through text-muted-foreground" : ""}>
                                       {c.profissional?.apelido || c.profissional?.nome_completo || c.profissional_nome_manual || "—"}
@@ -382,6 +409,13 @@ const Financeiro = () => {
           {/* Por Recreador */}
           <TabsContent value="recreadores">
             <Card>
+              <CardHeader className="pb-2 flex flex-row items-center justify-between">
+                <CardTitle className="text-lg">Cachês por Recreador</CardTitle>
+                <Button variant="outline" size="sm" onClick={handleExportRecreadores}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Exportar CSV
+                </Button>
+              </CardHeader>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">

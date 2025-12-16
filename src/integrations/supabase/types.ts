@@ -18,24 +18,30 @@ export type Database = {
         Row: {
           acao: string
           created_at: string | null
+          descricao: string | null
           detalhes: Json | null
           id: string
+          payload: Json | null
           reserva_id: string | null
           usuario_admin: string | null
         }
         Insert: {
           acao: string
           created_at?: string | null
+          descricao?: string | null
           detalhes?: Json | null
           id?: string
+          payload?: Json | null
           reserva_id?: string | null
           usuario_admin?: string | null
         }
         Update: {
           acao?: string
           created_at?: string | null
+          descricao?: string | null
           detalhes?: Json | null
           id?: string
+          payload?: Json | null
           reserva_id?: string | null
           usuario_admin?: string | null
         }
@@ -144,6 +150,7 @@ export type Database = {
           endereco: string | null
           id: string
           nome_completo: string
+          notas: string | null
           telefone: string | null
           tipo_cadastro: string
           updated_at: string
@@ -158,6 +165,7 @@ export type Database = {
           endereco?: string | null
           id?: string
           nome_completo: string
+          notas?: string | null
           telefone?: string | null
           tipo_cadastro: string
           updated_at?: string
@@ -172,6 +180,7 @@ export type Database = {
           endereco?: string | null
           id?: string
           nome_completo?: string
+          notas?: string | null
           telefone?: string | null
           tipo_cadastro?: string
           updated_at?: string

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Filter, Eye, Check, X, Trash2, FileText } from "lucide-react";
+import { Search, Filter, Eye, Check, X, Trash2, FileText, Download, Kanban } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +31,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/admin/AdminLayout";
+import ReservationTimeline from "@/components/admin/ReservationTimeline";
+import { logAdminAction } from "@/utils/adminLogs";
+import { exportReservas } from "@/utils/exportCSV";
 
 const AdminReservas = () => {
   const { user, isAdmin, isLoading } = useAuth();
@@ -133,6 +136,10 @@ const AdminReservas = () => {
 
       if (error) throw error;
 
+      await logAdminAction('RESERVA_EDITADA', editReserva.id, {
+        campos: 'dados atualizados',
+      });
+
       toast({
         title: "Dados atualizados",
         description: "As informações da reserva foram salvas com sucesso.",
@@ -232,6 +239,11 @@ const AdminReservas = () => {
 
         if (error) throw error;
 
+        await logAdminAction('STATUS_ATUALIZADO', id, {
+          de: reserva?.status || 'desconhecido',
+          para: newStatus,
+        });
+
         toast({
           title: "Status atualizado",
           description: `Reserva marcada como ${newStatus}`,
@@ -247,6 +259,10 @@ const AdminReservas = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleExportCSV = () => {
+    exportReservas(filteredReservas);
   };
 
   const deleteReserva = async () => {
@@ -323,11 +339,23 @@ const AdminReservas = () => {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Reservas</h1>
-          <p className="text-muted-foreground">
-            Gerencie todas as reservas, aprovação e contratos
-          </p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">Reservas</h1>
+            <p className="text-muted-foreground">
+              Gerencie todas as reservas, aprovação e contratos
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate('/admin/reservas-kanban')}>
+              <Kanban className="w-4 h-4 mr-2" />
+              Ver Pipeline
+            </Button>
+            <Button variant="outline" onClick={handleExportCSV}>
+              <Download className="w-4 h-4 mr-2" />
+              Exportar CSV
+            </Button>
+          </div>
         </div>
 
         {/* Filters */}
@@ -694,6 +722,11 @@ const AdminReservas = () => {
                   }
                   placeholder="Informações adicionais relevantes para o evento"
                 />
+              </div>
+
+              {/* Timeline */}
+              <div className="border-t pt-4 mt-4">
+                <ReservationTimeline reservaId={editReserva.id} />
               </div>
 
               <div className="flex justify-between items-center pt-2">
