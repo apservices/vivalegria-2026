@@ -50,7 +50,10 @@ interface Stats {
   totalCacheMes: number;
   reservasSemana: number;
   reservasMes: number;
-  taxaConfirmacao: number; // confirmadas / totais
+  taxaConfirmacao: number;
+  totalClientes: number;
+  totalProfissionais: number;
+  profissionaisAtivos: number;
 }
 
 const AdminDashboard = () => {
@@ -68,6 +71,9 @@ const AdminDashboard = () => {
     reservasSemana: 0,
     reservasMes: 0,
     taxaConfirmacao: 0,
+    totalClientes: 0,
+    totalProfissionais: 0,
+    profissionaisAtivos: 0,
   });
 
   const [recentReservas, setRecentReservas] = useState<Reserva[]>([]);
@@ -90,7 +96,7 @@ const AdminDashboard = () => {
 
   const fetchStatsAndData = async () => {
     try {
-      const [reservasResult, candidaturasResult, castingResult] =
+      const [reservasResult, candidaturasResult, castingResult, clientesResult, profissionaisResult] =
         await Promise.all([
           supabase
             .from("reservas")
@@ -99,11 +105,17 @@ const AdminDashboard = () => {
             ),
           supabase.from("candidaturas").select("id, status, created_at"),
           supabase.from("evento_casting").select("id, reserva_id, cache"),
+          supabase.from("clientes").select("id", { count: 'exact', head: true }),
+          supabase.from("profissionais").select("id, status"),
         ]);
 
       const reservas = (reservasResult.data || []) as Reserva[];
       const candidaturas = (candidaturasResult.data || []) as Candidatura[];
       const casting = (castingResult.data || []) as EventoCasting[];
+      const totalClientes = clientesResult.count || 0;
+      const profissionais = profissionaisResult.data || [];
+      const totalProfissionais = profissionais.length;
+      const profissionaisAtivos = profissionais.filter((p: { status: string | null }) => p.status === 'ativo').length;
 
       // KPIs básicos
       const reservasPendentes = reservas.filter(
@@ -197,6 +209,9 @@ const AdminDashboard = () => {
         reservasSemana,
         reservasMes,
         taxaConfirmacao,
+        totalClientes,
+        totalProfissionais,
+        profissionaisAtivos,
       });
       setRecentReservas(recent);
       setProximosEventos(proximos);
@@ -427,6 +442,66 @@ const AdminDashboard = () => {
                 <p className="text-xs text-muted-foreground mt-1">
                   Soma dos cachês lançados para eventos do mês atual.
                 </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Base de Dados */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total de Clientes</p>
+                <p className="text-3xl font-bold mt-1">
+                  {loadingStats ? "..." : stats.totalClientes}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Clientes cadastrados na base
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                <Users className="w-6 h-6 text-indigo-600" />
+              </div>
+            </div>
+            <Button asChild variant="link" className="mt-2 p-0 h-auto">
+              <Link to="/admin/clientes">Ver clientes →</Link>
+            </Button>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total de Profissionais</p>
+                <p className="text-3xl font-bold mt-1">
+                  {loadingStats ? "..." : stats.totalProfissionais}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Recreadores cadastrados
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-cyan-100 flex items-center justify-center">
+                <Users className="w-6 h-6 text-cyan-600" />
+              </div>
+            </div>
+            <Button asChild variant="link" className="mt-2 p-0 h-auto">
+              <Link to="/admin/recreadores">Ver recreadores →</Link>
+            </Button>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Profissionais Ativos</p>
+                <p className="text-3xl font-bold mt-1 text-green-600">
+                  {loadingStats ? "..." : stats.profissionaisAtivos}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Disponíveis para eventos
+                </p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
             </div>
           </Card>

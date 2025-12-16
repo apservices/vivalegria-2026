@@ -30,11 +30,8 @@ import AdminCasting from "./pages/admin/Casting";
 import AdminAvaliacoes from "./pages/admin/Avaliacoes";
 import AdminFinanceiro from "./pages/admin/Financeiro";
 import AdminConfigComunicacoes from "./pages/admin/ConfigComunicacoes";
-<<<<<<< HEAD
-import AdminClientes from "./pages/admin/Clientes";        // ?? NOVA
-import AdminRecreadores from "./pages/admin/Recreadores"; // ?? NOVA
-=======
->>>>>>> main
+import AdminClientes from "./pages/admin/clientes";
+import AdminRecreadores from "./pages/admin/recreadores";
 import NotFound from "./pages/NotFound";
 
 // NOVAS LANDING PAGES

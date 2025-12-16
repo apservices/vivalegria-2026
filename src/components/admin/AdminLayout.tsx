@@ -26,7 +26,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/reservas", label: "Reservas", icon: Calendar },
-    { href: "/admin/casting", label: "Casting", icon: UserCheck },
+    { href: "/admin/clientes", label: "Clientes", icon: Users },
+    { href: "/admin/recreadores", label: "Recreadores", icon: UserCheck },
+    { href: "/admin/casting", label: "Casting", icon: Calendar },
     { href: "/admin/financeiro", label: "Financeiro", icon: DollarSign },
     { href: "/admin/candidaturas", label: "Candidaturas", icon: Users },
     { href: "/admin/avaliacoes", label: "Avaliações", icon: Star },
