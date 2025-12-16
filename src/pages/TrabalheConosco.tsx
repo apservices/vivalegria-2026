@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import type React from "react";
-import { Heart, Users, Clock, Star, Send, CheckCircle2 } from "lucide-react";
+import { Heart, Users, Clock, Star, Send, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -237,15 +238,34 @@ const TrabalheConosco = () => {
           </div>
         </section>
 
-        {/* Application Form */}
+        {/* CTA para Cadastro Completo */}
+        <section className="py-16 bg-gradient-to-r from-[#FF731D] to-[#FFD836]">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Quer fazer parte da equipe?
+            </h2>
+            <p className="text-white/90 mb-8 max-w-2xl mx-auto">
+              Complete seu cadastro profissional completo e aumente suas chances 
+              de ser selecionado para os melhores eventos!
+            </p>
+            <Button asChild size="lg" variant="secondary" className="rounded-full">
+              <Link to="/cadastro-recreador">
+                Fazer Cadastro Completo
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Application Form - Quick Version */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-4">
-                Envie sua candidatura
+                Candidatura Rápida
               </h2>
               <p className="text-center text-muted-foreground mb-8">
-                Preencha o formulário abaixo e entraremos em contato!
+                Envie uma candidatura rápida e complete o cadastro depois!
               </p>
 
               <Card className="p-8">

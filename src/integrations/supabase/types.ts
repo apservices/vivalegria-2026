@@ -348,6 +348,7 @@ export type Database = {
           data_nascimento: string | null
           email: string | null
           endereco: string | null
+          experiencia_sucesso: string | null
           experiencia_tempo: string | null
           faixa_etaria_experiencia: string | null
           formacao: string | null
@@ -355,8 +356,12 @@ export type Database = {
           habilidades: Json | null
           id: string
           interesse_pacotes: boolean | null
+          interesses_curto_longo_prazo: string | null
           nome_completo: string
           pix_chave: string | null
+          por_que_recreacao: string | null
+          quer_mais_oportunidades: string | null
+          referencia_profissional: string | null
           registro: string | null
           status: string | null
           telefone: string | null
@@ -373,6 +378,7 @@ export type Database = {
           data_nascimento?: string | null
           email?: string | null
           endereco?: string | null
+          experiencia_sucesso?: string | null
           experiencia_tempo?: string | null
           faixa_etaria_experiencia?: string | null
           formacao?: string | null
@@ -380,8 +386,12 @@ export type Database = {
           habilidades?: Json | null
           id?: string
           interesse_pacotes?: boolean | null
+          interesses_curto_longo_prazo?: string | null
           nome_completo: string
           pix_chave?: string | null
+          por_que_recreacao?: string | null
+          quer_mais_oportunidades?: string | null
+          referencia_profissional?: string | null
           registro?: string | null
           status?: string | null
           telefone?: string | null
@@ -398,6 +408,7 @@ export type Database = {
           data_nascimento?: string | null
           email?: string | null
           endereco?: string | null
+          experiencia_sucesso?: string | null
           experiencia_tempo?: string | null
           faixa_etaria_experiencia?: string | null
           formacao?: string | null
@@ -405,8 +416,12 @@ export type Database = {
           habilidades?: Json | null
           id?: string
           interesse_pacotes?: boolean | null
+          interesses_curto_longo_prazo?: string | null
           nome_completo?: string
           pix_chave?: string | null
+          por_que_recreacao?: string | null
+          quer_mais_oportunidades?: string | null
+          referencia_profissional?: string | null
           registro?: string | null
           status?: string | null
           telefone?: string | null
@@ -448,38 +463,53 @@ export type Database = {
       }
       reclamacoes: {
         Row: {
+          anexos: string[] | null
           categoria: string
+          codigo_evento_externo: string | null
           created_at: string | null
           created_by: string | null
           descricao: string
           id: string
+          nome_cliente: string | null
           protocolo: string
           reserva_id: string
+          responsavel_abertura: string | null
           status: string
+          telefone_cliente: string | null
           tratativa_interna: string | null
           updated_at: string | null
         }
         Insert: {
+          anexos?: string[] | null
           categoria: string
+          codigo_evento_externo?: string | null
           created_at?: string | null
           created_by?: string | null
           descricao: string
           id?: string
+          nome_cliente?: string | null
           protocolo: string
           reserva_id: string
+          responsavel_abertura?: string | null
           status?: string
+          telefone_cliente?: string | null
           tratativa_interna?: string | null
           updated_at?: string | null
         }
         Update: {
+          anexos?: string[] | null
           categoria?: string
+          codigo_evento_externo?: string | null
           created_at?: string | null
           created_by?: string | null
           descricao?: string
           id?: string
+          nome_cliente?: string | null
           protocolo?: string
           reserva_id?: string
+          responsavel_abertura?: string | null
           status?: string
+          telefone_cliente?: string | null
           tratativa_interna?: string | null
           updated_at?: string | null
         }

@@ -37,6 +37,7 @@ import AdminClientes from "./pages/admin/clientes";
 import AdminRecreadores from "./pages/admin/recreadores";
 import AdminReservasKanban from "./pages/admin/ReservasKanban";
 import AdminLogs from "./pages/admin/Logs";
+import AdminReclamacoes from "./pages/admin/Reclamacoes";
 import NotFound from "./pages/NotFound";
 
 // NOVAS LANDING PAGES
@@ -45,6 +46,9 @@ import OrcamentoLP from "./pages/orcamento-lp/index";
 import RecreacaoInfantilSP from "./pages/recreacao-infantil-sp/index";
 import EventosCorporativosInfantis from "./pages/eventos-corporativos-infantis/index";
 import Obrigado from "./pages/Obrigado";
+
+// FORMULÁRIO COMPLETO DE CADASTRO
+import CadastroRecreador from "./pages/CadastroRecreador";
 
 // PORTAL DO RECREADOR
 import RecreadorDashboard from "./pages/recreador/Dashboard";
@@ -89,7 +93,11 @@ const App = () => (
               <Route path="/admin/candidaturas" element={<RoleGuard allowedRoles={['admin']}><AdminCandidaturas /></RoleGuard>} />
               <Route path="/admin/avaliacoes" element={<RoleGuard allowedRoles={['admin']}><AdminAvaliacoes /></RoleGuard>} />
               <Route path="/admin/logs" element={<RoleGuard allowedRoles={['admin']}><AdminLogs /></RoleGuard>} />
+              <Route path="/admin/reclamacoes" element={<RoleGuard allowedRoles={['admin']}><AdminReclamacoes /></RoleGuard>} />
               <Route path="/admin/config-comunicacoes" element={<RoleGuard allowedRoles={['admin']}><AdminConfigComunicacoes /></RoleGuard>} />
+
+              {/* CADASTRO RECREADOR - Público */}
+              <Route path="/cadastro-recreador" element={<PublicLayout><CadastroRecreador /></PublicLayout>} />
 
               {/* PORTAL DO RECREADOR */}
               <Route path="/recreador" element={<RoleGuard allowedRoles={['recreador']}><RecreadorDashboard /></RoleGuard>} />
