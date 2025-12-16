@@ -43,17 +43,44 @@ const Setup2FA = () => {
             navigate("/admin");
             return;
           }
+          
+          // Has unverified factor - try to unenroll it first
+          const unverifiedFactor = factors.totp.find(f => f.status !== 'verified');
+          if (unverifiedFactor) {
+            await supabase.auth.mfa.unenroll({ factorId: unverifiedFactor.id });
+          }
         }
 
-        // Enroll new TOTP factor
+        // Enroll new TOTP factor with unique name
+        const uniqueName = `Vivalegria-${Date.now()}`;
         const { data, error: enrollError } = await supabase.auth.mfa.enroll({
           factorType: 'totp',
-          friendlyName: 'Vivalegria Admin'
+          friendlyName: uniqueName
         });
 
         if (enrollError) {
           console.error('MFA enroll error:', enrollError);
-          setError("Erro ao configurar 2FA. Tente novamente.");
+          
+          // If still conflict, try again without friendly name
+          if (enrollError.message?.includes('already exists')) {
+            const { data: retryData, error: retryError } = await supabase.auth.mfa.enroll({
+              factorType: 'totp'
+            });
+            
+            if (retryError) {
+              setError("Erro ao configurar 2FA. Tente fazer logout e login novamente.");
+              setIsLoading(false);
+              return;
+            }
+            
+            if (retryData) {
+              setQrCode(retryData.totp.qr_code);
+              setSecret(retryData.totp.secret);
+              setFactorId(retryData.id);
+            }
+          } else {
+            setError("Erro ao configurar 2FA. Tente novamente.");
+          }
           setIsLoading(false);
           return;
         }
