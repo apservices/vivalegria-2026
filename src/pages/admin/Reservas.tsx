@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Filter, Eye, Check, X, Trash2 } from "lucide-react";
+import { Search, Filter, Eye, Check, X, Trash2, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +45,9 @@ const AdminReservas = () => {
   const [statusFilter, setStatusFilter] = useState("all");
 
   const [selectedReserva, setSelectedReserva] = useState<any>(null);
+  const [editReserva, setEditReserva] = useState<any | null>(null);
+  const [isSavingReserva, setIsSavingReserva] = useState(false);
+
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -107,8 +110,51 @@ const AdminReservas = () => {
     setFilteredReservas(filtered);
   };
 
+  const salvarDadosReserva = async () => {
+    if (!editReserva) return;
+
+    try {
+      setIsSavingReserva(true);
+
+      const { error } = await supabase
+        .from("reservas")
+        .update({
+          nome_completo: editReserva.nome_completo,
+          email: editReserva.email,
+          telefone: editReserva.telefone,
+          data_evento: editReserva.data_evento,
+          hora_inicio: editReserva.hora_inicio,
+          local_evento: editReserva.local_evento,
+          pacote_tipo: editReserva.pacote_tipo,
+          numero_criancas: editReserva.numero_criancas,
+          observacoes: editReserva.observacoes,
+        })
+        .eq("id", editReserva.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Dados atualizados",
+        description: "As informações da reserva foram salvas com sucesso.",
+      });
+
+      setSelectedReserva(editReserva);
+      await fetchReservas();
+    } catch (error) {
+      console.error("Error updating reserva:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível salvar as alterações da reserva.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingReserva(false);
+    }
+  };
+
   const updateStatus = async (id: string, newStatus: string) => {
     try {
+      // Melhor prática: separar claramente contrato da simples mudança de status.[web:163][web:176]
       if (newStatus === "aprovado") {
         toast({
           title: "Gerando contrato...",
@@ -137,6 +183,14 @@ const AdminReservas = () => {
           title: "Contrato enviado!",
           description: `E-mail com contrato enviado para o cliente (${data?.codigo})`,
         });
+
+        // opcionalmente, marcar status como "aprovado"
+        const { error: updateError } = await supabase
+          .from("reservas")
+          .update({ status: "aprovado" })
+          .eq("id", id);
+
+        if (updateError) throw updateError;
       } else {
         const { error } = await supabase
           .from("reservas")
@@ -201,7 +255,7 @@ const AdminReservas = () => {
       case "aprovado":
         return (
           <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
-            Aprovado
+            Aprovado (contrato)
           </span>
         );
       case "confirmado":
@@ -239,7 +293,7 @@ const AdminReservas = () => {
         <div>
           <h1 className="text-3xl font-bold">Reservas</h1>
           <p className="text-muted-foreground">
-            Gerencie todas as reservas de eventos
+            Gerencie todas as reservas, aprovação e contratos
           </p>
         </div>
 
@@ -257,15 +311,15 @@ const AdminReservas = () => {
             </div>
 
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-[220px]">
                 <Filter className="w-4 h-4 mr-2" />
                 <SelectValue placeholder="Filtrar por status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="pendente">Pendente</SelectItem>
-                <SelectItem value="aprovado">Aprovado</SelectItem>
                 <SelectItem value="confirmado">Confirmado</SelectItem>
+                <SelectItem value="aprovado">Aprovado (contrato)</SelectItem>
                 <SelectItem value="cancelado">Cancelado</SelectItem>
               </SelectContent>
             </Select>
@@ -345,47 +399,39 @@ const AdminReservas = () => {
                         {reserva.pacote_tipo}
                       </td>
 
-                      <td className="py-3 px-2">{reserva.numero_criancas}</td>
+                      <td className="py-3 px-2">
+                        {reserva.numero_criancas}
+                      </td>
 
                       <td className="py-3 px-2">
                         {getStatusBadge(reserva.status)}
                       </td>
 
                       <td className="py-3 px-2 font-medium">
-                        R${" "}
-                        {Number(reserva.total_calculado).toLocaleString(
-                          "pt-BR",
-                          { minimumFractionDigits: 2 }
-                        )}
+                        R{"$ "}
+                        {Number(
+                          reserva.total_calculado || 0
+                        ).toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                        })}
                       </td>
 
                       <td className="py-3 px-2">
-                        <div className="flex items-center gap-1">
+                        <div className="flex flex-wrap items-center gap-1">
+                          {/* Ver/editar dados do cliente */}
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => setSelectedReserva(reserva)}
-                            title="Ver detalhes"
+                            onClick={() => {
+                              setSelectedReserva(reserva);
+                              setEditReserva(reserva);
+                            }}
+                            title="Ver dados do cliente"
                           >
                             <Eye className="w-4 h-4" />
                           </Button>
 
-                          {(reserva.status === "pendente" ||
-                            reserva.status === "confirmado") &&
-                            !reserva.email_enviado_em && (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() =>
-                                  updateStatus(reserva.id, "aprovado")
-                                }
-                                title="Aprovar e enviar contrato"
-                                className="text-emerald-600 hover:text-emerald-700"
-                              >
-                                <Check className="w-4 h-4" />
-                              </Button>
-                            )}
-
+                          {/* Confirmar reserva (sem contrato) */}
                           {reserva.status === "pendente" && (
                             <Button
                               variant="ghost"
@@ -393,13 +439,31 @@ const AdminReservas = () => {
                               onClick={() =>
                                 updateStatus(reserva.id, "confirmado")
                               }
-                              title="Confirmar"
+                              title="Confirmar reserva"
                               className="text-green-600 hover:text-green-700"
                             >
                               <Check className="w-4 h-4" />
                             </Button>
                           )}
 
+                          {/* Gerar contrato (somente se já confirmada e ainda sem email_enviado_em) */}
+                          {(reserva.status === "confirmado" ||
+                            reserva.status === "pendente") &&
+                            !reserva.email_enviado_em && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() =>
+                                  updateStatus(reserva.id, "aprovado")
+                                }
+                                title="Gerar contrato e enviar e-mail"
+                                className="text-emerald-600 hover:text-emerald-700"
+                              >
+                                <FileText className="w-4 h-4" />
+                              </Button>
+                            )}
+
+                          {/* Cancelar */}
                           {reserva.status !== "cancelado" && (
                             <Button
                               variant="ghost"
@@ -407,13 +471,14 @@ const AdminReservas = () => {
                               onClick={() =>
                                 updateStatus(reserva.id, "cancelado")
                               }
-                              title="Cancelar"
+                              title="Cancelar reserva"
                               className="text-red-600 hover:text-red-700"
                             >
                               <X className="w-4 h-4" />
                             </Button>
                           )}
 
+                          {/* Excluir */}
                           <Button
                             variant="ghost"
                             size="icon"
@@ -434,19 +499,197 @@ const AdminReservas = () => {
         </Card>
       </div>
 
-      {/* Details Dialog */}
+      {/* Details Dialog - ficha completa do cliente/reserva */}
       <Dialog
         open={!!selectedReserva}
-        onOpenChange={() => setSelectedReserva(null)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedReserva(null);
+            setEditReserva(null);
+          }
+        }}
       >
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Detalhes da Reserva</DialogTitle>
+            <DialogTitle>
+              Detalhes da reserva{" "}
+              {selectedReserva ? `#${selectedReserva.id.slice(0, 8)}` : ""}
+            </DialogTitle>
           </DialogHeader>
 
-          {selectedReserva && (
+          {editReserva && (
             <div className="space-y-6">
-              {/* conteúdo mantido exatamente como você enviou */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Nome completo
+                  </p>
+                  <Input
+                    value={editReserva.nome_completo || ""}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        nome_completo: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">E-mail</p>
+                  <Input
+                    value={editReserva.email || ""}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Telefone
+                  </p>
+                  <Input
+                    value={editReserva.telefone || ""}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        telefone: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Número de crianças
+                  </p>
+                  <Input
+                    type="number"
+                    value={editReserva.numero_criancas || 0}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        numero_criancas: Number(e.target.value),
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Data do evento
+                  </p>
+                  <Input
+                    type="date"
+                    value={
+                      editReserva.data_evento
+                        ? editReserva.data_evento.slice(0, 10)
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        data_evento: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Hora de início
+                  </p>
+                  <Input
+                    type="time"
+                    value={editReserva.hora_inicio || ""}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        hora_inicio: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Local do evento
+                  </p>
+                  <Input
+                    value={editReserva.local_evento || ""}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        local_evento: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Pacote</p>
+                  <Input
+                    value={editReserva.pacote_tipo || ""}
+                    onChange={(e) =>
+                      setEditReserva({
+                        ...editReserva,
+                        pacote_tipo: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Status</p>
+                  <div>{getStatusBadge(editReserva.status)}</div>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs text-muted-foreground mb-1">
+                  Observações
+                </p>
+                <Input
+                  value={editReserva.observacoes || ""}
+                  onChange={(e) =>
+                    setEditReserva({
+                      ...editReserva,
+                      observacoes: e.target.value,
+                    })
+                  }
+                  placeholder="Informações adicionais relevantes para o evento"
+                />
+              </div>
+
+              <div className="flex justify-between items-center pt-2">
+                <div className="text-xs text-muted-foreground">
+                  Criada em:{" "}
+                  {selectedReserva?.created_at
+                    ? new Date(
+                        selectedReserva.created_at
+                      ).toLocaleString("pt-BR")
+                    : "-"}
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedReserva(null);
+                      setEditReserva(null);
+                    }}
+                  >
+                    Fechar
+                  </Button>
+                  <Button
+                    onClick={salvarDadosReserva}
+                    disabled={isSavingReserva}
+                  >
+                    {isSavingReserva ? "Salvando..." : "Salvar alterações"}
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
         </DialogContent>
@@ -458,8 +701,8 @@ const AdminReservas = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir esta reserva? Esta ação não pode ser
-              desfeita.
+              Tem certeza que deseja excluir esta reserva? Esta ação não pode
+              ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
