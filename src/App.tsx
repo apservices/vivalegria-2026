@@ -1,10 +1,72 @@
-// ... todos os imports que você já tem
-import RecreadorLogin from "./pages/recreador/Login";              // NOVO
-import RecreadorAuthCallback from "./pages/recreador/AuthCallback"; // NOVO (pode ser o próprio Dashboard adaptado)
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";`r`nimport { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import { TooltipProvider } from "./components/ui/tooltip";
+import { Toaster } from "./components/ui/toaster";
+import { Sonner } from "./components/ui/sonner";
+
+import { AuthProvider } from "./contexts/AuthContext";
+import { ConfiguratorProvider } from "./contexts/ConfiguratorContext";
+
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import WhatsAppButton from "./components/WhatsAppButton";
+import CookieConsent from "./components/CookieConsent";
+
+import RoleGuard from "./components/auth/RoleGuard";
+
+/* ====================== ADMIN ====================== */
+import AdminLogin from "./pages/admin/Login";
+import Setup2FA from "./pages/admin/Setup2FA";
+import Verify2FA from "./pages/admin/Verify2FA";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminReservas from "./pages/admin/Reservas";
+import AdminReservasKanban from "./pages/admin/ReservasKanban";
+import AdminClientes from "./pages/admin/Clientes";
+import AdminRecreadores from "./pages/admin/Recreadores";
+import AdminCasting from "./pages/admin/Casting";
+import AdminFinanceiro from "./pages/admin/Financeiro";
+import AdminCandidaturas from "./pages/admin/Candidaturas";
+import AdminAvaliacoes from "./pages/admin/Avaliacoes";
+import AdminLogs from "./pages/admin/Logs";
+import AdminReclamacoes from "./pages/admin/Reclamacoes";
+import AdminImportarDados from "./pages/admin/ImportarDados";
+import AdminConfigComunicacoes from "./pages/admin/ConfigComunicacoes";
+
+/* ====================== PORTAL RECREADOR ====================== */
+import RecreadorLogin from "./pages/recreador/Login";
+import RecreadorAuthCallback from "./pages/recreador/AuthCallback"; // certifique-se de criar esse arquivo
+import RecreadorDashboard from "./pages/recreador/Dashboard";
+import RecreadorEventos from "./pages/recreador/Eventos";
+import RecreadorPagamentos from "./pages/recreador/Pagamentos";
+import RecreadorPerfil from "./pages/recreador/Perfil";
+
+/* ====================== PÚBLICO / LANDINGS ====================== */
+import CadastroRecreador from "./pages/CadastroRecreador";
+import Home from "./pages/Home";
+import Pacotes from "./pages/Pacotes";
+import Oficinas from "./pages/Oficinas";
+import QuemSomos from "./pages/QuemSomos";
+import Corporativo from "./pages/Corporativo";
+import Contato from "./pages/Contato";
+import Contratar from "./pages/Contratar";
+import GuiaParaPais from "./pages/GuiaParaPais";
+import Privacidade from "./pages/Privacidade";
+import Termos from "./pages/Termos";
+import TrabalheConosco from "./pages/TrabalheConosco";
+import AvaliacaoEvento from "./pages/AvaliacaoEvento";
+import PesquisaSatisfacao from "./pages/PesquisaSatisfacao";
+import Obrigado from "./pages/Obrigado";
+import FestaInfantil from "./pages/FestaInfantil";
+import OrcamentoLP from "./pages/OrcamentoLP";
+import RecreacaoInfantilSP from "./pages/RecreacaoInfantilSP";
+import EventosCorporativosInfantis from "./pages/EventosCorporativosInfantis";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const PublicLayout = ({ children }: { children: React.ReactNode }) => (
+const queryClient = new QueryClient();`r`n`r`nconst PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
     <main className="flex-grow">{children}</main>
@@ -134,9 +196,7 @@ const App = () => (
               />
 
               {/* ====================== PORTAL RECREADOR ====================== */}
-              {/* Login via magic link */}
               <Route path="/recreador/login" element={<RecreadorLogin />} />
-              {/* Callback do Supabase após clicar no magic link */}
               <Route
                 path="/recreador/auth/callback"
                 element={
