@@ -2,6 +2,17 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
+interface SignInResult {
+  error: Error | null;
+  needsMFASetup?: boolean;
+  needsMFAVerify?: boolean;
+}
+
+interface MFAStatus {
+  needsSetup: boolean;
+  needsVerify: boolean;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -13,9 +24,19 @@ interface AuthContextType {
   needsMFA: boolean;
   mfaVerified: boolean;
   currentAAL: string | null;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null; needsMFASetup?: boolean; needsMFAVerify?: boolean }>;
+
+  // Admin / Casting login (senha + MFA)
+  signIn: (email: string, password: string) => Promise<SignInResult>;
+
+  // Recreador – magic link
+  signInRecreadorMagic: (email: string) => Promise<void>;
+
+  // Fluxo de reset de senha (opcional para admin/casting)
+  sendPasswordReset: (email: string, redirectPath?: string) => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<void>;
+
   signOut: () => Promise<void>;
-  checkMFAStatus: () => Promise<{ needsSetup: boolean; needsVerify: boolean }>;
+  checkMFAStatus: () => Promise<MFAStatus>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,26 +55,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const checkUserRoles = async (userId: string) => {
     try {
-      // Check all roles in parallel
       const [adminRes, castingRes, recreadorRes] = await Promise.all([
-        supabase.rpc('has_role', { _user_id: userId, _role: 'admin' }),
-        supabase.rpc('has_role', { _user_id: userId, _role: 'casting' }),
-        supabase.rpc('has_role', { _user_id: userId, _role: 'recreador' }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "casting" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "recreador" }),
       ]);
 
       const isAdminUser = adminRes.data === true;
       const isCastingUser = castingRes.data === true;
       const isRecreadorUser = recreadorRes.data === true;
 
-      // If recreador, get profissional_id
       let profId: string | null = null;
       if (isRecreadorUser) {
         const { data } = await supabase
-          .from('profissional_auth')
-          .select('profissional_id')
-          .eq('user_id', userId)
+          .from("profissional_auth")
+          .select("profissional_id")
+          .eq("user_id", userId)
           .single();
-        profId = data?.profissional_id || null;
+        profId = data?.profissional_id ?? null;
       }
 
       return {
@@ -63,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         profissionalId: profId,
       };
     } catch (err) {
-      console.error('Error checking user roles:', err);
+      console.error("Error checking user roles:", err);
       return {
         isAdmin: false,
         isCasting: false,
@@ -73,12 +92,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const checkMFAStatus = async (): Promise<{ needsSetup: boolean; needsVerify: boolean }> => {
+  const checkMFAStatus = async (): Promise<MFAStatus> => {
     try {
-      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      const {
+        data: { user: currentUser },
+      } = await supabase.auth.getUser();
       if (!currentUser) return { needsSetup: false, needsVerify: false };
 
-      // Check if user is admin or casting (they need MFA)
       const roles = await checkUserRoles(currentUser.id);
       const requiresMFA = roles.isAdmin || roles.isCasting;
 
@@ -90,95 +110,86 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       setNeedsMFA(true);
 
-      // Check MFA factors
       const { data: factors } = await supabase.auth.mfa.listFactors();
-      const hasVerifiedTOTP = factors?.totp?.some(f => f.status === 'verified') || false;
+      const hasVerifiedTOTP =
+        factors?.totp?.some((f) => f.status === "verified") || false;
 
       if (!hasVerifiedTOTP) {
-        // Needs to set up MFA
         setMfaVerified(false);
         return { needsSetup: true, needsVerify: false };
       }
 
-      // Check current AAL level
-      const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-      
+      const { data: aalData } =
+        await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+
       if (aalData) {
         setCurrentAAL(aalData.currentLevel);
       }
 
-      if (aalData?.currentLevel === 'aal2') {
-        // MFA verified for this session
+      if (aalData?.currentLevel === "aal2") {
         setMfaVerified(true);
         return { needsSetup: false, needsVerify: false };
       }
 
-      // Has TOTP but hasn't verified this session
       setMfaVerified(false);
       return { needsSetup: false, needsVerify: true };
     } catch (err) {
-      console.error('Error checking MFA status:', err);
+      console.error("Error checking MFA status:", err);
       return { needsSetup: false, needsVerify: false };
     }
   };
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      setSession(newSession);
+      setUser(newSession?.user ?? null);
 
-        if (session?.user) {
-          setTimeout(async () => {
-            const roles = await checkUserRoles(session.user.id);
-            setIsAdmin(roles.isAdmin);
-            setIsCasting(roles.isCasting);
-            setIsRecreador(roles.isRecreador);
-            setProfissionalId(roles.profissionalId);
-            
-            // Check MFA status
-            await checkMFAStatus();
-            
-            setIsLoading(false);
-          }, 0);
-        } else {
-          setIsAdmin(false);
-          setIsCasting(false);
-          setIsRecreador(false);
-          setProfissionalId(null);
-          setNeedsMFA(false);
-          setMfaVerified(false);
-          setCurrentAAL(null);
-          setIsLoading(false);
-        }
-      }
-    );
+      if (newSession?.user) {
+        const roles = await checkUserRoles(newSession.user.id);
+        setIsAdmin(roles.isAdmin);
+        setIsCasting(roles.isCasting);
+        setIsRecreador(roles.isRecreador);
+        setProfissionalId(roles.profissionalId);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-
-      if (session?.user) {
-        checkUserRoles(session.user.id).then(async roles => {
-          setIsAdmin(roles.isAdmin);
-          setIsCasting(roles.isCasting);
-          setIsRecreador(roles.isRecreador);
-          setProfissionalId(roles.profissionalId);
-          
-          // Check MFA status
-          await checkMFAStatus();
-          
-          setIsLoading(false);
-        });
+        await checkMFAStatus();
+        setIsLoading(false);
       } else {
+        setIsAdmin(false);
+        setIsCasting(false);
+        setIsRecreador(false);
+        setProfissionalId(null);
+        setNeedsMFA(false);
+        setMfaVerified(false);
+        setCurrentAAL(null);
         setIsLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        const roles = await checkUserRoles(session.user.id);
+        setIsAdmin(roles.isAdmin);
+        setIsCasting(roles.isCasting);
+        setIsRecreador(roles.isRecreador);
+        setProfissionalId(roles.profissionalId);
+
+        await checkMFAStatus();
+      }
+      setIsLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  // Login por senha (admin/casting; recreador também pode usar se quiser)
+  const signIn = async (email: string, password: string): Promise<SignInResult> => {
     const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -188,21 +199,52 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { error };
     }
 
-    // After successful login, check MFA requirements
     if (data.user) {
       const mfaStatus = await checkMFAStatus();
-      return { 
-        error: null, 
+      return {
+        error: null,
         needsMFASetup: mfaStatus.needsSetup,
-        needsMFAVerify: mfaStatus.needsVerify
+        needsMFAVerify: mfaStatus.needsVerify,
       };
     }
 
     return { error: null };
   };
 
+  // Login recreador por magic link (Supabase OTP)
+  const signInRecreadorMagic = async (email: string) => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/recreador/auth/callback`,
+      },
+    });
+    if (error) throw error;
+  };
+
+  // Enviar link de reset de senha (admin/casting/recreador se permitido)
+  const sendPasswordReset = async (
+    email: string,
+    redirectPath: string = "/redefinir-senha"
+  ) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}${redirectPath}`,
+    });
+    if (error) throw error;
+  };
+
+  // Atualizar senha após o usuário abrir o link de reset
+  const updatePassword = async (newPassword: string) => {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+    if (error) throw error;
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
     setIsAdmin(false);
     setIsCasting(false);
     setIsRecreador(false);
@@ -213,30 +255,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      session, 
-      isAdmin, 
-      isCasting, 
-      isRecreador, 
-      profissionalId, 
-      isLoading,
-      needsMFA,
-      mfaVerified,
-      currentAAL,
-      signIn, 
-      signOut,
-      checkMFAStatus
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        isAdmin,
+        isCasting,
+        isRecreador,
+        profissionalId,
+        isLoading,
+        needsMFA,
+        mfaVerified,
+        currentAAL,
+        signIn,
+        signInRecreadorMagic,
+        sendPasswordReset,
+        updatePassword,
+        signOut,
+        checkMFAStatus,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
     throw new Error("useAuth must be used within AuthProvider");
   }
-  return context;
+  return ctx;
 };
