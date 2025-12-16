@@ -1,14 +1,28 @@
--- Fase 2: Adicionar coluna notas em clientes para CRM
-ALTER TABLE public.clientes ADD COLUMN IF NOT EXISTS notas TEXT;
+-- =========================================================
+-- CORREÇÃO FINAL: ÍNDICE admin_logs.reserva_id
+-- Migration neutralizada + coluna e índice seguros
+-- =========================================================
 
--- Fase 2: Adicionar coluna descricao em admin_logs para timeline legível
-ALTER TABLE public.admin_logs ADD COLUMN IF NOT EXISTS descricao TEXT;
+-- 1. Garantir que a coluna reserva_id exista em admin_logs
+ALTER TABLE public.admin_logs
+ADD COLUMN IF NOT EXISTS reserva_id uuid
+REFERENCES public.reservas(id) ON DELETE SET NULL;
 
--- Adicionar coluna payload em admin_logs para detalhes técnicos em JSON
-ALTER TABLE public.admin_logs ADD COLUMN IF NOT EXISTS payload JSONB DEFAULT '{}'::jsonb;
+COMMENT ON COLUMN public.admin_logs.reserva_id IS 'Vínculo opcional com reserva para timeline de auditoria';
 
--- Criar índice para buscar logs por reserva_id (timeline)
-CREATE INDEX IF NOT EXISTS idx_admin_logs_reserva_id ON public.admin_logs(reserva_id);
-
--- Criar índice para buscar logs por data
-CREATE INDEX IF NOT EXISTS idx_admin_logs_created_at ON public.admin_logs(created_at DESC);
+-- 2. Criar o índice SOMENTE se a coluna reserva_id existir
+-- (essa verificação no information_schema evita o erro 42703 para sempre)
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'admin_logs'
+      AND column_name = 'reserva_id'
+  ) THEN
+    CREATE INDEX IF NOT EXISTS idx_admin_logs_reserva_id
+    ON public.admin_logs(reserva_id);
+  END IF;
+END
+$$;
