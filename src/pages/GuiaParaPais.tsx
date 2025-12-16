@@ -51,19 +51,23 @@ const GuiaParaPais = () => {
   const safetyTips = [
     {
       title: "Espaço Seguro",
-      description: "Verifique se o local é livre de obstáculos e superfícies perigosas",
+      description:
+        "Verifique se o local é livre de obstáculos e superfícies perigosas",
     },
     {
       title: "Supervisão Adequada",
-      description: "Nossa equipe mantém proporção ideal de 1 monitor para cada 10–12 crianças",
+      description:
+        "Nossa equipe mantém proporção ideal de 1 monitor para cada 10–12 crianças",
     },
     {
       title: "Materiais Certificados",
-      description: "Todos os materiais são atóxicos, hipoalergênicos e aprovados pelo INMETRO",
+      description:
+        "Todos os materiais são atóxicos, hipoalergênicos e aprovados pelo INMETRO",
     },
     {
       title: "Protocolos de Higiene",
-      description: "Sanitização de equipamentos antes, durante e após o evento",
+      description:
+        "Sanitização de equipamentos antes, durante e após o evento",
     },
   ];
 
@@ -95,7 +99,8 @@ const GuiaParaPais = () => {
     },
     {
       title: "Festa no Estilo Maker",
-      description: "Crianças criam suas próprias lembrancinhas em oficinas interativas",
+      description:
+        "Crianças criam suas próprias lembrancinhas em oficinas interativas",
     },
     {
       title: "Celebração Multi-Idade",
@@ -103,6 +108,12 @@ const GuiaParaPais = () => {
         "Estações de atividades adaptadas para diferentes faixas etárias no mesmo evento",
     },
   ];
+
+  const whatsappMessage =
+    "Olá! Li o Guia para Pais e gostaria de saber mais sobre os serviços.";
+  const whatsappUrl =
+    "https://wa.me/5511965982251?text=" +
+    encodeURIComponent(whatsappMessage);
 
   return (
     <>
@@ -122,8 +133,8 @@ const GuiaParaPais = () => {
               </div>
               <h1 className="text-balance">Guia Completo para Pais</h1>
               <p className="text-xl text-muted-foreground text-balance">
-                Insights sobre desenvolvimento infantil, dicas práticas e inspiração para criar
-                momentos inesquecíveis
+                Insights sobre desenvolvimento infantil, dicas práticas e
+                inspiração para criar momentos inesquecíveis
               </p>
             </div>
           </div>
@@ -136,7 +147,8 @@ const GuiaParaPais = () => {
               <div className="text-center mb-16">
                 <h2 className="mb-4">Desenvolvimento Infantil</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Entenda como o brincar impacta positivamente o crescimento das crianças
+                  Entenda como o brincar impacta positivamente o crescimento das
+                  crianças
                 </p>
               </div>
 
@@ -150,7 +162,9 @@ const GuiaParaPais = () => {
                       <CardTitle className="text-xl">{topic.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground leading-relaxed">{topic.description}</p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {topic.description}
+                      </p>
                     </CardContent>
                   </Card>
                 ))}
@@ -166,14 +180,17 @@ const GuiaParaPais = () => {
               <div className="text-center mb-16">
                 <h2 className="mb-4">Dicas para Festa Infantil</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Checklist completo para organizar uma celebração segura e memorável
+                  Checklist completo para organizar uma celebração segura e
+                  memorável
                 </p>
               </div>
 
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Checklist */}
                 <Card className="p-8">
-                  <h3 className="text-2xl font-bold mb-6">Checklist Essencial</h3>
+                  <h3 className="text-2xl font-bold mb-6">
+                    Checklist Essencial
+                  </h3>
                   <div className="space-y-4">
                     {partyChecklist.map((item, index) => (
                       <div key={index} className="flex items-start gap-3">
@@ -188,13 +205,17 @@ const GuiaParaPais = () => {
                 <Card className="p-8">
                   <div className="flex items-center gap-3 mb-6">
                     <Shield className="w-6 h-6 text-primary" />
-                    <h3 className="text-2xl font-bold">Segurança em Primeiro Lugar</h3>
+                    <h3 className="text-2xl font-bold">
+                      Segurança em Primeiro Lugar
+                    </h3>
                   </div>
                   <div className="space-y-6">
                     {safetyTips.map((tip, index) => (
                       <div key={index}>
                         <h4 className="font-semibold mb-1">{tip.title}</h4>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{tip.description}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {tip.description}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -203,10 +224,14 @@ const GuiaParaPais = () => {
 
               {/* Package Selection Tips */}
               <Card className="mt-8 p-8 border-primary/20">
-                <h3 className="text-2xl font-bold mb-6">Como Escolher o Pacote Ideal</h3>
+                <h3 className="text-2xl font-bold mb-6">
+                  Como Escolher o Pacote Ideal
+                </h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold mb-3 text-primary">Considere:</h4>
+                    <h4 className="font-semibold mb-3 text-primary">
+                      Considere:
+                    </h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       <li>• Número de crianças convidadas</li>
                       <li>• Faixa etária predominante</li>
@@ -216,19 +241,24 @@ const GuiaParaPais = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-3 text-primary">Vivalegria recomenda:</h4>
+                    <h4 className="font-semibold mb-3 text-primary">
+                      Vivalegria recomenda:
+                    </h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       <li>
                         • <strong>Classic</strong>: até 15 crianças, 4 horas
                       </li>
                       <li>
-                        • <strong>Select</strong>: 16–30 crianças, experiência completa
+                        • <strong>Select</strong>: 16–30 crianças, experiência
+                        completa
                       </li>
                       <li>
-                        • <strong>Oficinas</strong>: eventos educativos e criativos
+                        • <strong>Oficinas</strong>: eventos educativos e
+                        criativos
                       </li>
                       <li>
-                        • <strong>Corporativo</strong>: grandes eventos e empresas
+                        • <strong>Corporativo</strong>: grandes eventos e
+                        empresas
                       </li>
                     </ul>
                   </div>
@@ -245,7 +275,8 @@ const GuiaParaPais = () => {
               <div className="text-center mb-16">
                 <h2 className="mb-4">Educação & Criatividade</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  O poder transformador das atividades criativas no desenvolvimento infantil
+                  O poder transformador das atividades criativas no
+                  desenvolvimento infantil
                 </p>
               </div>
 
@@ -257,8 +288,12 @@ const GuiaParaPais = () => {
                         <topic.icon className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold mb-2">{topic.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed">{topic.description}</p>
+                        <h3 className="text-xl font-bold mb-2">
+                          {topic.title}
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {topic.description}
+                        </p>
                       </div>
                     </div>
                   </Card>
@@ -266,24 +301,35 @@ const GuiaParaPais = () => {
               </div>
 
               <Card className="p-8 bg-gradient-subtle border-0">
-                <h3 className="text-2xl font-bold mb-6">Como as Crianças Aprendem Brincando</h3>
+                <h3 className="text-2xl font-bold mb-6">
+                  Como as Crianças Aprendem Brincando
+                </h3>
                 <div className="grid md:grid-cols-3 gap-6">
                   <div>
-                    <div className="text-3xl font-bold text-primary mb-2">75%</div>
+                    <div className="text-3xl font-bold text-primary mb-2">
+                      75%
+                    </div>
                     <p className="text-sm text-muted-foreground">
-                      das crianças retêm melhor informações aprendidas de forma lúdica
+                      das crianças retêm melhor informações aprendidas de forma
+                      lúdica
                     </p>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-primary mb-2">3×</div>
+                    <div className="text-3xl font-bold text-primary mb-2">
+                      3×
+                    </div>
                     <p className="text-sm text-muted-foreground">
-                      mais engajamento em atividades práticas comparado a teóricas
+                      mais engajamento em atividades práticas comparado a
+                      teóricas
                     </p>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-primary mb-2">90%</div>
+                    <div className="text-3xl font-bold text-primary mb-2">
+                      90%
+                    </div>
                     <p className="text-sm text-muted-foreground">
-                      dos pais relatam melhora na criatividade após oficinas regulares
+                      dos pais relatam melhora na criatividade após oficinas
+                      regulares
                     </p>
                   </div>
                 </div>
@@ -305,7 +351,8 @@ const GuiaParaPais = () => {
                 </div>
                 <h2 className="mb-4">Ideias Criativas e Modernas</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Inspire-se com as últimas tendências em festas e eventos infantis
+                  Inspire-se com as últimas tendências em festas e eventos
+                  infantis
                 </p>
               </div>
 
@@ -313,7 +360,9 @@ const GuiaParaPais = () => {
                 {trendingIdeas.map((idea, index) => (
                   <Card key={index} className="p-6 hover-lift">
                     <h3 className="text-lg font-bold mb-3">{idea.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{idea.description}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {idea.description}
+                    </p>
                   </Card>
                 ))}
               </div>
@@ -328,7 +377,8 @@ const GuiaParaPais = () => {
               <div className="text-center mb-12">
                 <h2 className="mb-4">Pronto para Criar Memórias Incríveis?</h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Explore nossas soluções e encontre a perfeita para o seu evento
+                  Explore nossas soluções e encontre a perfeita para o seu
+                  evento
                 </p>
               </div>
 
@@ -341,7 +391,11 @@ const GuiaParaPais = () => {
                   <p className="text-sm text-muted-foreground mb-6">
                     Classic, Select e soluções personalizadas
                   </p>
-                  <Button asChild variant="outline" className="w-full rounded-full">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full rounded-full"
+                  >
                     <Link to="/pacotes">
                       Ver Pacotes
                       <ArrowRight className="ml-2 w-4 h-4" />
@@ -353,11 +407,17 @@ const GuiaParaPais = () => {
                   <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                     <Palette className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3">Oficinas Criativas</h3>
+                  <h3 className="text-xl font-bold mb-3">
+                    Oficinas Criativas
+                  </h3>
                   <p className="text-sm text-muted-foreground mb-6">
                     Slime, pintura, cupcakes e muito mais
                   </p>
-                  <Button asChild variant="outline" className="w-full rounded-full">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full rounded-full"
+                  >
                     <Link to="/oficinas">
                       Conhecer Oficinas
                       <ArrowRight className="ml-2 w-4 h-4" />
@@ -373,7 +433,10 @@ const GuiaParaPais = () => {
                   <p className="text-sm text-muted-foreground mb-6">
                     Configure seu evento personalizado
                   </p>
-                  <Button asChild className="w-full rounded-full shadow-premium">
+                  <Button
+                    asChild
+                    className="w-full rounded-full shadow-premium"
+                  >
                     <Link to="/contratar">
                       Começar Agora
                       <ArrowRight className="ml-2 w-4 h-4" />
@@ -384,9 +447,12 @@ const GuiaParaPais = () => {
 
               {/* WhatsApp CTA */}
               <Card className="mt-8 p-8 bg-gradient-warm text-center border-0">
-                <h3 className="text-2xl font-bold mb-4 text-white">Ainda tem dúvidas?</h3>
+                <h3 className="text-2xl font-bold mb-4 text-white">
+                  Ainda tem dúvidas?
+                </h3>
                 <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-                  Nossa equipe está pronta para ajudar você a planejar o evento perfeito
+                  Nossa equipe está pronta para ajudar você a planejar o evento
+                  perfeito
                 </p>
                 <Button
                   asChild
@@ -394,9 +460,7 @@ const GuiaParaPais = () => {
                   className="rounded-full bg-white text-primary hover:bg-white/90 shadow-premium"
                 >
                   <a
-                    href={`https://wa.me/5511965982251?text=${encodeURIComponent(
-                      "Olá! Li o Guia para Pais e gostaria de saber mais sobre os serviços."
-                    )}`}
+                    href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
