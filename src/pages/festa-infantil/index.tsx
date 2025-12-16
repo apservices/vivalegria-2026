@@ -13,7 +13,7 @@ export default function FestaInfantil() {
       <HeadSEO
         title="Festa Infantil em São Paulo | Recreação Infantil Profissional"
         description="Festa infantil com recreação profissional em São Paulo. Segurança, alegria e diversão para crianças. Fale com a Vivalegria."
-        path="/festa-infantil"
+        canonical="https://www.vivalegria.com.br/festa-infantil"
       />
 
       <main className="min-h-screen">
