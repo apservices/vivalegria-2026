@@ -1,3 +1,5 @@
+// import RecreadorAuthCallback from "./pages/recreador/AuthCallback";
+import RecreadorAuthCallback from "./pages/recreador/Dashboard";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";

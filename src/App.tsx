@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";`r`nimport { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { TooltipProvider } from "./components/ui/tooltip";
@@ -36,7 +36,7 @@ import AdminConfigComunicacoes from "./pages/admin/ConfigComunicacoes";
 
 /* ====================== PORTAL RECREADOR ====================== */
 import RecreadorLogin from "./pages/recreador/Login";
-import RecreadorAuthCallback from "./pages/recreador/AuthCallback"; // certifique-se de criar esse arquivo
+import RecreadorAuthCallback from "./pages/recreador/AuthCallback";
 import RecreadorDashboard from "./pages/recreador/Dashboard";
 import RecreadorEventos from "./pages/recreador/Eventos";
 import RecreadorPagamentos from "./pages/recreador/Pagamentos";
@@ -66,7 +66,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const queryClient = new QueryClient();`r`n`r`nconst PublicLayout = ({ children }: { children: React.ReactNode }) => (
+const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
     <main className="flex-grow">{children}</main>
