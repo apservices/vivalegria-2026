@@ -3,61 +3,35 @@ import { Link, useLocation } from "react-router-dom";
 import { 
   LayoutDashboard, 
   Calendar, 
-  Users, 
-  LogOut, 
-  Home, 
-  UserCheck, 
+  DollarSign, 
   Star, 
-  DollarSign,
-  Settings,
-  Kanban,
-  Clock,
-  AlertTriangle
+  User,
+  LogOut, 
+  Home
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
 
-interface AdminLayoutProps {
+interface RecreadorLayoutProps {
   children: ReactNode;
 }
 
-type NavItem = {
-  href: string;
-  label: string;
-  icon: any;
-  roles: ('admin' | 'casting')[];
-};
-
-const AdminLayout = ({ children }: AdminLayoutProps) => {
+const RecreadorLayout = ({ children }: RecreadorLayoutProps) => {
   const location = useLocation();
-  const { signOut, isAdmin, isCasting } = useAuth();
+  const { signOut } = useAuth();
 
-  const allNavItems: NavItem[] = [
-    { href: "/admin", label: "Dashboard", icon: LayoutDashboard, roles: ['admin', 'casting'] },
-    { href: "/admin/reservas", label: "Reservas", icon: Calendar, roles: ['admin'] },
-    { href: "/admin/reservas-kanban", label: "Pipeline", icon: Kanban, roles: ['admin'] },
-    { href: "/admin/clientes", label: "Clientes", icon: Users, roles: ['admin'] },
-    { href: "/admin/recreadores", label: "Recreadores", icon: UserCheck, roles: ['admin', 'casting'] },
-    { href: "/admin/casting", label: "Casting", icon: Calendar, roles: ['admin', 'casting'] },
-    { href: "/admin/financeiro", label: "Financeiro", icon: DollarSign, roles: ['admin'] },
-    { href: "/admin/candidaturas", label: "Candidaturas", icon: Users, roles: ['admin'] },
-    { href: "/admin/avaliacoes", label: "Avaliações", icon: Star, roles: ['admin'] },
-    { href: "/admin/reclamacoes", label: "Reclamações", icon: AlertTriangle, roles: ['admin'] },
-    { href: "/admin/logs", label: "Auditoria", icon: Clock, roles: ['admin'] },
-    { href: "/admin/config-comunicacoes", label: "Comunicação", icon: Settings, roles: ['admin'] },
+  const navItems = [
+    { href: "/recreador", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/recreador/eventos", label: "Meus Eventos", icon: Calendar },
+    { href: "/recreador/pagamentos", label: "Pagamentos", icon: DollarSign },
+    { href: "/recreador/avaliacoes", label: "Avaliações", icon: Star },
+    { href: "/recreador/perfil", label: "Meu Perfil", icon: User },
   ];
 
-  // Filter nav items based on user role
-  const navItems = allNavItems.filter(item => {
-    if (isAdmin && item.roles.includes('admin')) return true;
-    if (isCasting && item.roles.includes('casting')) return true;
-    return false;
-  });
-
   const isActive = (href: string) => {
-    if (href === "/admin") {
-      return location.pathname === "/admin";
+    if (href === "/recreador") {
+      return location.pathname === "/recreador";
     }
     return location.pathname.startsWith(href);
   };
@@ -68,9 +42,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
           <img src={logoVivalegria} alt="Vivalegria" className="h-10" />
-          <p className="text-xs text-muted-foreground mt-2">
-            {isAdmin ? 'Área Administrativa' : 'Área de Casting'}
-          </p>
+          <p className="text-xs text-muted-foreground mt-2">Portal do Recreador</p>
         </div>
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
@@ -116,4 +88,4 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 };
 
-export default AdminLayout;
+export default RecreadorLayout;

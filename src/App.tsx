@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ConfiguratorProvider } from "@/contexts/ConfiguratorContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import RoleGuard from "@/components/RoleGuard";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -43,6 +44,12 @@ import RecreacaoInfantilSP from "./pages/recreacao-infantil-sp/index";
 import EventosCorporativosInfantis from "./pages/eventos-corporativos-infantis/index";
 import Obrigado from "./pages/Obrigado";
 
+// PORTAL DO RECREADOR
+import RecreadorDashboard from "./pages/recreador/Dashboard";
+import RecreadorEventos from "./pages/recreador/Eventos";
+import RecreadorPagamentos from "./pages/recreador/Pagamentos";
+import RecreadorPerfil from "./pages/recreador/Perfil";
+
 const queryClient = new QueryClient();
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
@@ -68,17 +75,23 @@ const App = () => (
             <Routes>
               {/* ADMIN ROTAS */}
               <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/reservas" element={<AdminReservas />} />
-              <Route path="/admin/reservas-kanban" element={<AdminReservasKanban />} />
-              <Route path="/admin/clientes" element={<AdminClientes />} />
-              <Route path="/admin/recreadores" element={<AdminRecreadores />} />
-              <Route path="/admin/casting" element={<AdminCasting />} />
-              <Route path="/admin/financeiro" element={<AdminFinanceiro />} />
-              <Route path="/admin/candidaturas" element={<AdminCandidaturas />} />
-              <Route path="/admin/avaliacoes" element={<AdminAvaliacoes />} />
-              <Route path="/admin/logs" element={<AdminLogs />} />
-              <Route path="/admin/config-comunicacoes" element={<AdminConfigComunicacoes />} />
+              <Route path="/admin" element={<RoleGuard allowedRoles={['admin', 'casting']}><AdminDashboard /></RoleGuard>} />
+              <Route path="/admin/reservas" element={<RoleGuard allowedRoles={['admin']}><AdminReservas /></RoleGuard>} />
+              <Route path="/admin/reservas-kanban" element={<RoleGuard allowedRoles={['admin']}><AdminReservasKanban /></RoleGuard>} />
+              <Route path="/admin/clientes" element={<RoleGuard allowedRoles={['admin']}><AdminClientes /></RoleGuard>} />
+              <Route path="/admin/recreadores" element={<RoleGuard allowedRoles={['admin', 'casting']}><AdminRecreadores /></RoleGuard>} />
+              <Route path="/admin/casting" element={<RoleGuard allowedRoles={['admin', 'casting']}><AdminCasting /></RoleGuard>} />
+              <Route path="/admin/financeiro" element={<RoleGuard allowedRoles={['admin']}><AdminFinanceiro /></RoleGuard>} />
+              <Route path="/admin/candidaturas" element={<RoleGuard allowedRoles={['admin']}><AdminCandidaturas /></RoleGuard>} />
+              <Route path="/admin/avaliacoes" element={<RoleGuard allowedRoles={['admin']}><AdminAvaliacoes /></RoleGuard>} />
+              <Route path="/admin/logs" element={<RoleGuard allowedRoles={['admin']}><AdminLogs /></RoleGuard>} />
+              <Route path="/admin/config-comunicacoes" element={<RoleGuard allowedRoles={['admin']}><AdminConfigComunicacoes /></RoleGuard>} />
+
+              {/* PORTAL DO RECREADOR */}
+              <Route path="/recreador" element={<RoleGuard allowedRoles={['recreador']}><RecreadorDashboard /></RoleGuard>} />
+              <Route path="/recreador/eventos" element={<RoleGuard allowedRoles={['recreador']}><RecreadorEventos /></RoleGuard>} />
+              <Route path="/recreador/pagamentos" element={<RoleGuard allowedRoles={['recreador']}><RecreadorPagamentos /></RoleGuard>} />
+              <Route path="/recreador/perfil" element={<RoleGuard allowedRoles={['recreador']}><RecreadorPerfil /></RoleGuard>} />
 
               {/* PÚBLICAS */}
               <Route path="/avaliacao-evento" element={<AvaliacaoEvento />} />
