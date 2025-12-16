@@ -10,6 +10,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import CookieConsent from "@/components/CookieConsent";
+
+// Páginas Públicas
 import Home from "./pages/Home";
 import Pacotes from "./pages/Pacotes";
 import Oficinas from "./pages/Oficinas";
@@ -23,6 +25,24 @@ import Termos from "./pages/Termos";
 import TrabalheConosco from "./pages/TrabalheConosco";
 import AvaliacaoEvento from "./pages/AvaliacaoEvento";
 import PesquisaSatisfacao from "./pages/PesquisaSatisfacao";
+import Obrigado from "./pages/Obrigado";
+
+// Landing Pages Segmentadas
+import FestaInfantil from "./pages/festa-infantil/index";
+import OrcamentoLP from "./pages/orcamento-lp/index";
+import RecreacaoInfantilSP from "./pages/recreacao-infantil-sp/index";
+import EventosCorporativosInfantis from "./pages/eventos-corporativos-infantis/index";
+
+// Formulário Completo de Cadastro
+import CadastroRecreador from "./pages/CadastroRecreador";
+
+// Portal do Recreador
+import RecreadorDashboard from "./pages/recreador/Dashboard";
+import RecreadorEventos from "./pages/recreador/Eventos";
+import RecreadorPagamentos from "./pages/recreador/Pagamentos";
+import RecreadorPerfil from "./pages/recreador/Perfil";
+
+// Admin
 import AdminLogin from "./pages/admin/Login";
 import Setup2FA from "./pages/admin/Setup2FA";
 import Verify2FA from "./pages/admin/Verify2FA";
@@ -39,32 +59,16 @@ import AdminReservasKanban from "./pages/admin/ReservasKanban";
 import AdminLogs from "./pages/admin/Logs";
 import AdminReclamacoes from "./pages/admin/Reclamacoes";
 import AdminImportarDados from "./pages/admin/ImportarDados";
+
+// 404
 import NotFound from "./pages/NotFound";
-
-// NOVAS LANDING PAGES
-import FestaInfantil from "./pages/festa-infantil/index";
-import OrcamentoLP from "./pages/orcamento-lp/index";
-import RecreacaoInfantilSP from "./pages/recreacao-infantil-sp/index";
-import EventosCorporativosInfantis from "./pages/eventos-corporativos-infantis/index";
-import Obrigado from "./pages/Obrigado";
-
-// FORMULÁRIO COMPLETO DE CADASTRO
-import CadastroRecreador from "./pages/CadastroRecreador";
-
-// PORTAL DO RECREADOR
-import RecreadorDashboard from "./pages/recreador/Dashboard";
-import RecreadorEventos from "./pages/recreador/Eventos";
-import RecreadorPagamentos from "./pages/recreador/Pagamentos";
-import RecreadorPerfil from "./pages/recreador/Perfil";
 
 const queryClient = new QueryClient();
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    <main className="flex-grow">
-      {children}
-    </main>
+    <main className="flex-grow">{children}</main>
     <Footer />
     <WhatsAppButton />
     <CookieConsent />
@@ -80,10 +84,11 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* ADMIN ROTAS */}
+              {/* ====================== ADMIN ====================== */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/setup-2fa" element={<Setup2FA />} />
               <Route path="/admin/verify-2fa" element={<Verify2FA />} />
+
               <Route path="/admin" element={<RoleGuard allowedRoles={['admin', 'casting']}><AdminDashboard /></RoleGuard>} />
               <Route path="/admin/reservas" element={<RoleGuard allowedRoles={['admin']}><AdminReservas /></RoleGuard>} />
               <Route path="/admin/reservas-kanban" element={<RoleGuard allowedRoles={['admin']}><AdminReservasKanban /></RoleGuard>} />
@@ -98,19 +103,16 @@ const App = () => (
               <Route path="/admin/importar-dados" element={<RoleGuard allowedRoles={['admin']}><AdminImportarDados /></RoleGuard>} />
               <Route path="/admin/config-comunicacoes" element={<RoleGuard allowedRoles={['admin']}><AdminConfigComunicacoes /></RoleGuard>} />
 
-              {/* CADASTRO RECREADOR - Público */}
-              <Route path="/cadastro-recreador" element={<PublicLayout><CadastroRecreador /></PublicLayout>} />
-
-              {/* PORTAL DO RECREADOR */}
+              {/* ====================== PORTAL RECREADOR ====================== */}
               <Route path="/recreador" element={<RoleGuard allowedRoles={['recreador']}><RecreadorDashboard /></RoleGuard>} />
               <Route path="/recreador/eventos" element={<RoleGuard allowedRoles={['recreador']}><RecreadorEventos /></RoleGuard>} />
               <Route path="/recreador/pagamentos" element={<RoleGuard allowedRoles={['recreador']}><RecreadorPagamentos /></RoleGuard>} />
               <Route path="/recreador/perfil" element={<RoleGuard allowedRoles={['recreador']}><RecreadorPerfil /></RoleGuard>} />
 
-              {/* PÚBLICAS */}
-              <Route path="/avaliacao-evento" element={<AvaliacaoEvento />} />
-              <Route path="/pesquisa-satisfacao" element={<PesquisaSatisfacao />} />
+              {/* ====================== CADASTRO PÚBLICO ====================== */}
+              <Route path="/cadastro-recreador" element={<PublicLayout><CadastroRecreador /></PublicLayout>} />
 
+              {/* ====================== PÚBLICAS ====================== */}
               <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
               <Route path="/pacotes" element={<PublicLayout><Pacotes /></PublicLayout>} />
               <Route path="/oficinas" element={<PublicLayout><Oficinas /></PublicLayout>} />
@@ -122,14 +124,17 @@ const App = () => (
               <Route path="/privacidade" element={<PublicLayout><Privacidade /></PublicLayout>} />
               <Route path="/termos" element={<PublicLayout><Termos /></PublicLayout>} />
               <Route path="/trabalhe-conosco" element={<PublicLayout><TrabalheConosco /></PublicLayout>} />
+              <Route path="/avaliacao-evento" element={<AvaliacaoEvento />} />
+              <Route path="/pesquisa-satisfacao" element={<PesquisaSatisfacao />} />
+              <Route path="/obrigado" element={<PublicLayout><Obrigado /></PublicLayout>} />
 
-              {/* NOVAS LANDING PAGES */}
+              {/* ====================== LANDING PAGES SEGMENTADAS ====================== */}
               <Route path="/festa-infantil" element={<PublicLayout><FestaInfantil /></PublicLayout>} />
               <Route path="/orcamento" element={<PublicLayout><OrcamentoLP /></PublicLayout>} />
               <Route path="/recreacao-infantil-sp" element={<PublicLayout><RecreacaoInfantilSP /></PublicLayout>} />
               <Route path="/eventos-corporativos-infantis" element={<PublicLayout><EventosCorporativosInfantis /></PublicLayout>} />
-              <Route path="/obrigado" element={<PublicLayout><Obrigado /></PublicLayout>} />
 
+              {/* ====================== 404 ====================== */}
               <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
             </Routes>
           </BrowserRouter>
