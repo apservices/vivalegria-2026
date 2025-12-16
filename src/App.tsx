@@ -24,6 +24,8 @@ import TrabalheConosco from "./pages/TrabalheConosco";
 import AvaliacaoEvento from "./pages/AvaliacaoEvento";
 import PesquisaSatisfacao from "./pages/PesquisaSatisfacao";
 import AdminLogin from "./pages/admin/Login";
+import Setup2FA from "./pages/admin/Setup2FA";
+import Verify2FA from "./pages/admin/Verify2FA";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminReservas from "./pages/admin/Reservas";
 import AdminCandidaturas from "./pages/admin/Candidaturas";
@@ -75,6 +77,8 @@ const App = () => (
             <Routes>
               {/* ADMIN ROTAS */}
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/setup-2fa" element={<Setup2FA />} />
+              <Route path="/admin/verify-2fa" element={<Verify2FA />} />
               <Route path="/admin" element={<RoleGuard allowedRoles={['admin', 'casting']}><AdminDashboard /></RoleGuard>} />
               <Route path="/admin/reservas" element={<RoleGuard allowedRoles={['admin']}><AdminReservas /></RoleGuard>} />
               <Route path="/admin/reservas-kanban" element={<RoleGuard allowedRoles={['admin']}><AdminReservasKanban /></RoleGuard>} />

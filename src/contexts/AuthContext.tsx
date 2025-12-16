@@ -10,8 +10,12 @@ interface AuthContextType {
   isRecreador: boolean;
   profissionalId: string | null;
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  needsMFA: boolean;
+  mfaVerified: boolean;
+  currentAAL: string | null;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null; needsMFASetup?: boolean; needsMFAVerify?: boolean }>;
   signOut: () => Promise<void>;
+  checkMFAStatus: () => Promise<{ needsSetup: boolean; needsVerify: boolean }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,6 +28,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isRecreador, setIsRecreador] = useState(false);
   const [profissionalId, setProfissionalId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [needsMFA, setNeedsMFA] = useState(false);
+  const [mfaVerified, setMfaVerified] = useState(false);
+  const [currentAAL, setCurrentAAL] = useState<string | null>(null);
 
   const checkUserRoles = async (userId: string) => {
     try {
@@ -66,6 +73,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const checkMFAStatus = async (): Promise<{ needsSetup: boolean; needsVerify: boolean }> => {
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) return { needsSetup: false, needsVerify: false };
+
+      // Check if user is admin or casting (they need MFA)
+      const roles = await checkUserRoles(currentUser.id);
+      const requiresMFA = roles.isAdmin || roles.isCasting;
+
+      if (!requiresMFA) {
+        setNeedsMFA(false);
+        setMfaVerified(true);
+        return { needsSetup: false, needsVerify: false };
+      }
+
+      setNeedsMFA(true);
+
+      // Check MFA factors
+      const { data: factors } = await supabase.auth.mfa.listFactors();
+      const hasVerifiedTOTP = factors?.totp?.some(f => f.status === 'verified') || false;
+
+      if (!hasVerifiedTOTP) {
+        // Needs to set up MFA
+        setMfaVerified(false);
+        return { needsSetup: true, needsVerify: false };
+      }
+
+      // Check current AAL level
+      const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      
+      if (aalData) {
+        setCurrentAAL(aalData.currentLevel);
+      }
+
+      if (aalData?.currentLevel === 'aal2') {
+        // MFA verified for this session
+        setMfaVerified(true);
+        return { needsSetup: false, needsVerify: false };
+      }
+
+      // Has TOTP but hasn't verified this session
+      setMfaVerified(false);
+      return { needsSetup: false, needsVerify: true };
+    } catch (err) {
+      console.error('Error checking MFA status:', err);
+      return { needsSetup: false, needsVerify: false };
+    }
+  };
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -79,6 +135,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsCasting(roles.isCasting);
             setIsRecreador(roles.isRecreador);
             setProfissionalId(roles.profissionalId);
+            
+            // Check MFA status
+            await checkMFAStatus();
+            
             setIsLoading(false);
           }, 0);
         } else {
@@ -86,6 +146,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsCasting(false);
           setIsRecreador(false);
           setProfissionalId(null);
+          setNeedsMFA(false);
+          setMfaVerified(false);
+          setCurrentAAL(null);
           setIsLoading(false);
         }
       }
@@ -96,11 +159,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        checkUserRoles(session.user.id).then(roles => {
+        checkUserRoles(session.user.id).then(async roles => {
           setIsAdmin(roles.isAdmin);
           setIsCasting(roles.isCasting);
           setIsRecreador(roles.isRecreador);
           setProfissionalId(roles.profissionalId);
+          
+          // Check MFA status
+          await checkMFAStatus();
+          
           setIsLoading(false);
         });
       } else {
@@ -112,11 +179,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    return { error };
+
+    if (error) {
+      return { error };
+    }
+
+    // After successful login, check MFA requirements
+    if (data.user) {
+      const mfaStatus = await checkMFAStatus();
+      return { 
+        error: null, 
+        needsMFASetup: mfaStatus.needsSetup,
+        needsMFAVerify: mfaStatus.needsVerify
+      };
+    }
+
+    return { error: null };
   };
 
   const signOut = async () => {
@@ -125,6 +207,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsCasting(false);
     setIsRecreador(false);
     setProfissionalId(null);
+    setNeedsMFA(false);
+    setMfaVerified(false);
+    setCurrentAAL(null);
   };
 
   return (
@@ -135,9 +220,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isCasting, 
       isRecreador, 
       profissionalId, 
-      isLoading, 
+      isLoading,
+      needsMFA,
+      mfaVerified,
+      currentAAL,
       signIn, 
-      signOut 
+      signOut,
+      checkMFAStatus
     }}>
       {children}
     </AuthContext.Provider>
