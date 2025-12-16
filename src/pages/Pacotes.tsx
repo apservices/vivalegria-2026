@@ -9,14 +9,17 @@ import { trackLPView, trackContratarClick } from "@/utils/tracking";
 type PremiumPackage = {
   name: string;
   badge: string;
-  badgeColor: string; // ex: "bg-primary"
+  badgeColor: string;
   badgeIcon: React.ElementType;
   audience: string;
   description: string;
-  startPrice: string; // ex: "R$ 589"
+  startPrice: string;
   features: string[];
   note?: string;
 };
+
+const WHATSAPP_LINK =
+  "https://wa.me/5511965982251?text=Olá!%20Gostaria%20de%20informações%20sobre%20os%20pacotes%20da%20Vivalegria.";
 
 const premiumPackages: PremiumPackage[] = [
   {
@@ -76,13 +79,12 @@ const premiumPackages: PremiumPackage[] = [
 ];
 
 const Pacotes = () => {
-  // Track landing page view on mount (respects consent)
   useEffect(() => {
-    trackLPView('pacotes');
+    trackLPView("pacotes");
   }, []);
 
   const handleContratarClick = (packageName: string) => {
-    trackContratarClick(`Contratar ${packageName}`);
+    trackContratarClick(`Pacotes - ${packageName}`);
   };
 
   return (
@@ -93,7 +95,6 @@ const Pacotes = () => {
         canonical="/pacotes"
       />
 
-      {/* Premium Packages */}
       <section className="py-24 bg-gradient-subtle">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -103,20 +104,17 @@ const Pacotes = () => {
             </p>
           </div>
 
-          {/* Wrapper relativo com mascote */}
           <div className="relative max-w-5xl mx-auto">
-            {/* Mascote decorativo */}
             <Mascote
               pose="banner"
               animation="balanco"
               className="hidden xl:block w-48 xl:w-56 absolute -right-32 top-10 z-10 drop-shadow-2xl"
             />
 
-            {/* Grid dos cards */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {premiumPackages.map((pkg, index) => (
+              {premiumPackages.map((pkg) => (
                 <Card
-                  key={index}
+                  key={pkg.name}
                   className="p-8 hover-lift border-2 border-dashed border-primary/30"
                 >
                   <span
@@ -127,8 +125,12 @@ const Pacotes = () => {
                   </span>
 
                   <h2 className="text-3xl font-bold mb-2">{pkg.name}</h2>
-                  <p className="text-sm text-primary font-semibold mb-3">{pkg.audience}</p>
-                  <p className="text-muted-foreground mb-4">{pkg.description}</p>
+                  <p className="text-sm text-primary font-semibold mb-3">
+                    {pkg.audience}
+                  </p>
+                  <p className="text-muted-foreground mb-4">
+                    {pkg.description}
+                  </p>
 
                   <div className="p-4 bg-background rounded-lg mb-6 border">
                     <p className="text-2xl font-bold text-primary">
@@ -141,8 +143,8 @@ const Pacotes = () => {
                       O que está incluso:
                     </h3>
 
-                    {pkg.features.map((feature, i) => (
-                      <div key={i} className="flex items-start">
+                    {pkg.features.map((feature) => (
+                      <div key={feature} className="flex items-start">
                         <Check className="w-5 h-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
                         <span className="text-sm">{feature}</span>
                       </div>
@@ -155,9 +157,14 @@ const Pacotes = () => {
                     </p>
                   )}
 
-                  <Button asChild className="w-full rounded-full" variant="outline">
+                  <Button
+                    asChild
+                    className="w-full rounded-full"
+                    variant="outline"
+                    onClick={() => handleContratarClick(pkg.name)}
+                  >
                     <a
-                      href="https://wa.me/5511965982251"
+                      href={WHATSAPP_LINK}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
