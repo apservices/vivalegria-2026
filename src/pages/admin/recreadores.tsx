@@ -206,7 +206,7 @@ const AdminRecreadores = () => {
       if (error) throw error;
 
       await logAdminAction(
-        'status_recreador_alterado',
+        'RECREADOR_STATUS_ALTERADO',
         null,
         { 
           profissional_id: selectedRecreador.id,

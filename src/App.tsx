@@ -1,4 +1,4 @@
-﻿import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -32,6 +32,8 @@ import AdminFinanceiro from "./pages/admin/Financeiro";
 import AdminConfigComunicacoes from "./pages/admin/ConfigComunicacoes";
 import AdminClientes from "./pages/admin/clientes";
 import AdminRecreadores from "./pages/admin/recreadores";
+import AdminReservasKanban from "./pages/admin/ReservasKanban";
+import AdminLogs from "./pages/admin/Logs";
 import NotFound from "./pages/NotFound";
 
 // NOVAS LANDING PAGES
@@ -61,19 +63,21 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* ?? ADMIN ROTAS - ORDENADAS E COMPLETAS */}
+              {/* ADMIN ROTAS */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/reservas" element={<AdminReservas />} />
-              <Route path="/admin/clientes" element={<AdminClientes />} />           {/* ?? NOVA */}
-              <Route path="/admin/recreadores" element={<AdminRecreadores />} />     {/* ?? NOVA */}
+              <Route path="/admin/reservas-kanban" element={<AdminReservasKanban />} />
+              <Route path="/admin/clientes" element={<AdminClientes />} />
+              <Route path="/admin/recreadores" element={<AdminRecreadores />} />
               <Route path="/admin/casting" element={<AdminCasting />} />
               <Route path="/admin/financeiro" element={<AdminFinanceiro />} />
               <Route path="/admin/candidaturas" element={<AdminCandidaturas />} />
               <Route path="/admin/avaliacoes" element={<AdminAvaliacoes />} />
+              <Route path="/admin/logs" element={<AdminLogs />} />
               <Route path="/admin/config-comunicacoes" element={<AdminConfigComunicacoes />} />
 
-              {/* P�BLICAS */}
+              {/* PÚBLICAS */}
               <Route path="/avaliacao-evento" element={<AvaliacaoEvento />} />
               <Route path="/pesquisa-satisfacao" element={<PesquisaSatisfacao />} />
 

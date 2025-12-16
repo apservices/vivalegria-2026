@@ -9,7 +9,9 @@ import {
   UserCheck, 
   Star, 
   DollarSign,
-  Settings
+  Settings,
+  Kanban,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,12 +28,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/reservas", label: "Reservas", icon: Calendar },
+    { href: "/admin/reservas-kanban", label: "Pipeline", icon: Kanban },
     { href: "/admin/clientes", label: "Clientes", icon: Users },
     { href: "/admin/recreadores", label: "Recreadores", icon: UserCheck },
     { href: "/admin/casting", label: "Casting", icon: Calendar },
     { href: "/admin/financeiro", label: "Financeiro", icon: DollarSign },
     { href: "/admin/candidaturas", label: "Candidaturas", icon: Users },
     { href: "/admin/avaliacoes", label: "Avaliações", icon: Star },
+    { href: "/admin/logs", label: "Auditoria", icon: Clock },
     { href: "/admin/config-comunicacoes", label: "Comunicação", icon: Settings },
   ];
 
@@ -50,7 +54,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <img src={logoVivalegria} alt="Vivalegria" className="h-10" />
           <p className="text-xs text-muted-foreground mt-2">Área Administrativa</p>
         </div>
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <Link
               key={item.href}
