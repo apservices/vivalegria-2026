@@ -34,6 +34,11 @@ interface RecreadorComDados {
   transporte: string | null;
   pix_chave: string | null;
   tem_cnpj: boolean | null;
+  faixa_etaria_experiencia: string | null;
+  frequencia_desejada: string | null;
+  interesse_pacotes: boolean | null;
+  uniformes: Record<string, unknown> | null;
+  created_at: string | null;
   total_eventos: number;
   cache_medio: number;
   total_caches: number;
@@ -121,6 +126,11 @@ const AdminRecreadores = () => {
           transporte: prof.transporte,
           pix_chave: prof.pix_chave,
           tem_cnpj: prof.tem_cnpj,
+          faixa_etaria_experiencia: prof.faixa_etaria_experiencia,
+          frequencia_desejada: prof.frequencia_desejada,
+          interesse_pacotes: prof.interesse_pacotes,
+          uniformes: prof.uniformes as Record<string, unknown> | null,
+          created_at: prof.created_at,
           total_eventos: stats.count,
           cache_medio: stats.count > 0 ? stats.totalCache / stats.count : 0,
           total_caches: stats.totalCache
@@ -488,10 +498,14 @@ const AdminRecreadores = () => {
               {/* Experiência */}
               <div className="space-y-3">
                 <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Experiência</h4>
-                <div className="space-y-2 text-sm">
+                <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <span className="text-muted-foreground">Tempo:</span>
                     <p>{selectedRecreador.experiencia_tempo || '-'}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Faixa Etária:</span>
+                    <p>{selectedRecreador.faixa_etaria_experiencia || '-'}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Formação:</span>
@@ -503,6 +517,36 @@ const AdminRecreadores = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Preferências */}
+              <div className="space-y-3">
+                <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Preferências</h4>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Frequência Desejada:</span>
+                    <p>{selectedRecreador.frequencia_desejada || '-'}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Interesse Pacotes:</span>
+                    <p>{selectedRecreador.interesse_pacotes ? 'Sim' : 'Não'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Uniformes */}
+              {selectedRecreador.uniformes && Object.keys(selectedRecreador.uniformes).length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Uniformes</h4>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {Object.entries(selectedRecreador.uniformes).map(([key, value]) => (
+                      <div key={key}>
+                        <span className="text-muted-foreground capitalize">{key}:</span>
+                        <p>{String(value) || '-'}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Habilidades */}
               {selectedRecreador.habilidades.length > 0 && (
@@ -534,6 +578,13 @@ const AdminRecreadores = () => {
                   </Card>
                 </div>
               </div>
+
+              {/* Data de cadastro */}
+              {selectedRecreador.created_at && (
+                <div className="text-xs text-muted-foreground text-center pt-2 border-t">
+                  Cadastrado em: {new Date(selectedRecreador.created_at).toLocaleDateString('pt-BR')}
+                </div>
+              )}
 
               {/* Ações */}
               <div className="pt-4 border-t">
