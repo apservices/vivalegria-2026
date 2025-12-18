@@ -22,8 +22,8 @@ import Verify2FA from "./pages/admin/Verify2FA";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminReservas from "./pages/admin/Reservas";
 import AdminReservasKanban from "./pages/admin/ReservasKanban";
-import AdminClientes from "./pages/admin/Clientes";
-import AdminRecreadores from "./pages/admin/Recreadores";
+import AdminClientes from "./pages/admin/clientes";
+import AdminRecreadores from "./pages/admin/recreadores";
 import AdminCasting from "./pages/admin/Casting";
 import AdminFinanceiro from "./pages/admin/Financeiro";
 import AdminCandidaturas from "./pages/admin/Candidaturas";
@@ -34,7 +34,7 @@ import AdminImportarDados from "./pages/admin/ImportarDados";
 import AdminConfigComunicacoes from "./pages/admin/ConfigComunicacoes";
 
 /* ====================== RECREADOR ====================== */
-import RecreadorLogin from "./pages/recreador/Login";
+import RecreadorLogin from "./pages/recreador/login";
 import RecreadorAuthCallback from "./pages/recreador/AuthCallback";
 import RecreadorDashboard from "./pages/recreador/Dashboard";
 import RecreadorEventos from "./pages/recreador/Eventos";
