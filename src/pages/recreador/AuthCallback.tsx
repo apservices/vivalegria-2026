@@ -9,21 +9,21 @@ export default function RecreadorAuthCallback() {
   useEffect(() => {
     const handleMagicLink = async () => {
       try {
-        // 1️⃣ Processa o magic link
-        const { data, error } = await supabase.auth.getSessionFromUrl({
-          storeSession: true,
-        });
+        // 1️⃣ Processa o magic link - usa getSession que detecta automaticamente
+        const { data: sessionData, error } = await supabase.auth.getSession();
 
-        if (error || !data?.session) {
+        if (error || !sessionData?.session) {
           setError("Link inválido ou expirado.");
           return;
         }
 
-        const user = data.session.user;
+        const user = sessionData.session.user;
 
-        // 2️⃣ Buscar roles reais no banco
-        const { data: roles, error: roleError } = await supabase
-          .rpc("get_user_roles", { _user_id: user.id });
+        // 2️⃣ Buscar roles reais no banco via user_roles table
+        const { data: rolesData, error: roleError } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id);
 
         if (roleError) {
           console.error("Erro ao buscar roles:", roleError);
@@ -31,18 +31,20 @@ export default function RecreadorAuthCallback() {
           return;
         }
 
+        const roles = rolesData?.map(r => r.role) || [];
+
         // 3️⃣ Redirecionamento por role
-        if (roles?.includes("admin")) {
+        if (roles.includes("admin")) {
           navigate("/admin", { replace: true });
           return;
         }
 
-        if (roles?.includes("casting")) {
+        if (roles.includes("casting")) {
           navigate("/admin/casting", { replace: true });
           return;
         }
 
-        if (roles?.includes("recreador")) {
+        if (roles.includes("recreador")) {
           navigate("/recreador", { replace: true });
           return;
         }
