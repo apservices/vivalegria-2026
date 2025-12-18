@@ -190,19 +190,29 @@
   opacity: 0.35;
 }
 
-
 /* FIX GLOBAL SPACING */ 
 body, main {
   margin: 0;
   padding: 0;
 }
 
-
-
+/* Responsive media */
 img { max-width: 100%; height: auto; }
-
-
-
-
 video { max-width: 100%; height: auto; }
+
+/* VideoHero full-width fix - garante que ocupe toda a largura */
+.video-hero-fullscreen {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.video-hero-fullscreen video {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  object-fit: cover;
+}
 

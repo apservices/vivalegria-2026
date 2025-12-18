@@ -53,6 +53,7 @@ import GuiaParaPais from "./pages/GuiaParaPais";
 import Privacidade from "./pages/Privacidade";
 import Termos from "./pages/Termos";
 import TrabalheConosco from "./pages/TrabalheConosco";
+import CadastroRecreador from "./pages/CadastroRecreador";
 import AvaliacaoEvento from "./pages/AvaliacaoEvento";
 import PesquisaSatisfacao from "./pages/PesquisaSatisfacao";
 import Obrigado from "./pages/Obrigado";
@@ -64,16 +65,22 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-/* ====================== LAYOUT PÚBLICO ====================== */
+/* ====================== HOME LAYOUT (sem padding) ====================== */
+const HomeLayout = ({ children }: { children: ReactNode }) => (
+  <div className="flex flex-col min-h-screen">
+    <Header />
+    <main className="flex-grow">{children}</main>
+    <Footer />
+    <WhatsAppButton />
+    <CookieConsent />
+  </div>
+);
+
+/* ====================== LAYOUT PÚBLICO (com padding) ====================== */
 const PublicLayout = ({ children }: { children: ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
-
-    {/* Compensa Header fixo */}
-    <main className="flex-grow pt-24 md:pt-28">
-      {children}
-    </main>
-
+    <main className="flex-grow pt-24 md:pt-28">{children}</main>
     <Footer />
     <WhatsAppButton />
     <CookieConsent />
@@ -92,7 +99,7 @@ const App = () => {
             <BrowserRouter>
               <Routes>
 
-                {/* ADMIN */}
+                {/* ========== ADMIN ========== */}
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/setup-2fa" element={<Setup2FA />} />
                 <Route path="/admin/verify-2fa" element={<Verify2FA />} />
@@ -105,9 +112,106 @@ const App = () => {
                     </RoleGuard>
                   }
                 />
+                <Route
+                  path="/admin/reservas"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminReservas />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/reservas-kanban"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminReservasKanban />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/clientes"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminClientes />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/recreadores"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminRecreadores />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/casting"
+                  element={
+                    <RoleGuard allowedRoles={["admin", "casting"]}>
+                      <AdminCasting />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/financeiro"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminFinanceiro />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/candidaturas"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminCandidaturas />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/avaliacoes"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminAvaliacoes />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/logs"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminLogs />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/reclamacoes"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminReclamacoes />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/importar-dados"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminImportarDados />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/admin/comunicacoes"
+                  element={
+                    <RoleGuard allowedRoles={["admin"]}>
+                      <AdminConfigComunicacoes />
+                    </RoleGuard>
+                  }
+                />
 
-                {/* RECREADOR */}
+                {/* ========== RECREADOR ========== */}
                 <Route path="/recreador/login" element={<RecreadorLogin />} />
+                <Route path="/recreador/auth-callback" element={<RecreadorAuthCallback />} />
                 <Route
                   path="/recreador"
                   element={
@@ -116,15 +220,54 @@ const App = () => {
                     </RoleGuard>
                   }
                 />
+                <Route
+                  path="/recreador/eventos"
+                  element={
+                    <RoleGuard allowedRoles={["recreador"]}>
+                      <RecreadorEventos />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/recreador/pagamentos"
+                  element={
+                    <RoleGuard allowedRoles={["recreador"]}>
+                      <RecreadorPagamentos />
+                    </RoleGuard>
+                  }
+                />
+                <Route
+                  path="/recreador/perfil"
+                  element={
+                    <RoleGuard allowedRoles={["recreador"]}>
+                      <RecreadorPerfil />
+                    </RoleGuard>
+                  }
+                />
 
-                {/* PÚBLICO */}
-                <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+                {/* ========== PÚBLICO ========== */}
+                {/* Home usa layout SEM padding para o hero full-screen */}
+                <Route path="/" element={<HomeLayout><Home /></HomeLayout>} />
+
+                {/* Demais páginas usam layout COM padding */}
                 <Route path="/pacotes" element={<PublicLayout><Pacotes /></PublicLayout>} />
                 <Route path="/oficinas" element={<PublicLayout><Oficinas /></PublicLayout>} />
                 <Route path="/quem-somos" element={<PublicLayout><QuemSomos /></PublicLayout>} />
                 <Route path="/corporativo" element={<PublicLayout><Corporativo /></PublicLayout>} />
                 <Route path="/contato" element={<PublicLayout><Contato /></PublicLayout>} />
                 <Route path="/contratar" element={<PublicLayout><Contratar /></PublicLayout>} />
+                <Route path="/guia-para-pais" element={<PublicLayout><GuiaParaPais /></PublicLayout>} />
+                <Route path="/privacidade" element={<PublicLayout><Privacidade /></PublicLayout>} />
+                <Route path="/termos" element={<PublicLayout><Termos /></PublicLayout>} />
+                <Route path="/trabalhe-conosco" element={<PublicLayout><TrabalheConosco /></PublicLayout>} />
+                <Route path="/cadastro-recreador" element={<PublicLayout><CadastroRecreador /></PublicLayout>} />
+                <Route path="/avaliacao-evento" element={<PublicLayout><AvaliacaoEvento /></PublicLayout>} />
+                <Route path="/pesquisa-satisfacao" element={<PublicLayout><PesquisaSatisfacao /></PublicLayout>} />
+                <Route path="/obrigado" element={<PublicLayout><Obrigado /></PublicLayout>} />
+                <Route path="/festa-infantil" element={<PublicLayout><FestaInfantil /></PublicLayout>} />
+                <Route path="/orcamento" element={<PublicLayout><OrcamentoLP /></PublicLayout>} />
+                <Route path="/recreacao-infantil-sp" element={<PublicLayout><RecreacaoInfantilSP /></PublicLayout>} />
+                <Route path="/eventos-corporativos-infantis" element={<PublicLayout><EventosCorporativosInfantis /></PublicLayout>} />
 
                 {/* 404 */}
                 <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
