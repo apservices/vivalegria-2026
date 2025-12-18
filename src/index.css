@@ -85,14 +85,18 @@
     --ring: 45 100% 52%;
   }
 
-  * { border-color: hsl(var(--border)); }
+  * {
+    border-color: hsl(var(--border));
+  }
 
   body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: "Inter", "Poppins", system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
+    margin: 0;
+    padding: 0;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "Inter", "Poppins", system-ui, -apple-system,
+      BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold;
@@ -107,6 +111,10 @@
     line-height: 1.6;
   }
 }
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
@@ -137,7 +145,15 @@
   .bg-gradient-subtle { background: var(--gradient-subtle); }
   .bg-gradient-warm { background: var(--gradient-warm); }
   .bg-gradient-primary { background: var(--gradient-primary); }
+
+  .border-border {
+    border-color: hsl(var(--border));
+  }
 }
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -147,6 +163,16 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulinho {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes balanco {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
 }
 
 .animate-mascote-fade {
@@ -163,107 +189,60 @@
   transform-origin: center;
 }
 
-@keyframes pulinho {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+/* =========================================================
+   HERO / VIDEO FIX — DEFINITIVO
+   ========================================================= */
+
+/* Neutraliza QUALQUER pseudo-elemento que gere faixa preta */
+.hero::before,
+.hero::after,
+.video-hero::before,
+.video-hero::after {
+  content: none !important;
+  display: none !important;
 }
 
-@keyframes balanco {
-  0%, 100% { transform: rotate(-4deg); }
-  50% { transform: rotate(4deg); }
-}
-
-@layer utilities {
-  .border-border {
-    border-color: hsl(var(--border));
-  }
-}
-
-
-/* FIX OVERLAY HERO */ 
-.hero, .video-hero, .video-hero::before, .video-hero::after {
+/* Garantir hero sem fundo próprio */
+.hero,
+.video-hero,
+section.relative.min-h-screen {
+  background: transparent !important;
   overflow: hidden;
 }
 
-.hero::before,
-.hero::after {
-  opacity: 0.35;
-}
-
-/* FIX GLOBAL SPACING */ 
-body, main {
-  margin: 0;
-  padding: 0;
-}
-
-/* Responsive media */
-img { max-width: 100%; height: auto; }
-
-/* ===== FIX: Hero VideoHero ocupar largura total ===== */
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-}
-
-/* A section pai do VideoHero na Home precisa ser 100vw e compensar o espaçador do header */
-.flex-grow > .flex.flex-col > section:first-child,
-main > .flex.flex-col > section:first-child,
-main.flex-grow > .flex.flex-col > section:first-child {
+/* Hero ocupa exatamente a viewport */
+section.relative.min-h-screen {
   width: 100vw;
   max-width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-top: -64px; /* Compensa o div.h-16 do Header */
-  position: relative;
-  min-height: 100vh;
-}
-
-/* VideoHero section interna */
-section.relative.min-h-screen {
-  width: 100vw;
-  max-width: none;
-  position: relative;
-  min-height: 100vh;
-}
-
-/* Garantir vídeo cobre área */
-section.relative.min-h-screen video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  object-fit: cover;
-}
-
-/* Conteúdo do hero centralizado verticalmente */
-/* ===== FIX FINAL: remover faixa preta abaixo do hero ===== */
-
-section.relative.min-h-screen {
-  width: 100vw;
-  max-width: none;
-  position: relative;
-  min-height: 100vh;
   height: 100vh;
   max-height: 100vh;
-  background-color: #000;
+  position: relative;
 }
 
-/* Garantir vídeo cobre área */
+/* Vídeo cobre 100% da área */
 section.relative.min-h-screen video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 100vh;
   object-fit: cover;
 }
 
-/* Conteúdo do hero — sem compensação duplicada */
+/* Conteúdo do hero sem empurrões */
 section.relative.min-h-screen .relative.z-10 {
   padding-top: 0;
 }
-/* fallback */
+
+/* =========================================================
+   GLOBAL SAFETY
+   ========================================================= */
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
 }
 
-
+img {
+  max-width: 100%;
+  height: auto;
+}
