@@ -1,9 +1,10 @@
 /**
  * React hook for tracking events
  * Provides easy access to tracking functions in React components
+ * LGPD-safe, production-ready
  */
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
   trackWhatsAppClick,
@@ -13,6 +14,10 @@ import {
   getPageType,
   hasTrackingConsent,
 } from "@/utils/tracking";
+
+/* ================================
+   TYPES
+================================ */
 
 type WhatsAppSource =
   | "header"
@@ -39,13 +44,17 @@ type LandingPageName =
   | "pacotes"
   | "oficinas";
 
+/* ================================
+   MAIN TRACKING HOOK
+================================ */
+
 export const useTracking = () => {
   const location = useLocation();
 
   const hasConsent = hasTrackingConsent();
   const pageType = getPageType(location.pathname);
 
-  /** WhatsApp click */
+  /* WhatsApp click */
   const onWhatsAppClick = useCallback(
     (source: WhatsAppSource) => {
       if (!hasConsent) return;
@@ -54,7 +63,7 @@ export const useTracking = () => {
     [hasConsent]
   );
 
-  /** Form submit */
+  /* Form submit */
   const onFormSubmit = useCallback(
     (formType: FormType) => {
       if (!hasConsent) return;
@@ -63,7 +72,7 @@ export const useTracking = () => {
     [hasConsent]
   );
 
-  /** CTA contratar */
+  /* CTA contratar */
   const onContratarClick = useCallback(
     (buttonLabel: string) => {
       if (!hasConsent) return;
@@ -72,7 +81,7 @@ export const useTracking = () => {
     [hasConsent]
   );
 
-  /** Landing page view manual */
+  /* Manual landing page view */
   const onLPView = useCallback(
     (lpName: LandingPageName) => {
       if (!hasConsent) return;
@@ -91,18 +100,25 @@ export const useTracking = () => {
   };
 };
 
-/**
- * Hook to automatically track landing page views
- * Use this ONLY inside landing pages
- */
+/* ================================
+   AUTO LANDING PAGE TRACKING
+   Use ONLY inside landing pages
+================================ */
+
 export const useLPTracking = (lpName: LandingPageName) => {
   const location = useLocation();
+  const trackedRef = useRef(false);
 
   useEffect(() => {
-    if (!hasTrackingConsent()) return;
+    const hasConsent = hasTrackingConsent();
+    if (!hasConsent) return;
 
     const pageType = getPageType(location.pathname);
-    if (pageType === "landing_page" || pageType === "page") {
+    if (
+      (pageType === "landing_page" || pageType === "page") &&
+      !trackedRef.current
+    ) {
+      trackedRef.current = true;
       trackLPView(lpName);
     }
   }, [lpName, location.pathname]);
