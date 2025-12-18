@@ -1,18 +1,36 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 import { HelmetProvider } from "react-helmet-async";
-import App from "./App.tsx";
-import "./index.css";
-import { initTracking } from "./utils/tracking";
 
-// Initialize tracking system with Consent Mode v2
-// This MUST happen before app renders to ensure proper consent handling
-initTracking();
+/**
+ * Inicialização segura do Meta Pixel
+ */
+function initMetaPixel() {
+  const pixelId = import.meta.env.VITE_META_PIXEL_ID;
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  if (!pixelId) {
+    if (import.meta.env.DEV) {
+      console.info("[Meta Pixel] Desativado (VITE_META_PIXEL_ID não definido)");
+    }
+    return;
+  }
+
+  if (!(window as any).fbq) {
+    console.warn("[Meta Pixel] fbq não encontrado");
+    return;
+  }
+
+  (window as any).fbq("init", pixelId);
+  (window as any).fbq("track", "PageView");
+}
+
+initMetaPixel();
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
     <HelmetProvider>
       <App />
     </HelmetProvider>
-  </StrictMode>
+  </React.StrictMode>
 );
