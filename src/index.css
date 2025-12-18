@@ -2,15 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* =========================================================
+   DESIGN SYSTEM — VIVALEGRIA
+   All colors MUST be HSL
+   ========================================================= */
 
 @layer base {
   :root {
-    /* Base Colors - Vivalegria Original */
-    --background: 0 0% 100%; /* White #FFFFFF */
-    --foreground: 0 0% 24%; /* Text Gray #3C3C3C */
+    /* Base */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 24%;
 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 24%;
@@ -18,17 +19,17 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 24%;
 
-    /* Vivalegria Original Brand Colors */
-    --primary: 18 100% 56%; /* Viva Orange #FF731D - PRIMARY CTA */
+    /* Brand */
+    --primary: 18 100% 56%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 45 100% 60%; /* Viva Yellow #FFD836 */
+    --secondary: 45 100% 60%;
     --secondary-foreground: 0 0% 24%;
 
-    --accent: 202 74% 69%; /* Viva Blue #73B6F0 */
+    --accent: 202 74% 69%;
     --accent-foreground: 0 0% 100%;
 
-    --muted: 44 100% 95%; /* Off-white Sections #FFF8E6 */
+    --muted: 44 100% 95%;
     --muted-foreground: 0 0% 46%;
 
     --destructive: 0 84% 60%;
@@ -40,111 +41,78 @@ All colors MUST be HSL.
 
     --radius: 1rem;
 
-    /* Extended Vivalegria Palette */
-    --viva-yellow: 45 100% 60%; /* Viva Yellow #FFD836 */
-    --viva-orange: 18 100% 56%; /* Viva Orange #FF731D */
-    --viva-orange-hover: 11 100% 53%; /* Hover state #FF4E17 */
-    --viva-blue: 202 74% 69%; /* Viva Blue #73B6F0 */
-    --viva-text: 0 0% 24%; /* Text Gray #3C3C3C */
-    --viva-offwhite: 44 100% 95%; /* Off-white #FFF8E6 */
-    
-    /* Gradients - Playful yet professional */
+    /* Extended palette */
+    --viva-yellow: 45 100% 60%;
+    --viva-orange: 18 100% 56%;
+    --viva-orange-hover: 11 100% 53%;
+    --viva-blue: 202 74% 69%;
+    --viva-text: 0 0% 24%;
+    --viva-offwhite: 44 100% 95%;
+
+    /* Gradients */
     --gradient-hero: linear-gradient(180deg, hsl(45 100% 60%) 0%, hsl(0 0% 100%) 100%);
     --gradient-warm: linear-gradient(135deg, hsl(18 100% 56%), hsl(11 100% 53%));
     --gradient-yellow: linear-gradient(135deg, hsl(45 100% 60%), hsl(45 100% 70%));
     --gradient-subtle: linear-gradient(180deg, hsl(44 100% 95%), hsl(0 0% 100%));
-    
-    /* Shadows - Playful depth */
+    --gradient-primary: linear-gradient(135deg, hsl(18 100% 56%), hsl(45 100% 60%));
+
+    /* Shadows */
     --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.08);
     --shadow-hover: 0 8px 24px rgba(255, 115, 29, 0.2);
     --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.06);
     --shadow-premium: 0 6px 20px rgba(255, 115, 29, 0.15);
-    
-    /* Transitions - Smooth and playful */
+    --shadow-elegant: 0 10px 32px rgba(0, 0, 0, 0.12);
+
+    /* Transitions */
     --transition-smooth: all 0.3s ease-out;
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-elegant: all 0.35s ease;
   }
 
   .dark {
     --background: 0 0% 10%;
     --foreground: 0 0% 98%;
-
     --card: 0 0% 14%;
     --card-foreground: 0 0% 98%;
-
     --popover: 0 0% 14%;
     --popover-foreground: 0 0% 98%;
-
     --primary: 45 100% 52%;
-    --primary-foreground: 0 0% 20%;
-
     --secondary: 202 52% 66%;
-    --secondary-foreground: 0 0% 100%;
-
     --accent: 28 100% 65%;
-    --accent-foreground: 0 0% 20%;
-
     --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 65%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 98%;
-
     --border: 0 0% 18%;
     --input: 0 0% 18%;
     --ring: 45 100% 52%;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+  * { border-color: hsl(var(--border)); }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Inter", "Poppins", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold;
   }
 
-  h1 {
-    font-size: clamp(2.625rem, 6vw, 3.5rem); /* 42px - 56px */
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-
-  h2 {
-    font-size: clamp(2rem, 5vw, 2.625rem); /* 32px - 42px */
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-
-  h3 {
-    font-size: clamp(1.625rem, 4vw, 2rem); /* 26px - 32px */
-    line-height: 1.3;
-  }
+  h1 { font-size: clamp(2.625rem, 6vw, 3.5rem); }
+  h2 { font-size: clamp(2rem, 5vw, 2.625rem); }
+  h3 { font-size: clamp(1.625rem, 4vw, 2rem); }
 
   p {
-    font-size: clamp(1.125rem, 2vw, 1.25rem); /* 18px - 20px */
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
     line-height: 1.6;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
 
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out forwards;
-  }
+  .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+  .animate-slide-up { animation: slideUp 0.6s ease-out forwards; }
 
   .hover-lift {
     transition: var(--transition-elegant);
@@ -156,7 +124,7 @@ All colors MUST be HSL.
   }
 
   .card-premium {
-    background: var(--card);
+    background: hsl(var(--card));
     border-radius: 16px;
     box-shadow: var(--shadow-card);
     padding: 2rem 2.5rem;
@@ -166,39 +134,19 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-elegant);
   }
 
-  .bg-gradient-subtle {
-    background: var(--gradient-subtle);
-  }
-
-  .bg-gradient-warm {
-    background: var(--gradient-warm);
-  }
-
-  .bg-gradient-primary {
-    background: var(--gradient-primary);
-  }
+  .bg-gradient-subtle { background: var(--gradient-subtle); }
+  .bg-gradient-warm { background: var(--gradient-warm); }
+  .bg-gradient-primary { background: var(--gradient-primary); }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-mascote-fade {
@@ -215,33 +163,20 @@ All colors MUST be HSL.
   transform-origin: center;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes pulinho {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 @keyframes balanco {
-  0%,
-  100% {
-    transform: rotate(-4deg);
-  }
-  50% {
-    transform: rotate(4deg);
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+@layer utilities {
+  .border-border {
+    border-color: hsl(var(--border));
   }
 }
+
+

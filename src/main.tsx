@@ -1,33 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import { HelmetProvider } from "react-helmet-async";
 
-/**
- * Inicialização segura do Meta Pixel
- */
-function initMetaPixel() {
-  const pixelId = import.meta.env.VITE_META_PIXEL_ID;
+import App from "./App";
+import "@/index.css";
 
-  if (!pixelId) {
-    if (import.meta.env.DEV) {
-      console.info("[Meta Pixel] Desativado (VITE_META_PIXEL_ID não definido)");
-    }
-    return;
-  }
+// Tracking centralizado (GA4, Google Ads, Meta Pixel)
+// LGPD-safe — só dispara após consentimento
+import { initTracking } from "@/utils/tracking";
 
-  if (!(window as any).fbq) {
-    console.warn("[Meta Pixel] fbq não encontrado");
-    return;
-  }
+// Inicializa tracking UMA ÚNICA VEZ
+// Importante: deve rodar antes do primeiro render
+initTracking();
 
-  (window as any).fbq("init", pixelId);
-  (window as any).fbq("track", "PageView");
+const rootElement = document.getElementById("root");
+
+if (!rootElement) {
+  throw new Error("Root element '#root' not found");
 }
 
-initMetaPixel();
-
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <HelmetProvider>
       <App />
