@@ -29,7 +29,7 @@
     --accent: 202 74% 69%;
     --accent-foreground: 0 0% 100%;
 
-    --muted: 44 100% 95%;
+    --muted: 44 100% 96%;
     --muted-foreground: 0 0% 46%;
 
     --destructive: 0 84% 60%;
@@ -79,7 +79,7 @@
     --primary: 45 100% 52%;
     --secondary: 202 52% 66%;
     --accent: 28 100% 65%;
-    --muted: 0 0% 18%;
+    --muted: 44 100% 96%;
     --border: 0 0% 18%;
     --input: 0 0% 18%;
     --ring: 45 100% 52%;
@@ -179,4 +179,30 @@
   }
 }
 
+
+/* FIX OVERLAY HERO */ 
+.hero, .video-hero, .video-hero::before, .video-hero::after {
+  overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+  opacity: 0.35;
+}
+
+
+/* FIX GLOBAL SPACING */ 
+body, main {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+img { max-width: 100%; height: auto; }
+
+
+
+
+video { max-width: 100%; height: auto; }
 
