@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { TooltipProvider } from "./components/ui/tooltip";
@@ -62,6 +62,7 @@ import OrcamentoLP from "./pages/OrcamentoLP";
 import RecreacaoInfantilSP from "./pages/recreacao-infantil-sp";
 import EventosCorporativosInfantis from "./pages/eventos-corporativos-infantis";
 import NotFound from "./pages/NotFound";
+import RedefinirSenha from "./pages/RedefinirSenha";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,10 @@ const App = () => {
 
             <BrowserRouter>
               <Routes>
+
+                {/* ========== REDIRECTS ========== */}
+                <Route path="/login" element={<Navigate to="/admin/login" replace />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
                 {/* ========== ADMIN ========== */}
                 <Route path="/admin/login" element={<AdminLogin />} />

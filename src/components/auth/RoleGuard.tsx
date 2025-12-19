@@ -53,7 +53,7 @@ export default function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
 
   // 5. Redirecionamento se não tiver acesso
   if (hasAccess === false) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
 
   // 6. Se tiver acesso, exibe os filhos
