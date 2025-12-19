@@ -54,7 +54,6 @@ export const useTracking = () => {
   const hasConsent = hasTrackingConsent();
   const pageType = getPageType(location.pathname);
 
-  /* WhatsApp click */
   const onWhatsAppClick = useCallback(
     (source: WhatsAppSource) => {
       if (!hasConsent) return;
@@ -63,7 +62,6 @@ export const useTracking = () => {
     [hasConsent]
   );
 
-  /* Form submit */
   const onFormSubmit = useCallback(
     (formType: FormType) => {
       if (!hasConsent) return;
@@ -72,7 +70,6 @@ export const useTracking = () => {
     [hasConsent]
   );
 
-  /* CTA contratar */
   const onContratarClick = useCallback(
     (buttonLabel: string) => {
       if (!hasConsent) return;
@@ -81,7 +78,6 @@ export const useTracking = () => {
     [hasConsent]
   );
 
-  /* Manual landing page view */
   const onLPView = useCallback(
     (lpName: LandingPageName) => {
       if (!hasConsent) return;
@@ -110,10 +106,10 @@ export const useLPTracking = (lpName: LandingPageName) => {
   const trackedRef = useRef(false);
 
   useEffect(() => {
-    const hasConsent = hasTrackingConsent();
-    if (!hasConsent) return;
+    if (!hasTrackingConsent()) return;
 
     const pageType = getPageType(location.pathname);
+
     if (
       (pageType === "landing_page" || pageType === "page") &&
       !trackedRef.current
