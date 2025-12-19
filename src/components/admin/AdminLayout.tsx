@@ -47,7 +47,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin/reclamacoes", label: "Reclamações", icon: AlertTriangle, roles: ['admin'] },
     { href: "/admin/importar-dados", label: "Importar Dados", icon: Upload, roles: ['admin'] },
     { href: "/admin/logs", label: "Auditoria", icon: Clock, roles: ['admin'] },
-    { href: "/admin/config-comunicacoes", label: "Comunicação", icon: Settings, roles: ['admin'] },
+    { href: "/admin/comunicacoes", label: "Comunicação", icon: Settings, roles: ['admin'] },
   ];
 
   // Filter nav items based on user role

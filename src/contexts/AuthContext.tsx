@@ -216,7 +216,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/recreador/auth/callback`,
+        emailRedirectTo: `${window.location.origin}/recreador/auth-callback`,
       },
     });
     if (error) throw error;

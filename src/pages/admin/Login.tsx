@@ -1,25 +1,39 @@
 import { useEffect, useState } from "react";
 import type React from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, Mail, AlertCircle } from "lucide-react";
+import { Lock, Mail, AlertCircle, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { user, isAdmin, isCasting, isRecreador, isLoading, needsMFA, mfaVerified, signIn, checkMFAStatus } = useAuth();
+  const { user, isAdmin, isCasting, isRecreador, isLoading, needsMFA, mfaVerified, signIn, checkMFAStatus, sendPasswordReset } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Forgot password modal
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotError, setForgotError] = useState("");
 
   useEffect(() => {
     const handleRedirect = async () => {
@@ -159,7 +173,22 @@ const AdminLogin = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Senha</Label>
+              <Button
+                type="button"
+                variant="link"
+                className="px-0 h-auto text-sm"
+                onClick={() => {
+                  setForgotEmail(email);
+                  setShowForgotPassword(true);
+                  setForgotSent(false);
+                  setForgotError("");
+                }}
+              >
+                Esqueci minha senha
+              </Button>
+            </div>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
@@ -186,6 +215,87 @@ const AdminLogin = () => {
           </Button>
         </div>
       </Card>
+
+      {/* Modal de recuperação de senha */}
+      <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Recuperar senha</DialogTitle>
+            <DialogDescription>
+              Digite seu e-mail para receber um link de redefinição de senha.
+            </DialogDescription>
+          </DialogHeader>
+
+          {forgotSent ? (
+            <div className="text-center py-4">
+              <p className="text-green-600 font-medium mb-2">Link enviado!</p>
+              <p className="text-sm text-muted-foreground">
+                Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.
+              </p>
+              <Button
+                className="mt-4"
+                onClick={() => setShowForgotPassword(false)}
+              >
+                Fechar
+              </Button>
+            </div>
+          ) : (
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setForgotError("");
+                setForgotLoading(true);
+                try {
+                  await sendPasswordReset(forgotEmail.trim());
+                  setForgotSent(true);
+                } catch (err: any) {
+                  setForgotError(err.message || "Erro ao enviar link. Tente novamente.");
+                } finally {
+                  setForgotLoading(false);
+                }
+              }}
+              className="space-y-4"
+            >
+              {forgotError && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{forgotError}</AlertDescription>
+                </Alert>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="forgot-email">E-mail</Label>
+                <Input
+                  id="forgot-email"
+                  type="email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="seu@email.com"
+                  required
+                />
+              </div>
+              <div className="flex gap-2 justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowForgotPassword(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button type="submit" disabled={forgotLoading}>
+                  {forgotLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    "Enviar link"
+                  )}
+                </Button>
+              </div>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
