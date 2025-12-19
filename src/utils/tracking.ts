@@ -93,7 +93,6 @@ declare global {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
-    gtag_report_conversion?: (url?: string) => boolean;
   }
 }
 
@@ -103,13 +102,15 @@ declare global {
 
 const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
 
+const isBrowser = (): boolean => typeof window !== "undefined";
+
 /**
  * Check if Meta Pixel can be safely used
  */
 const canUseMetaPixel = (): boolean => {
   return Boolean(
     META_PIXEL_ID &&
-      typeof window !== "undefined" &&
+      isBrowser() &&
       typeof window.fbq === "function"
   );
 };
@@ -121,11 +122,11 @@ const canUseMetaPixel = (): boolean => {
 const CONSENT_STORAGE_KEY = "cookie-consent";
 
 export const hasTrackingConsent = (): boolean => {
-  if (typeof window === "undefined") return false;
+  if (!isBrowser()) return false;
   return localStorage.getItem(CONSENT_STORAGE_KEY) === "accepted";
 };
 
-const getConsentState = (): ConsentState => {
+export const getConsentState = (): ConsentState => {
   const status: ConsentStatus = hasTrackingConsent()
     ? "granted"
     : "denied";
@@ -145,7 +146,7 @@ const getConsentState = (): ConsentState => {
 // ============================================
 
 export const initConsentMode = (): void => {
-  if (typeof window === "undefined") return;
+  if (!isBrowser()) return;
 
   window.dataLayer = window.dataLayer || [];
 
@@ -171,7 +172,7 @@ export const initConsentMode = (): void => {
 };
 
 export const updateConsent = (accepted: boolean): void => {
-  if (typeof window === "undefined") return;
+  if (!isBrowser()) return;
 
   const status: ConsentStatus = accepted ? "granted" : "denied";
 
@@ -185,7 +186,6 @@ export const updateConsent = (accepted: boolean): void => {
     });
   }
 
-  // 🔒 Meta Pixel guarded by Pixel ID
   if (canUseMetaPixel()) {
     window.fbq!("consent", accepted ? "grant" : "revoke");
   }
@@ -198,13 +198,13 @@ export const updateConsent = (accepted: boolean): void => {
 export const getPageType = (pathname?: string): PageType => {
   const path =
     pathname ||
-    (typeof window !== "undefined" ? window.location.pathname : "/");
+    (isBrowser() ? window.location.pathname : "/");
 
   if (path === "/") return "home";
   if (path.startsWith("/admin")) return "admin";
   if (
     path.startsWith("/festa-infantil") ||
-    path.startsWith("/orcamento-lp") ||
+    path.startsWith("/orcamento") ||
     path.startsWith("/corporativo")
   )
     return "landing_page";
@@ -230,7 +230,7 @@ export const trackEvent = (
     | "lp_view",
   payload: TrackingPayload
 ): void => {
-  if (!hasTrackingConsent()) return;
+  if (!hasTrackingConsent() || !isBrowser()) return;
 
   const eventData = {
     ...payload,
@@ -242,24 +242,22 @@ export const trackEvent = (
     window.gtag("event", eventName, eventData);
   }
 
-  // Google Ads
-  if (typeof window.gtag === "function") {
-    const conversionMap: Record<string, string> = {
-      whatsapp_click: "AW-17048161741/01bMCNXdiNEbEM2bmcE_",
-      form_submit: "AW-17048161741/form_submit",
-      contratar_click: "AW-17048161741/contratar_click",
-    };
+  // Google Ads Conversions
+  const conversionMap: Record<string, string> = {
+    whatsapp_click: "AW-17048161741/01bMCNXdiNEbEM2bmcE_",
+    form_submit: "AW-17048161741/form_submit",
+    contratar_click: "AW-17048161741/contratar_click",
+  };
 
-    const conversionId = conversionMap[eventName];
-    if (conversionId) {
-      window.gtag("event", "conversion", {
-        send_to: conversionId,
-        ...eventData,
-      });
-    }
+  const conversionId = conversionMap[eventName];
+  if (conversionId && typeof window.gtag === "function") {
+    window.gtag("event", "conversion", {
+      send_to: conversionId,
+      ...eventData,
+    });
   }
 
-  // 🔒 Meta Pixel (100% safe)
+  // Meta Pixel
   if (canUseMetaPixel()) {
     const metaEventMap: Record<string, string> = {
       whatsapp_click: "Contact",
@@ -277,6 +275,7 @@ export const trackEvent = (
 // ============================================
 
 export const trackWhatsAppClick = (source: WhatsAppSource): void => {
+  if (!isBrowser()) return;
   trackEvent("whatsapp_click", {
     page_path: window.location.pathname,
     page_type: getPageType(),
@@ -285,6 +284,7 @@ export const trackWhatsAppClick = (source: WhatsAppSource): void => {
 };
 
 export const trackFormSubmit = (formType: FormType): void => {
+  if (!isBrowser()) return;
   trackEvent("form_submit", {
     form_type: formType,
     page_path: window.location.pathname,
@@ -293,6 +293,7 @@ export const trackFormSubmit = (formType: FormType): void => {
 };
 
 export const trackContratarClick = (buttonLabel: string): void => {
+  if (!isBrowser()) return;
   trackEvent("contratar_click", {
     page_path: window.location.pathname,
     page_type: getPageType(),
@@ -301,6 +302,7 @@ export const trackContratarClick = (buttonLabel: string): void => {
 };
 
 export const trackLPView = (lpName: LandingPageName): void => {
+  if (!isBrowser()) return;
   trackEvent("lp_view", {
     lp_name: lpName,
     page_path: window.location.pathname,
@@ -312,7 +314,10 @@ export const trackLPView = (lpName: LandingPageName): void => {
 // ============================================
 
 export const initTracking = (): void => {
-  if (typeof window === "undefined") return;
+  if (!isBrowser()) return;
   initConsentMode();
-  console.debug("[Tracking] Initialized safely");
+
+  if (import.meta.env.DEV) {
+    console.debug("[Tracking] Initialized safely");
+  }
 };
