@@ -75,8 +75,8 @@ export default function Footer() {
                 🎉 Vivalegria Recreação Infantil
               </h3>
               <p className="text-sm text-background/80 leading-relaxed">
-                Transformando festas em experiências inesquecíveis desde 2015. 
-                Recreação infantil premium em São Paulo.
+                Transformamos eventos em experiências inesquecíveis.
+                Recreação infantil premium - Qualidade, Segurança e Profissionalismo.                
               </p>
             </div>
 
@@ -115,7 +115,7 @@ export default function Footer() {
                 <div className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
                   <span>
-                    Vivalegria Recreação Infantil<br />
+                    Vivalegria Recreação <br />
                     São Paulo - SP<br />
                     Atendemos toda a região metropolitana
                   </span>
