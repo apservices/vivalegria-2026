@@ -9,7 +9,6 @@ import {
 import SEO from "@/components/SEO";
 import JsonLd from "@/components/JsonLd";
 import VideoHero from "@/components/VideoHero";
-
 // Sections
 import HowItWorks from "@/components/home/HowItWorks";
 import ForWho from "@/components/home/ForWho";
@@ -19,7 +18,6 @@ import Testimonials from "@/components/home/Testimonials";
 import InstagramGallery from "@/components/home/InstagramGallery";
 import BlogPreview from "@/components/home/BlogPreview";
 import MapSection from "@/components/home/MapSection";
-
 // Assets
 import vivaSlime from "@/assets/viva-slime.png";
 import vivaRecreacao from "@/assets/viva-recreacao.png";
@@ -81,17 +79,14 @@ const Home = () => {
         description="Recreação infantil premium em São Paulo."
         canonical="/"
       />
-
       <JsonLd type="organization" />
       <JsonLd type="local-business" />
       <JsonLd type="faq" />
-
       <div className="flex flex-col">
         {/* ================= HERO ================= */}
         <section className="relative min-h-[calc(100vh-6rem)] flex items-center">
           <VideoHero />
         </section>
-
         {/* Sub headline */}
         <div className="bg-secondary/30 py-4 text-center">
           <p className="text-lg font-medium">
@@ -102,10 +97,8 @@ const Home = () => {
             em São Paulo e região
           </p>
         </div>
-
         <HowItWorks />
         <PriceCalculator />
-
         {/* WHY US */}
         <section className="py-20 bg-background">
           <div className="container mx-auto px-6">
@@ -117,7 +110,6 @@ const Home = () => {
                 O que nos torna especiais
               </p>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {values.map((value, index) => (
                 <div
@@ -141,20 +133,17 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         <ForWho />
         <SecuritySection />
         <Testimonials />
         <InstagramGallery />
         <BlogPreview />
-
         {/* FAQ */}
         <section className="py-20 bg-muted">
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-4xl font-bold text-center mb-12">
               Perguntas Frequentes
             </h2>
-
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
                 <AccordionItem
@@ -162,10 +151,10 @@ const Home = () => {
                   value={`item-${index}`}
                   className="bg-card rounded-xl px-6"
                 >
-                  <AccordionTrigger className="font-bold">
+                  <AccordionTrigger className="text-lg font-semibold hover:no-underline py-4">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
+                  <AccordionContent className="text-muted-foreground pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -173,9 +162,7 @@ const Home = () => {
             </Accordion>
           </div>
         </section>
-
         <MapSection />
-
         {/* CTA FINAL */}
         <section className="py-20 bg-primary text-primary-foreground text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -207,4 +194,3 @@ const Home = () => {
 };
 
 export default Home;
-
