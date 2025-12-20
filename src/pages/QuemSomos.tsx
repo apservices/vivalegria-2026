@@ -1,10 +1,10 @@
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
 
-// Imagens reais Vivalegria
-import quemSomosImg from "@/assets/quem-somos/quem-somos-pintura.jpg";
-import missaoImg from "@/assets/quem-somos/missao-grupo.jpg";
-import paixaoImg from "@/assets/quem-somos/paixao-movimento.jpg";
+// Imagens reais Vivalegria (CAMINHOS CORRIGIDOS)
+import quemSomosImg from "@/assets/quem-somos-pintura.jpg";
+import missaoImg from "@/assets/missao-grupo.jpg";
+import paixaoImg from "@/assets/paixao-movimento.jpg";
 import mascoteSucesso from "@/assets/mascote-sucesso.png";
 
 const QuemSomos = () => {
@@ -21,7 +21,7 @@ const QuemSomos = () => {
         <section className="relative w-full h-[320px] md:h-[420px] overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover"
-            src="/videos/q"
+              src="/videos/quem-somos-bg.mp4"
             autoPlay
             muted
             loop
