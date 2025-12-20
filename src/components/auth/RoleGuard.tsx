@@ -1,65 +1,54 @@
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { useEffect, useState, forwardRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { Loader2 } from "lucide-react";
 
 type Role = "admin" | "casting" | "recreador";
 
 interface RoleGuardProps {
   allowedRoles: Role[];
-  children: React.ReactNode;
+  children: ReactNode;
+  redirectTo?: string;
 }
 
-const RoleGuard = forwardRef<HTMLDivElement, RoleGuardProps>(
-  ({ allowedRoles, children }, ref) => {
-    const [loading, setLoading] = useState(true);
-    const [hasAccess, setHasAccess] = useState<boolean | null>(null);
+const RoleGuard = ({ 
+  allowedRoles, 
+  children, 
+  redirectTo = "/admin/login" 
+}: RoleGuardProps) => {
+  const { isAdmin, isCasting, isRecreador, isLoading, user } = useAuth();
 
-    useEffect(() => {
-      const checkRole = async () => {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        if (!user) {
-          setHasAccess(false);
-          setLoading(false);
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        if (error || !data) {
-          setHasAccess(false);
-        } else {
-          setHasAccess(allowedRoles.includes(data.role as Role));
-        }
-
-        setLoading(false);
-      };
-
-      checkRole();
-    }, [allowedRoles]);
-
-    if (loading) {
-      return (
-        <div ref={ref} className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      );
-    }
-
-    if (hasAccess === false) {
-      return <Navigate to="/admin/login" replace />;
-    }
-
-    return <div ref={ref}>{children}</div>;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
   }
-);
 
-RoleGuard.displayName = "RoleGuard";
+  // Not logged in
+  if (!user) {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  // Check if user has any of the allowed roles
+  const hasAccess = 
+    (allowedRoles.includes("admin") && isAdmin) ||
+    (allowedRoles.includes("casting") && isCasting) ||
+    (allowedRoles.includes("recreador") && isRecreador);
+
+  if (!hasAccess) {
+    // Redirect based on role
+    if (isRecreador) {
+      return <Navigate to="/recreador/login" replace />;
+    }
+    if (isCasting) {
+      return <Navigate to="/admin/casting" replace />;
+    }
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  return <>{children}</>;
+};
 
 export default RoleGuard;
