@@ -57,13 +57,11 @@ const Home = () => {
     },
     {
       question: "Vocês atendem em toda São Paulo e região?",
-      answer:
-        "Sim! Atendemos toda a Grande São Paulo e região metropolitana.",
+      answer: "Sim! Atendemos toda a Grande São Paulo e região metropolitana.",
     },
     {
       question: "Qual a antecedência mínima para contratar?",
-      answer:
-        "Recomendamos pelo menos 15 dias de antecedência.",
+      answer: "Recomendamos pelo menos 15 dias de antecedência.",
     },
     {
       question: "Vocês levam equipamentos e materiais?",
@@ -82,11 +80,13 @@ const Home = () => {
       <JsonLd type="organization" />
       <JsonLd type="local-business" />
       <JsonLd type="faq" />
+
       <div className="flex flex-col">
         {/* ================= HERO ================= */}
         <section className="relative min-h-[calc(100vh-6rem)] flex items-center">
           <VideoHero />
         </section>
+
         {/* Sub headline */}
         <div className="bg-secondary/30 py-4 text-center">
           <p className="text-lg font-medium">
@@ -97,8 +97,10 @@ const Home = () => {
             em São Paulo e região
           </p>
         </div>
+
         <HowItWorks />
         <PriceCalculator />
+
         {/* WHY US */}
         <section className="py-20 bg-background">
           <div className="container mx-auto px-6">
@@ -110,6 +112,7 @@ const Home = () => {
                 O que nos torna especiais
               </p>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {values.map((value, index) => (
                 <div
@@ -124,7 +127,9 @@ const Home = () => {
                       loading="lazy"
                     />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{value.title}</h3>
+                  <h3 className="text-xl font-bold mb-2">
+                    {value.title}
+                  </h3>
                   <p className="text-sm text-muted-foreground">
                     {value.description}
                   </p>
@@ -133,17 +138,20 @@ const Home = () => {
             </div>
           </div>
         </section>
+
         <ForWho />
         <SecuritySection />
         <Testimonials />
         <InstagramGallery />
         <BlogPreview />
+
         {/* FAQ */}
         <section className="py-20 bg-muted">
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-4xl font-bold text-center mb-12">
               Perguntas Frequentes
             </h2>
+
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
                 <AccordionItem
@@ -162,16 +170,24 @@ const Home = () => {
             </Accordion>
           </div>
         </section>
+
         <MapSection />
-        {/* CTA FINAL */}
-        <section className="py-20 bg-primary text-primary-foreground text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+
+        {/* CTA FINAL – COR AJUSTADA (OPÇÃO A) */}
+        <section className="py-20 bg-[#FFF3E6] text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[#FF731D]">
             Pronto para criar memórias inesquecíveis?
           </h2>
+
+          <p className="text-lg text-[#6B4F3F] mb-10">
+            Entre em contato e vamos planejar juntos o evento perfeito para você.
+          </p>
+
           <div className="flex justify-center gap-4 flex-wrap">
             <Button asChild size="lg" className="rounded-full">
               <Link to="/contratar">Solicitar orçamento</Link>
             </Button>
+
             <Button
               asChild
               size="lg"
