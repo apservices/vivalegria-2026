@@ -23,12 +23,12 @@ export default function Footer() {
     "Pinheiros",
     "Jardins",
     "ABC Paulista",
-    "+ toda SÃ£o Paulo e regiÃ£o",
+    "+ toda São Paulo e região",
   ];
 
   const handleWhatsApp = () => {
     window.open(
-      "https://wa.me/5511965982251?text=OlÃ¡! Gostaria de saber mais sobre os serviÃ§os da Vivalegria.",
+      "https://wa.me/5511965982251?text=Olá! Gostaria de saber mais sobre os serviços da Vivalegria.",
       "_blank"
     );
   };
@@ -39,10 +39,10 @@ export default function Footer() {
       <section className="bg-gradient-warm py-16 px-4">
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground">
-            Pronto para criar memÃ³rias inesquecÃ­veis?
+            Pronto para criar memórias inesquecíveis?
           </h2>
           <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto">
-            Entre em contato e vamos planejar juntos o evento perfeito para vocÃª!
+            Entre em contato e vamos planejar juntos o evento perfeito para você!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button
@@ -50,7 +50,7 @@ export default function Footer() {
               size="lg"
               className="bg-white text-primary hover:bg-white/90 font-semibold px-8"
             >
-              <Link to="/contratar">Solicitar orÃ§amento</Link>
+              <Link to="/contratar">Solicitar orçamento</Link>
             </Button>
             <Button
               onClick={handleWhatsApp}
@@ -69,20 +69,20 @@ export default function Footer() {
       <div className="bg-foreground text-background py-12 px-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {/* Coluna 1 - Logo e DescriÃ§Ã£o */}
+            {/* Coluna 1 - Logo e Descrição */}
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-secondary">
-                ðŸŽ‰ Vivalegria RecreaÃ§Ã£o Infantil
+                ?? Vivalegria Recreação Infantil
               </h3>
               <p className="text-sm text-background/80 leading-relaxed">
-                Transformamos eventos em experiÃªncias inesquecÃ­veis.
-                RecreaÃ§Ã£o infantil premium - Qualidade, SeguranÃ§a e Profissionalismo.                
+                Transformamos eventos em experiências inesquecíveis.
+                Recreação infantil premium com qualidade, segurança e profissionalismo.
               </p>
             </div>
 
-            {/* Coluna 2 - NavegaÃ§Ã£o */}
+            {/* Coluna 2 - Navegação */}
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-secondary">NavegaÃ§Ã£o</h4>
+              <h4 className="text-lg font-semibold text-secondary">Navegação</h4>
               <nav className="flex flex-col space-y-2">
                 {navegacao.map((item) => (
                   <Link
@@ -98,7 +98,9 @@ export default function Footer() {
 
             {/* Coluna 3 - Onde Atendemos */}
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-secondary">Onde Atendemos</h4>
+              <h4 className="text-lg font-semibold text-secondary">
+                Onde Atendemos
+              </h4>
               <ul className="space-y-2">
                 {regioes.map((regiao) => (
                   <li key={regiao} className="text-sm text-background/80">
@@ -115,34 +117,37 @@ export default function Footer() {
                 <div className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
                   <span>
-                    Vivalegria RecreaÃ§Ã£o <br />
-                    SÃ£o Paulo - SP<br />
-                    Atendemos toda a regiÃ£o metropolitana
+                    Vivalegria Recreação<br />
+                    São Paulo - SP<br />
+                    Atendemos toda a região metropolitana
                   </span>
                 </div>
+
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-secondary flex-shrink-0" />
-                  <a 
-                    href="tel:+5511965982251" 
+                  <a
+                    href="tel:+5511965982251"
                     className="hover:text-secondary transition-colors"
                   >
                     (11) 96598-2251
                   </a>
                 </div>
+
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-secondary flex-shrink-0" />
-                  <a 
+                  <a
                     href="mailto:contato@vivalegria.com.br"
                     className="hover:text-secondary transition-colors"
                   >
                     contato@vivalegria.com.br
                   </a>
                 </div>
+
                 <div className="flex items-start gap-2">
                   <Clock className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
                   <span>
-                    Seg a Sex: 9hâ€“18h<br />
-                    SÃ¡b: 9hâ€“12h
+                    Seg a Sex: 9h–18h<br />
+                    Sáb: 9h–12h
                   </span>
                 </div>
               </address>
@@ -156,21 +161,21 @@ export default function Footer() {
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-background/70">
             <p>
-              Â© {currentYear} Vivalegria RecreaÃ§Ã£o Infantil. Todos os direitos reservados.
+              © {currentYear} Vivalegria Recreação Infantil. Todos os direitos reservados.
             </p>
             <p className="text-center">
-              RecreaÃ§Ã£o infantil em SÃ£o Paulo â€¢ Vila Mariana â€¢ Moema â€¢ ABC
+              Recreação infantil em São Paulo • Vila Mariana • Moema • ABC
             </p>
             <div className="flex gap-4">
-              <Link 
-                to="/privacidade" 
+              <Link
+                to="/privacidade"
                 className="hover:text-secondary transition-colors"
               >
-                PolÃ­tica de Privacidade
+                Política de Privacidade
               </Link>
-              <span>â€¢</span>
-              <Link 
-                to="/termos" 
+              <span>•</span>
+              <Link
+                to="/termos"
                 className="hover:text-secondary transition-colors"
               >
                 Termos de Uso

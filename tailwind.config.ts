@@ -1,9 +1,18 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config = {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+
+  content: [
+    "./index.html",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+
   prefix: "",
+
   theme: {
     container: {
       center: true,
@@ -12,13 +21,16 @@ export default {
         "2xl": "1400px",
       },
     },
+
     extend: {
       colors: {
+        /* Base tokens (shadcn / radix) */
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -47,55 +59,78 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
+        /* Vivalegria Design System */
         viva: {
           sun: "hsl(var(--viva-yellow))",
           gold: "hsl(var(--viva-yellow))",
+          yellow: "hsl(var(--viva-yellow))",
           orange: "hsl(var(--viva-orange))",
           warm: "hsl(var(--viva-orange-hover))",
           blue: "hsl(var(--viva-blue))",
           dark: "hsl(var(--viva-text))",
-          yellow: "hsl(var(--viva-yellow))",
           offwhite: "hsl(var(--viva-offwhite))",
         },
       },
+
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        sans: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "sans-serif",
+        ],
       },
+
       boxShadow: {
-        'soft': 'var(--shadow-soft)',
-        'hover': 'var(--shadow-hover)',
-        'card': 'var(--shadow-card)',
-        'premium': 'var(--shadow-premium)',
-        'elegant': 'var(--shadow-elegant)',
+        soft: "var(--shadow-soft)",
+        hover: "var(--shadow-hover)",
+        card: "var(--shadow-card)",
+        premium: "var(--shadow-premium)",
+        elegant: "var(--shadow-elegant)",
       },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
+
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
+
+  /* 🔒 Proteção contra purge em produção */
+  safelist: [
+    // fundos e textos usados em destaques visuais
+    "bg-amber-400",
+    "bg-amber-500",
+    "bg-yellow-400",
+    "bg-orange-500",
+
+    "text-amber-600",
+    "text-orange-500",
+
+    "border-amber-400",
+    "border-orange-500",
+  ],
+
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
+export default config;
