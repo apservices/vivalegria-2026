@@ -66,23 +66,29 @@ import RedefinirSenha from "./pages/RedefinirSenha";
 
 const queryClient = new QueryClient();
 
-/* ====================== HOME LAYOUT (sem padding) ====================== */
+/* ====================== HOME LAYOUT (SEM OFFSET) ====================== */
 const HomeLayout = ({ children }: { children: ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    <main className="flex-grow">{children}</main>
+    <main className="flex-grow">
+      {children}
+    </main>
     <Footer />
     <WhatsAppButton />
     <CookieConsent />
   </div>
 );
 
-/* ====================== LAYOUT PÚBLICO (padding corrigido) ====================== */
+/* ====================== LAYOUT PÚBLICO (OFFSET ÚNICO DO HEADER) ====================== */
 const PublicLayout = ({ children }: { children: ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    {/* 🔧 Correção: compensar APENAS a altura real do Header (h-16) */}
-    <main className="flex-grow pt-16">{children}</main>
+
+    {/* Compensa exatamente a altura real do Header (h-16 = 64px) */}
+    <main className="flex-grow pt-16">
+      {children}
+    </main>
+
     <Footer />
     <WhatsAppButton />
     <CookieConsent />
@@ -100,9 +106,16 @@ const App = () => {
 
             <BrowserRouter>
               <Routes>
+
                 {/* ========== REDIRECTS ========== */}
-                <Route path="/login" element={<Navigate to="/admin/login" replace />} />
-                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+                <Route
+                  path="/login"
+                  element={<Navigate to="/admin/login" replace />}
+                />
+                <Route
+                  path="/redefinir-senha"
+                  element={<RedefinirSenha />}
+                />
 
                 {/* ========== ADMIN ========== */}
                 <Route path="/admin/login" element={<AdminLogin />} />
@@ -273,6 +286,7 @@ const App = () => {
 
                 {/* 404 */}
                 <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
+
               </Routes>
             </BrowserRouter>
 
