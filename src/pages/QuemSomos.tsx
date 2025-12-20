@@ -1,133 +1,145 @@
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
-import quemSomosBanner from "@/assets/viva-quem-somos-banner.png";
 
-// Imagens ilustrativas (imagens reais de recreação infantil alegre e profissional)
-const equipeImg1 = "https://www.tiogiu.com.br/wp-content/uploads/2022/04/18835947_1102595516551216_9053607266947550021_n.jpg";
-const equipeImg2 = "https://bombandobrinque.com.br/wp-content/uploads/2024/04/WhatsApp-Image-2019-01-04-at-11.17.50.jpeg";
-const equipeImg3 = "https://agitamorango.com.br/wp-content/uploads/2024/04/por-que-recreacao-infantil-e-fundamental.jpg.webp";
+// Imagens reais Vivalegria
+import quemSomosImg from "@/assets/quem-somos/quem-somos-pintura.jpg";
+import missaoImg from "@/assets/quem-somos/missao-grupo.jpg";
+import paixaoImg from "@/assets/quem-somos/paixao-movimento.jpg";
+import mascoteSucesso from "@/assets/mascote-sucesso.png";
 
 const QuemSomos = () => {
   return (
     <>
       <SEO
-        title="Quem Somos | Vivalegria Recreação"
-        description="Conheça a Vivalegria: referência em entretenimento infantil, combinando o encanto da infância com experiências recreativas educativas e memoráveis."
+        title="Quem Somos | Vivalegria Recreação Infantil"
+        description="A Vivalegria é especialista em recreação infantil no Brasil, criando experiências alegres, seguras e memoráveis para crianças e famílias."
         canonical="/quem-somos"
       />
+
       <div className="min-h-screen">
-        {/* Hero Banner */}
-        <section className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
-          <img
-            src={quemSomosBanner}
-            alt="Bem-vindo à Vivalegria"
-            className="w-full h-full object-cover"
+        {/* HERO COM VÍDEO DE FUNDO */}
+        <section className="relative w-full h-[320px] md:h-[420px] overflow-hidden">
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/videos/q"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
           />
-          <div className="absolute inset-0 bg-[#FFD836]/80 flex items-center justify-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white text-center drop-shadow-lg">
-              Bem-vindo à Vivalegria
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
+            <h1 className="text-white text-4xl md:text-5xl font-bold">
+              Quem Somos
             </h1>
+            <p className="text-white/90 mt-4 max-w-2xl text-lg">
+              Mais do que recreação infantil, criamos experiências que ficam para sempre.
+            </p>
           </div>
         </section>
 
-        {/* Quem Somos */}
-        <section className="py-16 bg-white">
+        {/* QUEM SOMOS */}
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
               <Card className="p-8 md:p-12 shadow-card border-t-4 border-[#FFD836]">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#FF731D] mb-6">
                   Quem Somos
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Fundada com o propósito de enriquecer a vida das crianças por meio da
-                  recreação, a Vivalegria é hoje um referencial em entretenimento infantil.
-                  Com uma equipe de especialistas em diversão, combinamos o encanto da infância
-                  com experiências recreativas educativas e memoráveis.
+                  A Vivalegria nasceu do desejo genuíno de valorizar a infância.
+                  Acreditamos que brincar é essencial para o desenvolvimento emocional,
+                  social e criativo das crianças.
+                  <br /><br />
+                  Com uma equipe brasileira preparada, acolhedora e apaixonada pelo que faz,
+                  transformamos cada encontro em uma experiência segura, divertida
+                  e cheia de significado para crianças e famílias.
                 </p>
               </Card>
+
               <img
-                src={equipeImg1}
-                alt="Equipe Vivalegria em ação com crianças felizes"
-                className="rounded-2xl shadow-lg object-cover h-full w-full"
+                src={quemSomosImg}
+                alt="Criança participando de atividade artística na Vivalegria"
+                className="rounded-2xl shadow-lg object-cover w-full h-full"
                 loading="lazy"
               />
             </div>
           </div>
         </section>
 
-        {/* Nossa Missão */}
-        <section className="py-16 bg-[#FFF8E6]">
+        {/* NOSSA MISSÃO */}
+        <section className="py-20 bg-[#FFF8E6]">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center flex-row-reverse">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+              <img
+                src={missaoImg}
+                alt="Crianças e recreadores Vivalegria em atividade coletiva"
+                className="rounded-2xl shadow-lg object-cover w-full h-full"
+                loading="lazy"
+              />
+
               <Card className="p-8 md:p-12 shadow-card border-t-4 border-[#FF731D]">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#FF731D] mb-6">
                   Nossa Missão
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Nossa missão é criar momentos inesquecíveis onde a alegria e o aprendizado
-                  se entrelaçam de forma mágica. Em cada evento, festa ou encontro, garantimos
-                  que cada risada ressoe e cada experiência seja projetada com carinho e atenção
-                  aos detalhes. Buscamos ser referência no setor como a maior e melhor escolha
-                  dos nossos clientes, proporcionando experiências que marcam vidas e criam
-                  memórias duradouras.
+                  Criar experiências inesquecíveis onde alegria, cuidado e segurança
+                  caminham juntos.
+                  <br /><br />
+                  Cada atividade é planejada com atenção aos detalhes, respeitando
+                  a individualidade de cada criança e oferecendo tranquilidade
+                  para os pais em todos os momentos do evento.
                 </p>
               </Card>
-              <img
-                src={equipeImg2}
-                alt="Recreadores profissionais animando festa infantil"
-                className="rounded-2xl shadow-lg object-cover h-full w-full"
-                loading="lazy"
-              />
             </div>
           </div>
         </section>
 
-        {/* Nossa Paixão */}
-        <section className="py-16 bg-white">
+        {/* NOSSA PAIXÃO */}
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
               <Card className="p-8 md:p-12 shadow-card border-t-4 border-[#73B6F0]">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#FF731D] mb-6">
                   Nossa Paixão
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Nossa paixão é proporcionar a crianças e famílias um espaço onde a imaginação
-                  comanda, a criatividade floresce e a diversão nunca termina. Com respeito pela
-                  individualidade de cada pequeno e um olhar sempre atento à segurança e ao
-                  bem-estar, a Vivalegria é mais do que uma empresa de recreação: é uma aliada da
-                  infância, um berço de momentos preciosos e uma guardiã de sorrisos.
+                  Nossa paixão é ver crianças sendo crianças:
+                  criando, explorando, rindo e se movimentando livremente.
+                  <br /><br />
+                  A Vivalegria acredita no brincar como linguagem universal da infância,
+                  fortalecendo vínculos, imaginação e memórias afetivas que permanecem
+                  para toda a vida.
                 </p>
               </Card>
+
               <img
-                src={equipeImg3}
-                alt="Crianças e monitores em momento de pura alegria"
-                className="rounded-2xl shadow-lg object-cover h-full w-full"
+                src={paixaoImg}
+                alt="Criança brincando ao ar livre em atividade da Vivalegria"
+                className="rounded-2xl shadow-lg object-cover w-full h-full"
                 loading="lazy"
               />
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-20 bg-gradient-to-br from-[#FF731D] to-[#FF4E17]">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">
-              Vamos criar momentos mágicos juntos?
-            </h2>
-            <Button
-              asChild
-              size="lg"
-              className="rounded-full text-lg px-10 h-14 bg-white text-[#FF731D] hover:bg-white/90"
-            >
-              <a
-                href="https://wa.me/5511965982251?text=Olá vim pelo site e gostaria de um orçamento"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Fale conosco pelo WhatsApp
-              </a>
-            </Button>
+        {/* CTA FINAL COM MASCOTE */}
+        <section className="py-20 bg-[#FF731D]">
+          <div className="container mx-auto px-4 max-w-4xl text-center text-white">
+            <img
+              src={mascoteSucesso}
+              alt="Mascote Vivalegria"
+              className="mx-auto mb-6 w-40"
+              loading="lazy"
+            />
+            <h3 className="text-3xl md:text-4xl font-bold mb-4">
+              Vem viver a Vivalegria
+            </h3>
+            <p className="text-lg mb-8">
+              Um espaço onde a infância é respeitada, cuidada e celebrada.
+            </p>
           </div>
         </section>
       </div>
