@@ -12,7 +12,7 @@ const Privacidade = () => {
         canonical="/privacidade"
       />
 
-      <div className="min-h-screen pt-20">
+      <div className="min-h-screen">
         <section className="py-24 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10">
           <div className="container mx-auto px-4 text-center">
             <h1 className="mb-6">Política de Privacidade</h1>
