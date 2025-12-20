@@ -77,11 +77,12 @@ const HomeLayout = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-/* ====================== LAYOUT PÚBLICO (com padding) ====================== */
+/* ====================== LAYOUT PÚBLICO (padding corrigido) ====================== */
 const PublicLayout = ({ children }: { children: ReactNode }) => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    <main className="flex-grow pt-24 md:pt-28">{children}</main>
+    {/* 🔧 Correção: compensar APENAS a altura real do Header (h-16) */}
+    <main className="flex-grow pt-16">{children}</main>
     <Footer />
     <WhatsAppButton />
     <CookieConsent />
@@ -99,7 +100,6 @@ const App = () => {
 
             <BrowserRouter>
               <Routes>
-
                 {/* ========== REDIRECTS ========== */}
                 <Route path="/login" element={<Navigate to="/admin/login" replace />} />
                 <Route path="/redefinir-senha" element={<RedefinirSenha />} />
@@ -251,10 +251,7 @@ const App = () => {
                 />
 
                 {/* ========== PÚBLICO ========== */}
-                {/* Home usa layout SEM padding para o hero full-screen */}
                 <Route path="/" element={<HomeLayout><Home /></HomeLayout>} />
-
-                {/* Demais páginas usam layout COM padding */}
                 <Route path="/pacotes" element={<PublicLayout><Pacotes /></PublicLayout>} />
                 <Route path="/oficinas" element={<PublicLayout><Oficinas /></PublicLayout>} />
                 <Route path="/quem-somos" element={<PublicLayout><QuemSomos /></PublicLayout>} />
@@ -276,7 +273,6 @@ const App = () => {
 
                 {/* 404 */}
                 <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
-
               </Routes>
             </BrowserRouter>
 

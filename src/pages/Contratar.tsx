@@ -107,7 +107,7 @@ const Contratar = () => {
         canonical="/contratar"
       />
 
-      <div className="min-h-screen pt-20 bg-background">
+      <div className="min-h-screen bg-background">
         {/* Hero */}
         <section className="py-12 bg-gradient-subtle">
           <div className="container mx-auto px-4">

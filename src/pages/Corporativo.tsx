@@ -78,7 +78,7 @@ const Corporativo = () => {
         canonical="/corporativo"
       />
 
-      <div className="min-h-screen pt-20">
+      <div className="min-h-screen">
         {/* Hero */}
         <section className="py-24 bg-gradient-to-br from-secondary/10 via-primary/10 to-accent/10">
           <div className="container mx-auto px-4 text-center">

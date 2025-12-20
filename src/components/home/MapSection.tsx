@@ -14,7 +14,7 @@ const MapSection = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {/* Map Embed */}
+          {/* MAPA */}
           <div className="rounded-2xl overflow-hidden shadow-lg h-[400px]">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d467689.8895679627!2d-46.87511934999999!3d-23.6824124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce448183a461d1%3A0x9ba94b08ff335bae!2sS%C3%A3o%20Paulo%2C%20SP!5e0!3m2!1spt-BR!2sbr!4v1702000000000!5m2!1spt-BR!2sbr"
@@ -28,7 +28,7 @@ const MapSection = () => {
             />
           </div>
 
-          {/* Contact Info */}
+          {/* INFORMAÇÕES */}
           <div className="bg-muted rounded-2xl p-8 flex flex-col justify-center">
             <h3 className="text-2xl font-bold mb-6">
               Vivalegria Recreação Infantil
@@ -36,7 +36,7 @@ const MapSection = () => {
 
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                   <MapPin className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -50,7 +50,7 @@ const MapSection = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                   <Phone className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -67,7 +67,7 @@ const MapSection = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                   <Mail className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -82,7 +82,7 @@ const MapSection = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                   <Clock className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>

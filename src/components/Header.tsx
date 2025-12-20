@@ -25,7 +25,7 @@ export default function Header() {
             <Link to="/" className="flex items-center">
               <img
                 src="/assets/vivalegria-logo.png"
-                alt="Vivalegria"
+                alt="Vivalegria Recreação Infantil"
                 className="h-9 w-auto"
               />
             </Link>
@@ -36,14 +36,14 @@ export default function Header() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="text-sm font-medium text-gray-700 hover:text-orange-600"
+                  className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors"
                 >
                   {item.label}
                 </Link>
               ))}
             </nav>
 
-            {/* CTA */}
+            {/* CTA DESKTOP */}
             <div className="hidden md:flex gap-2">
               <Button
                 asChild
@@ -53,11 +53,11 @@ export default function Header() {
               </Button>
             </div>
 
-            {/* MOBILE */}
+            {/* BOTÃO MOBILE */}
             <button
               className="md:hidden"
               onClick={() => setOpen(!open)}
-              aria-label="Menu"
+              aria-label="Abrir menu"
             >
               {open ? <X /> : <Menu />}
             </button>
@@ -73,7 +73,7 @@ export default function Header() {
                   key={item.path}
                   to={item.path}
                   onClick={() => setOpen(false)}
-                  className="py-2 text-gray-700 hover:text-orange-600"
+                  className="py-2 text-gray-700 hover:text-orange-600 transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -82,9 +82,6 @@ export default function Header() {
           </div>
         )}
       </header>
-
-      {/* ESPAÇADOR */}
-      <div className="h-16" />
     </>
   );
 }
