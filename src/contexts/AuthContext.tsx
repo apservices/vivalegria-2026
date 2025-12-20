@@ -31,7 +31,7 @@ interface AuthContextType {
   // Recreador – magic link
   signInRecreadorMagic: (email: string) => Promise<void>;
 
-  // Fluxo de reset de senha (opcional para admin/casting)
+  // Fluxo de reset de senha
   sendPasswordReset: (email: string, redirectPath?: string) => Promise<void>;
   updatePassword: (newPassword: string) => Promise<void>;
 
@@ -97,6 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const {
         data: { user: currentUser },
       } = await supabase.auth.getUser();
+
       if (!currentUser) return { needsSetup: false, needsVerify: false };
 
       const roles = await checkUserRoles(currentUser.id);
@@ -188,7 +189,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  // Login por senha (admin/casting; recreador também pode usar se quiser)
+  // Login por senha (admin/casting)
   const signIn = async (email: string, password: string): Promise<SignInResult> => {
     const { error, data } = await supabase.auth.signInWithPassword({
       email,
@@ -211,29 +212,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: null };
   };
 
-  // Login recreador por magic link (Supabase OTP)
+  // ✅ CORREÇÃO CRÍTICA AQUI (SEM REMOVER NADA)
   const signInRecreadorMagic = async (email: string) => {
+    const origin = window.location.origin.replace(/\/$/, "");
+
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/recreador/auth-callback`,
+        emailRedirectTo: `${origin}/recreador/auth/callback`,
       },
     });
+
     if (error) throw error;
   };
 
-  // Enviar link de reset de senha (admin/casting/recreador se permitido)
   const sendPasswordReset = async (
     email: string,
     redirectPath: string = "/redefinir-senha"
   ) => {
+    const origin = window.location.origin.replace(/\/$/, "");
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}${redirectPath}`,
+      redirectTo: `${origin}${redirectPath}`,
     });
     if (error) throw error;
   };
 
-  // Atualizar senha após o usuário abrir o link de reset
   const updatePassword = async (newPassword: string) => {
     const { error } = await supabase.auth.updateUser({
       password: newPassword,
