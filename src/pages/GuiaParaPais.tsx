@@ -123,7 +123,7 @@ const GuiaParaPais = () => {
         canonical="/guia-para-pais"
       />
 
-      <div className="min-h-screen pt-20">
+      <div className="min-h-screen">
         {/* Hero Section */}
         <section className="py-24 bg-gradient-subtle">
           <div className="container mx-auto px-4">
