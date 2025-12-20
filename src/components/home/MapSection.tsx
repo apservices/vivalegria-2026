@@ -12,7 +12,6 @@ const MapSection = () => {
             Vila Mariana, Moema, Brooklin, Tatuapé, ABC Paulista e toda a Grande São Paulo
           </p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* MAPA */}
           <div className="rounded-2xl overflow-hidden shadow-lg h-[400px]">
@@ -24,19 +23,17 @@ const MapSection = () => {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Localização Vivalegria - São Paulo"
+              title="Mapa de atendimento da Vivalegria - São Paulo e região"
             />
           </div>
-
           {/* INFORMAÇÕES */}
           <div className="bg-muted rounded-2xl p-8 flex flex-col justify-center">
             <h3 className="text-2xl font-bold mb-6">
               Vivalegria Recreação Infantil
             </h3>
-
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -48,9 +45,8 @@ const MapSection = () => {
                   </p>
                 </div>
               </div>
-
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
                   <Phone className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -65,24 +61,22 @@ const MapSection = () => {
                   </a>
                 </div>
               </div>
-
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
                   <Mail className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
                   <h4 className="font-bold mb-1">E-mail</h4>
                   <a
                     href="mailto:contato@vivalegria.com.br"
-                    className="text-primary hover:underline"
+                    className="text-primary hover:underline font-medium"
                   >
                     contato@vivalegria.com.br
                   </a>
                 </div>
               </div>
-
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
                   <Clock className="w-6 h-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -95,9 +89,8 @@ const MapSection = () => {
                 </div>
               </div>
             </div>
-
             <div className="mt-8 p-4 bg-primary/10 rounded-xl">
-              <p className="text-sm text-center">
+              <p className="text-sm text-center leading-relaxed">
                 <strong className="text-primary">
                   Eventos aos finais de semana e feriados!
                 </strong>
