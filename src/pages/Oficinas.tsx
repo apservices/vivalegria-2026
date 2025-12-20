@@ -17,7 +17,7 @@ import oficinaCupcake from "@/assets/oficina-cupcake.jpg";
 import oficinaPintura from "@/assets/oficina-pintura.jpg";
 import oficinaJardinagem from "@/assets/oficina-jardinagem.jpg";
 
-// Mascote Vivalegria (novo – sem remover nada)
+// Mascote Vivalegria
 import mascoteSlime from "@/assets/mascote-slime.png";
 
 const Oficinas = () => {
@@ -115,24 +115,36 @@ const Oficinas = () => {
       />
 
       <div className="min-h-screen">
-        {/* Hero */}
-        <section className="py-24 bg-gradient-subtle">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
+        {/* HERO COM VÍDEO */}
+        <section className="relative w-full h-[420px] md:h-[520px] overflow-hidden">
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/videos/oficinas-bg.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+            <div className="text-center px-4 max-w-3xl space-y-6">
               <Badge
-                className="mb-4 bg-primary shadow-soft"
+                className="mx-auto bg-white/90 text-primary shadow-soft"
                 variant="secondary"
               >
                 Aprender Brincando
               </Badge>
 
-              <h1 className="text-balance">
+              <h1 className="text-white text-4xl md:text-5xl font-bold">
                 Oficinas Criativas Vivalegria
               </h1>
 
-              <p className="text-xl text-muted-foreground text-balance">
-                Experiências educativas e divertidas. Cada criança cria,
-                aprende e leva sua obra para casa!
+              <p className="text-white/90 text-xl">
+                Experiências educativas e divertidas.
+                Cada criança cria, aprende e leva sua obra para casa.
               </p>
 
               <Button
@@ -196,9 +208,7 @@ const Oficinas = () => {
 
                     <div className="flex items-center gap-2 text-sm">
                       <Gift className="w-5 h-5 text-primary" />
-                      <span className="font-medium">
-                        Leva para casa:
-                      </span>
+                      <span className="font-medium">Leva para casa:</span>
                       <span className="text-muted-foreground">
                         {workshop.takeHome}
                       </span>
@@ -258,11 +268,10 @@ const Oficinas = () => {
           </div>
         </section>
 
-        {/* CTA Final – FUNDO SUAVE + MASCOTE (OPÇÃO A) */}
+        {/* CTA FINAL COM FUNDO SUAVE + MASCOTE */}
         <section className="py-24 bg-[#FFF3E6]">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8">
-
               <img
                 src={mascoteSlime}
                 alt="Mascote Vivalegria com slime colorido"
@@ -270,7 +279,7 @@ const Oficinas = () => {
                 loading="lazy"
               />
 
-              <h2 className="text-balance text-[#FF731D]">
+              <h2 className="text-[#FF731D]">
                 Pronto para criar memórias inesquecíveis?
               </h2>
 
@@ -288,7 +297,6 @@ const Oficinas = () => {
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
-
             </div>
           </div>
         </section>
