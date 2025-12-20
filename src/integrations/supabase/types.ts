@@ -550,7 +550,14 @@ export type Database = {
           observacoes_evento: string | null
           oficinas_selecionadas: string[] | null
           pacote_tipo: string
+          payment_completed_at: string | null
+          payment_expires_at: string | null
+          payment_link: string | null
+          payment_method: string | null
+          payment_session_id: string | null
+          payment_status: string | null
           status: string
+          status_venda: string | null
           telefone: string
           tipo_cadastro: Database["public"]["Enums"]["tipo_cadastro"]
           tipo_cliente: Database["public"]["Enums"]["tipo_cliente"]
@@ -584,7 +591,14 @@ export type Database = {
           observacoes_evento?: string | null
           oficinas_selecionadas?: string[] | null
           pacote_tipo: string
+          payment_completed_at?: string | null
+          payment_expires_at?: string | null
+          payment_link?: string | null
+          payment_method?: string | null
+          payment_session_id?: string | null
+          payment_status?: string | null
           status?: string
+          status_venda?: string | null
           telefone: string
           tipo_cadastro: Database["public"]["Enums"]["tipo_cadastro"]
           tipo_cliente: Database["public"]["Enums"]["tipo_cliente"]
@@ -618,7 +632,14 @@ export type Database = {
           observacoes_evento?: string | null
           oficinas_selecionadas?: string[] | null
           pacote_tipo?: string
+          payment_completed_at?: string | null
+          payment_expires_at?: string | null
+          payment_link?: string | null
+          payment_method?: string | null
+          payment_session_id?: string | null
+          payment_status?: string | null
           status?: string
+          status_venda?: string | null
           telefone?: string
           tipo_cadastro?: Database["public"]["Enums"]["tipo_cadastro"]
           tipo_cliente?: Database["public"]["Enums"]["tipo_cliente"]
