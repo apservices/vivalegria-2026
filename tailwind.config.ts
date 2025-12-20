@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-const config = {
+const config: Config = {
   darkMode: ["class"],
 
   content: [
@@ -23,6 +23,9 @@ const config = {
     },
 
     extend: {
+      /* ===============================
+       * Colors / Design Tokens
+       * =============================== */
       colors: {
         /* Base tokens (shadcn / radix) */
         border: "hsl(var(--border))",
@@ -73,6 +76,9 @@ const config = {
         },
       },
 
+      /* ===============================
+       * Typography
+       * =============================== */
       fontFamily: {
         sans: [
           "Inter",
@@ -83,6 +89,9 @@ const config = {
         ],
       },
 
+      /* ===============================
+       * Effects
+       * =============================== */
       boxShadow: {
         soft: "var(--shadow-soft)",
         hover: "var(--shadow-hover)",
@@ -97,6 +106,9 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
 
+      /* ===============================
+       * Animations (Radix / shadcn)
+       * =============================== */
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -117,7 +129,6 @@ const config = {
 
   /* 🔒 Proteção contra purge em produção */
   safelist: [
-    // fundos e textos usados em destaques visuais
     "bg-amber-400",
     "bg-amber-500",
     "bg-yellow-400",
@@ -131,6 +142,6 @@ const config = {
   ],
 
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+};
 
 export default config;

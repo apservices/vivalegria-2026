@@ -23,35 +23,38 @@ export default function Footer() {
     "Pinheiros",
     "Jardins",
     "ABC Paulista",
-    "+ toda São Paulo e região",
+    "+ toda SÃ£o Paulo e regiÃ£o",
   ];
 
   const handleWhatsApp = () => {
     window.open(
-      "https://wa.me/5511965982251?text=Olá! Gostaria de saber mais sobre os serviços da Vivalegria.",
+      "https://wa.me/5511965982251?text=OlÃ¡! Gostaria de saber mais sobre os serviÃ§os da Vivalegria.",
       "_blank"
     );
   };
 
   return (
     <footer className="w-full">
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="bg-gradient-warm py-16 px-4">
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground">
-            Pronto para criar memórias inesquecíveis?
+            Pronto para criar memÃ³rias inesquecÃ­veis?
           </h2>
+
           <p className="text-lg text-primary-foreground/90 max-w-2xl mx-auto">
-            Entre em contato e vamos planejar juntos o evento perfeito para você!
+            Entre em contato e vamos planejar juntos o evento perfeito para vocÃª!
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button
               asChild
               size="lg"
               className="bg-white text-primary hover:bg-white/90 font-semibold px-8"
             >
-              <Link to="/contratar">Solicitar orçamento</Link>
+              <Link to="/contratar">Solicitar orÃ§amento</Link>
             </Button>
+
             <Button
               onClick={handleWhatsApp}
               size="lg"
@@ -65,122 +68,125 @@ export default function Footer() {
         </div>
       </section>
 
-      {/* Main Footer */}
+      {/* ConteÃºdo principal */}
       <div className="bg-foreground text-background py-12 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {/* Coluna 1 - Logo e Descrição */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-secondary">
-                ?? Vivalegria Recreação Infantil
-              </h3>
-              <p className="text-sm text-background/80 leading-relaxed">
-                Transformamos eventos em experiências inesquecíveis.
-                Recreação infantil premium com qualidade, segurança e profissionalismo.
-              </p>
-            </div>
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Coluna 1 */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-secondary">
+              ðŸŽ‰ Vivalegria RecreaÃ§Ã£o
+            </h3>
+            <p className="text-sm text-background/80 leading-relaxed">
+              Transformamos eventos em experiÃªncias inesquecÃ­veis.
+              RecreaÃ§Ã£o infantil premium com qualidade, seguranÃ§a e profissionalismo.
+            </p>
+          </div>
 
-            {/* Coluna 2 - Navegação */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-secondary">Navegação</h4>
-              <nav className="flex flex-col space-y-2">
-                {navegacao.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    className="text-sm text-background/80 hover:text-secondary transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-            </div>
+          {/* Coluna 2 */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-secondary">NavegaÃ§Ã£o</h4>
+            <nav className="flex flex-col space-y-2">
+              {navegacao.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className="text-sm text-background/80 hover:text-secondary transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
 
-            {/* Coluna 3 - Onde Atendemos */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-secondary">
-                Onde Atendemos
-              </h4>
-              <ul className="space-y-2">
-                {regioes.map((regiao) => (
-                  <li key={regiao} className="text-sm text-background/80">
-                    {regiao}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Coluna 3 */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-secondary">
+              Onde Atendemos
+            </h4>
+            <ul className="space-y-2">
+              {regioes.map((regiao) => (
+                <li
+                  key={regiao}
+                  className="text-sm text-background/80"
+                >
+                  {regiao}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            {/* Coluna 4 - Contato */}
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-secondary">Contato</h4>
-              <address className="not-italic space-y-3 text-sm text-background/80">
-                <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
-                  <span>
-                    Vivalegria Recreação<br />
-                    São Paulo - SP<br />
-                    Atendemos toda a região metropolitana
-                  </span>
-                </div>
+          {/* Coluna 4 */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-secondary">Contato</h4>
 
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-secondary flex-shrink-0" />
-                  <a
-                    href="tel:+5511965982251"
-                    className="hover:text-secondary transition-colors"
-                  >
-                    (11) 96598-2251
-                  </a>
-                </div>
+            <address className="not-italic space-y-3 text-sm text-background/80">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 mt-0.5 text-secondary" />
+                <span>
+                  Vivalegria RecreaÃ§Ã£o<br />
+                  SÃ£o Paulo â€“ SP<br />
+                  Atendemos toda a regiÃ£o metropolitana
+                </span>
+              </div>
 
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-secondary flex-shrink-0" />
-                  <a
-                    href="mailto:contato@vivalegria.com.br"
-                    className="hover:text-secondary transition-colors"
-                  >
-                    contato@vivalegria.com.br
-                  </a>
-                </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-secondary" />
+                <a
+                  href="tel:+5511965982251"
+                  className="hover:text-secondary transition-colors"
+                >
+                  (11) 96598-2251
+                </a>
+              </div>
 
-                <div className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 mt-0.5 text-secondary flex-shrink-0" />
-                  <span>
-                    Seg a Sex: 9h–18h<br />
-                    Sáb: 9h–12h
-                  </span>
-                </div>
-              </address>
-            </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-secondary" />
+                <a
+                  href="mailto:contato@vivalegria.com.br"
+                  className="hover:text-secondary transition-colors"
+                >
+                  contato@vivalegria.com.br
+                </a>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <Clock className="w-4 h-4 mt-0.5 text-secondary" />
+                <span>
+                  Seg a Sex: 9hâ€“18h<br />
+                  SÃ¡b: 9hâ€“12h
+                </span>
+              </div>
+            </address>
           </div>
         </div>
       </div>
 
-      {/* Bottom Footer */}
+      {/* RodapÃ© inferior */}
       <div className="bg-foreground border-t border-background/10 py-6 px-4">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-background/70">
-            <p>
-              © {currentYear} Vivalegria Recreação Infantil. Todos os direitos reservados.
-            </p>
-            <p className="text-center">
-              Recreação infantil em São Paulo • Vila Mariana • Moema • ABC
-            </p>
-            <div className="flex gap-4">
-              <Link
-                to="/privacidade"
-                className="hover:text-secondary transition-colors"
-              >
-                Política de Privacidade
-              </Link>
-              <span>•</span>
-              <Link
-                to="/termos"
-                className="hover:text-secondary transition-colors"
-              >
-                Termos de Uso
-              </Link>
-            </div>
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-background/70">
+          <p>
+            Â© {currentYear} Vivalegria RecreaÃ§Ã£o.
+            Todos os direitos reservados.
+          </p>
+
+          <p className="text-center">
+            RecreaÃ§Ã£o infantil em SÃ£o Paulo â€¢ Vila Mariana â€¢ Moema â€¢ ABC
+          </p>
+
+          <div className="flex gap-4">
+            <Link
+              to="/privacidade"
+              className="hover:text-secondary transition-colors"
+            >
+              PolÃ­tica de Privacidade
+            </Link>
+            <span>â€¢</span>
+            <Link
+              to="/termos"
+              className="hover:text-secondary transition-colors"
+            >
+              Termos de Uso
+            </Link>
           </div>
         </div>
       </div>
