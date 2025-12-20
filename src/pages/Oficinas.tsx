@@ -10,11 +10,15 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
+
 import oficinaSlime from "@/assets/oficina-slime.jpg";
 import oficinaMicangas from "@/assets/oficina-micangas.jpg";
 import oficinaCupcake from "@/assets/oficina-cupcake.jpg";
 import oficinaPintura from "@/assets/oficina-pintura.jpg";
 import oficinaJardinagem from "@/assets/oficina-jardinagem.jpg";
+
+// Mascote Vivalegria (novo – sem remover nada)
+import mascoteSlime from "@/assets/mascote-slime.png";
 
 const Oficinas = () => {
   const workshops = [
@@ -110,7 +114,6 @@ const Oficinas = () => {
         canonical="/oficinas"
       />
 
-      {/* 🔧 Correção aplicada: removido pt-20 */}
       <div className="min-h-screen">
         {/* Hero */}
         <section className="py-24 bg-gradient-subtle">
@@ -255,27 +258,37 @@ const Oficinas = () => {
           </div>
         </section>
 
-        {/* CTA Final */}
-        <section className="py-24 bg-gradient-warm">
+        {/* CTA Final – FUNDO SUAVE + MASCOTE (OPÇÃO A) */}
+        <section className="py-24 bg-[#FFF3E6]">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-8">
-              <h2 className="text-balance text-white">
+
+              <img
+                src={mascoteSlime}
+                alt="Mascote Vivalegria com slime colorido"
+                className="mx-auto w-40"
+                loading="lazy"
+              />
+
+              <h2 className="text-balance text-[#FF731D]">
                 Pronto para criar memórias inesquecíveis?
               </h2>
-              <p className="text-xl text-white/90">
+
+              <p className="text-xl text-[#6B4F3F]">
                 Escolha as oficinas e crie um evento único para as crianças
               </p>
 
               <Button
                 asChild
                 size="lg"
-                className="rounded-full text-lg px-10 h-14 shadow-premium bg-white text-viva-orange hover:bg-white/90"
+                className="rounded-full text-lg px-10 h-14 shadow-premium"
               >
                 <Link to="/contratar">
                   Planejar minhas oficinas
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
+
             </div>
           </div>
         </section>
@@ -285,4 +298,3 @@ const Oficinas = () => {
 };
 
 export default Oficinas;
-
