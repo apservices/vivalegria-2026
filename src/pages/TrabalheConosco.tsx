@@ -146,7 +146,7 @@ const TrabalheConosco = () => {
         canonical="/trabalhe-conosco"
       />
 
-      <div className="min-h-screen pt-20">
+      <div className="min-h-screen">
         {/* Hero */}
         <section className="py-24 bg-gradient-to-br from-[#FFD836]/20 via-white to-white">
           <div className="container mx-auto px-4 text-center">
