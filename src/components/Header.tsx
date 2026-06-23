@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoAsset from "../../public/assets/vivalegria-logo.png.asset.json";
 
 export default function Header() {
   const [open, setOpen] = useState(false);

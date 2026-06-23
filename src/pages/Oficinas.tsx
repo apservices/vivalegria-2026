@@ -120,7 +120,7 @@ const Oficinas = () => {
         <section className="relative w-full h-[420px] md:h-[520px] overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover"
-            src="/videos/oficinas-bg.mp4"
+            src={oficinasVideo.url}
             autoPlay
             muted
             loop
