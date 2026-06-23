@@ -6,6 +6,7 @@ import quemSomosImg from "@/assets/quem-somos-pintura.jpg";
 import missaoImg from "@/assets/missao-grupo.jpg";
 import paixaoImg from "@/assets/paixao-movimento.jpg";
 import mascoteSucesso from "@/assets/mascote-sucesso.png";
+import quemSomosVideo from "../../public/videos/quem-somos-bg.mp4.asset.json";
 
 const QuemSomos = () => {
   return (
