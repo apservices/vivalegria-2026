@@ -19,6 +19,7 @@ import oficinaJardinagem from "@/assets/oficina-jardinagem.jpg";
 
 // Mascote Vivalegria
 import mascoteSlime from "@/assets/mascote-slime.png";
+import oficinasVideo from "../../public/videos/oficinas-bg.mp4.asset.json";
 
 const Oficinas = () => {
   const workshops = [
