@@ -25,7 +25,7 @@ export default function Header() {
             {/* LOGO */}
             <Link to="/" className="flex items-center">
               <img
-                src="/assets/vivalegria-logo.png"
+                src={logoAsset.url}
                 alt="Vivalegria Recreação Infantil"
                 className="h-9 w-auto"
               />
