@@ -10,7 +10,7 @@ interface SEOProps {
 
 const SEO = ({
   title = "Recreação Infantil SP | Pacotes a partir de R$589 | Vivalegria 2026",
-  description = "Recreação infantil premium em São Paulo para festas, casamentos e eventos. Pacotes Select (4h + 2 recreadores) e Clássico. Vila Mariana, Moema, ABC. ☎️ (11) 96598-2251",
+  description = "Recreação infantil premium em São Paulo para festas, casamentos e eventos. Pacotes Select (4h + 2 recreadores) e Clássico. Vila Mariana, Moema, ABC. Tel: (11) 96598-2251",
   keywords = "recreação infantil São Paulo, festas infantis SP, animação de festas preço, oficinas criativas, eventos corporativos infantis, recreação Vila Mariana, recreação Moema, recreação ABC Paulista",
   ogImage = "/logo-vivalegria.jpg",
   canonical,
