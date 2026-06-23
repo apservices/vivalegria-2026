@@ -191,7 +191,7 @@ const Termos = () => {
                         {section.content.map((item, itemIndex) => (
                           <li key={itemIndex} className="flex items-start gap-2">
                             <CheckCircle2 className="w-5 h-5 text-[#FF731D] mt-1 flex-shrink-0" />
-                            <span dangerouslySetInnerHTML={{ __html: item }} />
+                            <span><FormattedText text={item} /></span>
                           </li>
                         ))}
                       </ul>
