@@ -22,7 +22,7 @@ const QuemSomos = () => {
         <section className="relative w-full h-[320px] md:h-[420px] overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover"
-              src="/videos/quem-somos-bg.mp4"
+              src={quemSomosVideo.url}
             autoPlay
             muted
             loop
