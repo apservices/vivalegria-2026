@@ -8,6 +8,19 @@ import {
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 
+const FormattedText = ({ text }: { text: string }) => {
+  const parts = text.split(/(<strong>.*?<\/strong>)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/^<strong>(.*?)<\/strong>$/);
+        if (match) return <strong key={i}>{match[1]}</strong>;
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+};
+
 const Termos = () => {
   const sections = [
     {
