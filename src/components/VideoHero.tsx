@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import heroVideo from "../../public/videos/hero-vivalegria.mp4.asset.json";
 
 interface VideoHeroProps {
   videoUrl?: string;
 }
 
 const VideoHero = ({
-  videoUrl = "/videos/hero-vivalegria.mp4",
+  videoUrl = heroVideo.url,
 }: VideoHeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">

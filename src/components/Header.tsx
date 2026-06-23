@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoAsset from "../../public/assets/vivalegria-logo.png.asset.json";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function Header() {
             {/* LOGO */}
             <Link to="/" className="flex items-center">
               <img
-                src="/assets/vivalegria-logo.png"
+                src={logoAsset.url}
                 alt="Vivalegria Recreação Infantil"
                 className="h-9 w-auto"
               />

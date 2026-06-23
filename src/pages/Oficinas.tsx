@@ -19,6 +19,7 @@ import oficinaJardinagem from "@/assets/oficina-jardinagem.jpg";
 
 // Mascote Vivalegria
 import mascoteSlime from "@/assets/mascote-slime.png";
+import oficinasVideo from "../../public/videos/oficinas-bg.mp4.asset.json";
 
 const Oficinas = () => {
   const workshops = [
@@ -119,7 +120,7 @@ const Oficinas = () => {
         <section className="relative w-full h-[420px] md:h-[520px] overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover"
-            src="/videos/oficinas-bg.mp4"
+            src={oficinasVideo.url}
             autoPlay
             muted
             loop

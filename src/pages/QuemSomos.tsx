@@ -6,6 +6,7 @@ import quemSomosImg from "@/assets/quem-somos-pintura.jpg";
 import missaoImg from "@/assets/missao-grupo.jpg";
 import paixaoImg from "@/assets/paixao-movimento.jpg";
 import mascoteSucesso from "@/assets/mascote-sucesso.png";
+import quemSomosVideo from "../../public/videos/quem-somos-bg.mp4.asset.json";
 
 const QuemSomos = () => {
   return (
@@ -21,7 +22,7 @@ const QuemSomos = () => {
         <section className="relative w-full h-[320px] md:h-[420px] overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover"
-              src="/videos/quem-somos-bg.mp4"
+              src={quemSomosVideo.url}
             autoPlay
             muted
             loop
