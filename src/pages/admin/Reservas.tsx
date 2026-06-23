@@ -130,7 +130,7 @@ const AdminReservas = () => {
           local_evento: editReserva.local_evento,
           pacote_tipo: editReserva.pacote_tipo,
           numero_criancas: editReserva.numero_criancas,
-          observacoes: editReserva.observacoes,
+          observacoes_evento: (editReserva as any).observacoes_evento ?? (editReserva as any).observacoes,
         })
         .eq("id", editReserva.id);
 

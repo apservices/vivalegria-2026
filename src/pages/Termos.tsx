@@ -8,6 +8,19 @@ import {
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 
+const FormattedText = ({ text }: { text: string }) => {
+  const parts = text.split(/(<strong>.*?<\/strong>)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/^<strong>(.*?)<\/strong>$/);
+        if (match) return <strong key={i}>{match[1]}</strong>;
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+};
+
 const Termos = () => {
   const sections = [
     {
@@ -178,7 +191,7 @@ const Termos = () => {
                         {section.content.map((item, itemIndex) => (
                           <li key={itemIndex} className="flex items-start gap-2">
                             <CheckCircle2 className="w-5 h-5 text-[#FF731D] mt-1 flex-shrink-0" />
-                            <span dangerouslySetInnerHTML={{ __html: item }} />
+                            <span><FormattedText text={item} /></span>
                           </li>
                         ))}
                       </ul>
