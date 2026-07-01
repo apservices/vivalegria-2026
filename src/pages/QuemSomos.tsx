@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 
 // Imagens reais Vivalegria (CAMINHOS CORRIGIDOS)
 import quemSomosImg from "@/assets/quem-somos-pintura.jpg";
@@ -12,9 +13,17 @@ const QuemSomos = () => {
   return (
     <>
       <SEO
-        title="Quem Somos | Vivalegria Recreação Infantil"
-        description="A Vivalegria é especialista em recreação infantil no Brasil, criando experiências alegres, seguras e memoráveis para crianças e famílias."
+        title="Quem Somos | Vivalegria Recreação Infantil em São Paulo"
+        description="Conheça a Vivalegria: mais de +300 profissionais, 500+ eventos e paixão por transformar festas infantis em memórias inesquecíveis em São Paulo."
         canonical="/quem-somos"
+      />
+      <JsonLd type="about-page" />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Quem Somos", path: "/quem-somos" },
+        ]}
       />
 
       <div className="min-h-screen">

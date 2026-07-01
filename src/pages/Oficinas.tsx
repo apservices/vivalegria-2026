@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 
 import oficinaSlime from "@/assets/oficina-slime.jpg";
 import oficinaMicangas from "@/assets/oficina-micangas.jpg";
@@ -110,9 +111,24 @@ const Oficinas = () => {
   return (
     <>
       <SEO
-        title="Oficinas Criativas | Vivalegria Recreação"
-        description="Oficinas criativas para crianças: slime, miçangas, cupcakes, pintura em tela e jardinagem. Cada criança leva sua criação para casa!"
+        title="Oficinas Criativas Infantis SP | Slime, Pintura, Cupcake | Vivalegria"
+        description="Oficinas criativas para festas infantis em São Paulo: slime, miçangas, cupcakes, pintura em tela e jardinagem. Cada criança leva sua criação para casa."
         canonical="/oficinas"
+      />
+      <JsonLd
+        type="service"
+        serviceData={{
+          name: "Oficinas Criativas Infantis",
+          description:
+            "Oficinas temáticas (slime, miçangas, cupcake, pintura, jardinagem) para festas e eventos infantis em São Paulo.",
+        }}
+      />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Oficinas", path: "/oficinas" },
+        ]}
       />
 
       <div className="min-h-screen">

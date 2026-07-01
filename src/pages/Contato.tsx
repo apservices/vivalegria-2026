@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 import { trackFormSubmit, trackWhatsAppClick } from "@/utils/tracking";
 
 const Contato = () => {
@@ -62,9 +63,17 @@ const Contato = () => {
   return (
     <>
       <SEO
-        title="Contato | Vivalegria Recreação"
-        description="Entre em contato com a Vivalegria. Atendemos São Paulo e região metropolitana (incluindo ABC Paulista)."
+        title="Contato | Vivalegria Recreação Infantil SP"
+        description="Fale com a Vivalegria pelo WhatsApp (11) 96598-2251. Atendemos toda São Paulo e região metropolitana, incluindo Vila Mariana, Moema e ABC Paulista."
         canonical="/contato"
+      />
+      <JsonLd type="contact-page" />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Contato", path: "/contato" },
+        ]}
       />
 
       <div className="min-h-screen">
