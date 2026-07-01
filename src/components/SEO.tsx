@@ -31,7 +31,11 @@ const SEO = ({
     ? title
     : `${title} | Vivalegria Recreação`;
 
-  const url = canonical ? `${SITE_URL}${canonical}` : SITE_URL;
+  const url = canonical
+    ? canonical.startsWith("http")
+      ? canonical
+      : `${SITE_URL}${canonical}`
+    : SITE_URL;
   const image = ogImage.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`;
 
   return (
