@@ -12,3 +12,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /recreador/
+Disallow: /avaliacao-evento
+Disallow: /pesquisa-satisfacao
+Disallow: /redefinir-senha
+Disallow: /obrigado
+Disallow: /cadastro-recreador
+
+Sitemap: https://vivalegria.com.br/sitemap.xml
