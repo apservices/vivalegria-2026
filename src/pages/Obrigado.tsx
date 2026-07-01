@@ -38,7 +38,8 @@ const Obrigado = () => {
       <HeadSEO
         title="Reserva Confirmada | Vivalegria"
         description="Sua reserva foi registrada com sucesso! Entraremos em contato via WhatsApp para confirmar os detalhes do seu evento."
-        canonical="https://www.vivalegria.com.br/obrigado"
+        canonical="/obrigado"
+        noindex
       />
       <section className="min-h-screen flex items-center justify-center bg-gradient-subtle py-12 px-4">
         <div className="container mx-auto">

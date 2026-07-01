@@ -324,6 +324,7 @@ const CadastroRecreador = () => {
         title="Cadastro de Recreadores | Vivalegria"
         description="Cadastre-se como recreador na Vivalegria. Faça parte da nossa equipe de profissionais de recreação infantil em São Paulo."
         canonical="/cadastro-recreador"
+        noindex
       />
 
       <div className="min-h-screen pt-20 pb-12 bg-gradient-to-br from-[#FFD836]/10 via-white to-white">
