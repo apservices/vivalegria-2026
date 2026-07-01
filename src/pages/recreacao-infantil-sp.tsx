@@ -61,8 +61,8 @@ export default function RecreacaoInfantilSP() {
     <>
       <HeadSEO
         title="Recreação Infantil em São Paulo | Profissionais para Festas"
-        description="Recreação infantil profissional em São Paulo. Vila Mariana, Moema, Morumbi e toda região. Pacotes a partir de R$590. Fale com a Vivalegria."
-        canonical="https://www.vivalegria.com.br/recreacao-infantil-sp"
+        description="Recreação infantil profissional em São Paulo. Vila Mariana, Moema, Morumbi, Santo Amaro, Pinheiros, Jardins e ABC. Pacotes a partir de R$589,90."
+        canonical="/recreacao-infantil-sp"
       />
 
       <main className="min-h-screen">

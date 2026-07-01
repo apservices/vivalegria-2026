@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 
 const GuiaParaPais = () => {
   const developmentTopics = [
@@ -118,9 +119,26 @@ const GuiaParaPais = () => {
   return (
     <>
       <SEO
-        title="Guia para Pais | Vivalegria Recreação"
-        description="Dicas essenciais para pais: desenvolvimento infantil, organização de festas, segurança, educação criativa e tendências em eventos infantis."
+        title="Guia para Pais | Dicas de Festa e Desenvolvimento Infantil | Vivalegria"
+        description="Guia completo para pais: desenvolvimento infantil, organização de festas, segurança, brincadeiras educativas e tendências em eventos infantis."
         canonical="/guia-para-pais"
+        ogType="article"
+      />
+      <JsonLd
+        type="article"
+        articleData={{
+          headline: "Guia para Pais — Vivalegria Recreação Infantil",
+          description:
+            "Dicas essenciais para pais sobre desenvolvimento infantil, organização de festas e brincadeiras educativas.",
+          datePublished: "2025-01-15",
+        }}
+      />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Guia para Pais", path: "/guia-para-pais" },
+        ]}
       />
 
       <div className="min-h-screen">

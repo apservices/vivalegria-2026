@@ -43,7 +43,7 @@ export default function EventosCorporativosInfantis() {
       <HeadSEO
         title="Recreação Infantil para Eventos Corporativos | Vivalegria"
         description="Recreação infantil profissional para SIPAT, Family Day, datas comemorativas e eventos corporativos em São Paulo. Entretenimento seguro para filhos de colaboradores."
-        canonical="https://www.vivalegria.com.br/eventos-corporativos-infantis"
+        canonical="/eventos-corporativos-infantis"
       />
       {/* Schema JSON-LD adicionado para SEO */}
       <script type="application/ld+json">

@@ -3,6 +3,7 @@ import { Check, Star, Sparkles, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 import Mascote from "@/components/Mascote";
 import { trackLPView, trackContratarClick } from "@/utils/tracking";
 
@@ -90,9 +91,17 @@ const Pacotes = () => {
   return (
     <>
       <SEO
-        title="Pacotes de Recreação Infantil | Vivalegria"
-        description="Conheça nossos pacotes premium de recreação infantil para festas inesquecíveis."
+        title="Pacotes de Recreação Infantil SP | Select e Clássico | Vivalegria"
+        description="Pacotes de recreação infantil profissional em São Paulo. Clássico (1 recreador) a partir de R$589,90; Select (2 recreadores) a partir de R$789,90. Vila Mariana, Moema, ABC."
         canonical="/pacotes"
+      />
+      <JsonLd type="all-products" />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Pacotes", path: "/pacotes" },
+        ]}
       />
 
       <section className="py-24 bg-gradient-subtle">

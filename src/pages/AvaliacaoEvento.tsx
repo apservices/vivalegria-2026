@@ -248,7 +248,7 @@ const AvaliacaoEvento = () => {
   if (authLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Avaliação do Evento | Vivalegria" />
+        <SEO title="Avaliação do Evento | Vivalegria" noindex />
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF731D] mx-auto mb-4"></div>
           <p className="text-muted-foreground">Carregando...</p>
@@ -261,7 +261,7 @@ const AvaliacaoEvento = () => {
   if (!user || (!isRecreador && !isAdmin)) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Acesso Restrito | Vivalegria" />
+        <SEO title="Acesso Restrito | Vivalegria" noindex />
         <Card className="max-w-md w-full p-8 text-center">
           <Lock className="w-16 h-16 text-[#FF731D] mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-foreground mb-2">Área Restrita</h1>
@@ -283,7 +283,7 @@ const AvaliacaoEvento = () => {
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Avaliação Enviada | Vivalegria" />
+        <SEO title="Avaliação Enviada | Vivalegria" noindex />
         <Card className="max-w-md w-full p-8 text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-foreground mb-2">Avaliação Enviada!</h1>
@@ -314,7 +314,7 @@ const AvaliacaoEvento = () => {
   if (!isLoadingEventos && meusEventos.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Avaliação do Evento | Vivalegria" />
+        <SEO title="Avaliação do Evento | Vivalegria" noindex />
         <Card className="max-w-md w-full p-8 text-center">
           <AlertCircle className="w-16 h-16 text-[#FFD836] mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-foreground mb-2">Nenhum Evento Pendente</h1>
@@ -333,7 +333,7 @@ const AvaliacaoEvento = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white py-8 px-4">
-      <SEO title="Avaliação do Evento | Vivalegria" />
+      <SEO title="Avaliação do Evento | Vivalegria" noindex />
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <Star className="w-12 h-12 text-[#FFD836] mx-auto mb-4" />

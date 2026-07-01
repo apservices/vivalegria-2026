@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 import { useConfigurator } from "@/contexts/ConfiguratorContext";
 import { formatPrice, childrenRanges, type WorkshopType } from "@/utils/pricing";
 import { calculateWorkshopPrice } from "@/utils/pricing";
@@ -102,9 +103,16 @@ const Contratar = () => {
   return (
     <>
       <SEO
-        title="Contratar Serviços | Vivalegria"
-        description="Configure seu pacote ideal para festas infantis. Escolha entre pacotes Classic e Select, adicione oficinas criativas e reserve agora!"
+        title="Contratar Recreação Infantil | Configure seu Pacote | Vivalegria"
+        description="Monte o pacote ideal de recreação infantil: escolha Clássico ou Select, adicione oficinas criativas e reserve em minutos para toda a Grande SP."
         canonical="/contratar"
+      />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Contratar", path: "/contratar" },
+        ]}
       />
 
       <div className="min-h-screen bg-background">

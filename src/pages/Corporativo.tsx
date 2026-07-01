@@ -3,6 +3,7 @@ import { Building2, Hotel, School, Store, CheckCircle2, ArrowRight } from "lucid
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 import { trackLPView } from "@/utils/tracking";
 
 const Corporativo = () => {
@@ -73,9 +74,24 @@ const Corporativo = () => {
   return (
     <>
       <SEO
-        title="Eventos Corporativos | Vivalegria Recreação"
-        description="Recreação corporativa para shoppings, hotéis, escolas e empresas. Profissionalismo e alegria garantidos em cada evento."
+        title="Eventos Corporativos Infantis SP | Shoppings, Hotéis, Escolas | Vivalegria"
+        description="Recreação corporativa em São Paulo para shoppings, hotéis, resorts, escolas e empresas. Ativações de marca, áreas kids e eventos sazonais."
         canonical="/corporativo"
+      />
+      <JsonLd
+        type="service"
+        serviceData={{
+          name: "Recreação Corporativa Infantil",
+          description:
+            "Recreação profissional para eventos corporativos, shoppings, hotéis, resorts, escolas e empresas em São Paulo.",
+        }}
+      />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Corporativo", path: "/corporativo" },
+        ]}
       />
 
       <div className="min-h-screen">

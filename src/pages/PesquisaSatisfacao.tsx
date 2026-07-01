@@ -171,7 +171,7 @@ const PesquisaSatisfacao = () => {
   if (isValidating) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Pesquisa de Satisfação | Vivalegria" />
+        <SEO title="Pesquisa de Satisfação | Vivalegria" noindex />
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF731D] mx-auto mb-4"></div>
           <p className="text-muted-foreground">Validando acesso...</p>
@@ -184,7 +184,7 @@ const PesquisaSatisfacao = () => {
   if (!isValid) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Link Inválido | Vivalegria" />
+        <SEO title="Link Inválido | Vivalegria" noindex />
         <Card className="max-w-md w-full p-8 text-center">
           <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-foreground mb-2">Link Inválido</h1>
@@ -201,7 +201,7 @@ const PesquisaSatisfacao = () => {
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white flex items-center justify-center p-4">
-        <SEO title="Obrigado! | Vivalegria" />
+        <SEO title="Obrigado! | Vivalegria" noindex />
         <Card className="max-w-md w-full p-8 text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-foreground mb-2">Obrigado!</h1>
@@ -219,7 +219,7 @@ const PesquisaSatisfacao = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFF8E6] to-white py-8 px-4">
-      <SEO title="Pesquisa de Satisfação | Vivalegria" />
+      <SEO title="Pesquisa de Satisfação | Vivalegria" noindex />
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <Heart className="w-12 h-12 text-[#FF731D] mx-auto mb-4" />

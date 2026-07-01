@@ -1,32 +1,73 @@
-## Problema
+## Objetivo
+Implementar SEO completo por página: metadata única (title/description/canonical), Open Graph + Twitter tags, JSON-LD específico por rota, e sitemap.xml dinâmico.
 
-O build no Vercel falha porque o `index.html` no repositório GitHub está com encoding corrompido (mojibake duplo UTF-8 → Latin1):
+## Escopo — Páginas a otimizar
 
-- `Recreação` virou `RecreaÃƒÂ§ÃƒÂ£o`
-- `☎️` virou caracteres de controle inválidos que o parse5 (parser HTML do Vite) rejeita com `control-character-in-input-stream`
+**Institucionais/comerciais:**
+- `/` (Home) — já tem SEO/JsonLd, revisar
+- `/pacotes` — Product schema
+- `/oficinas` — Service schema
+- `/quem-somos` — AboutPage
+- `/contato` — ContactPage
+- `/corporativo` — Service schema
+- `/contratar` — WebPage
+- `/guia-para-pais` — Article
+- `/trabalhe-conosco` — JobPosting
 
-No sandbox o arquivo aparece correto, mas o que está commitado no GitHub está corrompido. Provavelmente houve um commit feito fora do Lovable (editor que salvou como Latin1) ou um merge ruim.
+**Landing pages SEO (alta prioridade):**
+- `/festa-infantil` — LocalBusiness + Service
+- `/recreacao-infantil-sp` — LocalBusiness + FAQ
+- `/eventos-corporativos-infantis` — Service
+- `/orcamento-lp` — WebPage
 
-## Correção
+**Legais:**
+- `/termos`, `/privacidade` — WebPage + noindex opcional
 
-1. **Reescrever `index.html`** salvando explicitamente em UTF-8 limpo, com:
-   - Todos os acentos corretos (Recreação, São Paulo, Clássico, André)
-   - Remover o emoji `☎️` da meta description (é o que gera o control-character) e substituir por texto simples `Tel:` — emojis em meta tags são frágeis e não agregam SEO
-   - Manter toda a estrutura atual (GTM, Consent Mode, Pixel, GA)
+**Excluídas do sitemap (noindex):** `/admin/*`, `/recreador/*`, `/avaliacao-evento`, `/pesquisa-satisfacao`, `/redefinir-senha`, `/obrigado`, `/cadastro-recreador`, `/404`.
 
-2. **Verificar `.gitattributes`** para garantir `*.html text eol=lf working-tree-encoding=UTF-8` e prevenir nova corrupção.
+## Implementação
 
-3. **Verificar o workflow `.github/workflows/encoding-check.yml`** que já existe — confirmar que está rodando e, se necessário, ajustar para barrar commits com mojibake antes do deploy.
+### 1. Estender componente `<SEO>` (`src/components/SEO.tsx`)
+Adicionar props: `ogType`, `ogImage` absoluto, `noindex`, `article` (published/modified date). Manter defaults atuais. Garantir `og:url` e `canonical` sempre auto-referentes usando `https://vivalegria-2026.lovable.app`.
 
-4. **Rodar build local** (`npm run build`) para validar antes de pedir novo deploy.
+### 2. Estender `<JsonLd>` (`src/components/JsonLd.tsx`)
+Adicionar types: `service`, `article`, `about-page`, `contact-page`, `breadcrumb`, `job-posting`. Aceitar `data` genérico para casos custom. Cada página injeta `<JsonLd type="breadcrumb" ... />` além do schema principal.
+
+### 3. Adicionar `<SEO>` + `<JsonLd>` em cada página listada
+Padrão por página:
+```tsx
+<SEO title="..." description="..." canonical="/rota" ogImage="..." />
+<JsonLd type="breadcrumb" data={{ items: [...] }} />
+<JsonLd type="service" ... />
+```
+Reescrever títulos/descrições de páginas hoje genéricas (`FestaInfantil`, `OrcamentoLP`, landing pages duplicadas). Copy focado em SP + bairros (Vila Mariana, Moema, Santo Amaro, Morumbi, Pinheiros, Jardins, ABC).
+
+### 4. Sitemap gerado no build
+Criar `scripts/generate-sitemap.ts` com `BASE_URL = "https://vivalegria-2026.lovable.app"` listando apenas rotas públicas indexáveis (14 entradas). Wire via `predev` e `prebuild` no `package.json`. Escreve `public/sitemap.xml`.
+
+### 5. `public/robots.txt`
+Adicionar `Sitemap: https://vivalegria-2026.lovable.app/sitemap.xml` ao final, preservando blocos existentes. Adicionar `Disallow: /admin/`, `/recreador/`, `/avaliacao-evento`, `/pesquisa-satisfacao`, `/obrigado`, `/redefinir-senha`.
+
+### 6. `index.html`
+Confirmar canonical/OG sitewide apontando para o domínio publicado; remover canonical estático se conflitar com Helmet (Helmet já é o dono per-route). Manter apenas os defaults como fallback para crawlers sem JS.
 
 ## Detalhes técnicos
 
-- O parser HTML (parse5) trata bytes `0x80-0x9F` não-mapeados como control characters fatais. O emoji `☎️` (U+260E U+FE0F) quando interpretado como Latin1 e re-encodado como UTF-8 produz a sequência `Ã¢ËœÅ½Ã¯Â¸Â`, onde `Ëœ` (0x98) é control char → erro.
-- A correção é puramente no arquivo `index.html` na raiz. Nenhum outro arquivo precisa mudar para destravar o deploy.
+- **Duplicatas detectadas:** existem `src/pages/FestaInfantil.tsx` **e** `src/pages/festa-infantil/index.tsx`, idem para `recreacao-infantil-sp`, `eventos-corporativos-infantis`, `orcamento-lp`. Verificar qual está roteada no `App.tsx` e aplicar SEO apenas nela (não duplicar). Não deletar a outra sem confirmação.
+- **og:image absoluto:** manter `/logo-vivalegria.jpg` (já existe em `public/`) como default. Hosting Lovable injeta preview automático quando ausente.
+- **Sem SSR:** Helmet muda `<head>` no cliente — Googlebot processa; LinkedIn/Slack/Facebook usam apenas `index.html`. Documentar isso no closing.
 
-## Entrega
+## Fora do escopo
+- Geração de novas imagens OG por página (usa fallback do hosting).
+- Alteração de rotas ou remoção das páginas duplicadas.
+- Reescrita de conteúdo/copy fora dos meta tags.
+- Novos schemas para páginas admin/recreador.
 
-- `index.html` reescrito em UTF-8 válido, sem emoji nas metas.
-- Confirmação de `.gitattributes` protegendo o encoding.
-- Build local validado.
+## Entregáveis
+- `src/components/SEO.tsx` estendido
+- `src/components/JsonLd.tsx` estendido
+- ~14 páginas com `<SEO>` + `<JsonLd>` adequados
+- `scripts/generate-sitemap.ts` novo
+- `package.json` com hooks `predev`/`prebuild`
+- `public/robots.txt` atualizado
+- `public/sitemap.xml` gerado

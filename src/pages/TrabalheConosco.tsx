@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
+import JsonLd from "@/components/JsonLd";
 import { maskPhone } from "@/utils/inputMasks";
 import { trackFormSubmit } from "@/utils/tracking";
 
@@ -141,9 +142,25 @@ const TrabalheConosco = () => {
   return (
     <>
       <SEO
-        title="Trabalhe Conosco | Vivalegria Recreação"
-        description="Faça parte da equipe Vivalegria! Vagas para recreadores e monitores de eventos infantis em São Paulo."
+        title="Trabalhe Conosco | Vagas para Recreadores SP | Vivalegria"
+        description="Faça parte da equipe Vivalegria em São Paulo. Vagas para recreadores e monitores de eventos infantis. Cadastre-se e trabalhe em festas que emocionam."
         canonical="/trabalhe-conosco"
+      />
+      <JsonLd
+        type="job-posting"
+        jobData={{
+          title: "Recreador Infantil - São Paulo",
+          description:
+            "Vagas para recreadores infantis freelancers em São Paulo. Cadastre-se para atuar em festas, eventos corporativos e escolas com a Vivalegria.",
+          employmentType: "PART_TIME",
+        }}
+      />
+      <JsonLd
+        type="breadcrumb"
+        breadcrumbItems={[
+          { name: "Início", path: "/" },
+          { name: "Trabalhe Conosco", path: "/trabalhe-conosco" },
+        ]}
       />
 
       <div className="min-h-screen">
