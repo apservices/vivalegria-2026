@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/contexts/AuthContext";
 import logoVivalegria from "@/assets/logo-vivalegria-new.png";
+import SEO from "@/components/SEO";
 
 export default function RedefinirSenha() {
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ export default function RedefinirSenha() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFD836]/10 via-white to-white p-4">
+      <SEO title="Redefinir Senha | Vivalegria" noindex />
       <Card className="p-8 max-w-md w-full">
         <div className="text-center mb-8">
           <img src={logoVivalegria} alt="Vivalegria" className="h-12 mx-auto mb-4" />
