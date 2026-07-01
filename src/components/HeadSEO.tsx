@@ -26,7 +26,11 @@ export const HeadSEO = ({
 }: HeadSEOProps = {}) => {
   const fullTitle = title ? `${title} | Vivalegria` : defaults.title;
   const desc = description || defaults.description;
-  const url = canonical ? `${SITE_URL}${canonical}` : SITE_URL;
+  const url = canonical
+    ? canonical.startsWith("http")
+      ? canonical
+      : `${SITE_URL}${canonical}`
+    : SITE_URL;
   const img = ogImage
     ? ogImage.startsWith("http")
       ? ogImage
