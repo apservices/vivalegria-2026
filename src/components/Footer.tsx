@@ -105,11 +105,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               {regioes.map((regiao) => (
-                <li
-                  key={regiao}
-                  className="text-sm text-background/80"
-                >
-                  {regiao}
+                <li key={regiao.href}>
+                  <Link
+                    to={regiao.href}
+                    className="text-sm text-background/80 hover:text-secondary transition-colors"
+                  >
+                    {regiao.label}
+                  </Link>
                 </li>
               ))}
             </ul>
