@@ -15,15 +15,15 @@ export default function Footer() {
     { label: "Trabalhe Conosco", href: "/trabalhe-conosco" },
   ];
 
-  const regioes = [
-    "Vila Mariana",
-    "Moema",
-    "Santo Amaro",
-    "Morumbi",
-    "Pinheiros",
-    "Jardins",
-    "ABC Paulista",
-    "+ toda São Paulo e região",
+  const regioes: { label: string; href: string }[] = [
+    { label: "Vila Mariana", href: "/recreacao-infantil-sp#vila-mariana" },
+    { label: "Moema", href: "/recreacao-infantil-sp#moema" },
+    { label: "Santo Amaro", href: "/recreacao-infantil-sp#santo-amaro" },
+    { label: "Morumbi", href: "/recreacao-infantil-sp#morumbi" },
+    { label: "Pinheiros", href: "/recreacao-infantil-sp#pinheiros" },
+    { label: "Jardins", href: "/recreacao-infantil-sp#jardins" },
+    { label: "ABC Paulista", href: "/recreacao-infantil-sp#abc-paulista" },
+    { label: "+ toda São Paulo e região", href: "/recreacao-infantil-sp" },
   ];
 
   const handleWhatsApp = () => {
@@ -105,11 +105,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               {regioes.map((regiao) => (
-                <li
-                  key={regiao}
-                  className="text-sm text-background/80"
-                >
-                  {regiao}
+                <li key={regiao.href}>
+                  <Link
+                    to={regiao.href}
+                    className="text-sm text-background/80 hover:text-secondary transition-colors"
+                  >
+                    {regiao.label}
+                  </Link>
                 </li>
               ))}
             </ul>

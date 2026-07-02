@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { HeadSEO } from "@/components/HeadSEO";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   ShieldCheck, 
   Heart, 
@@ -52,6 +53,19 @@ const diferenciais = [
 
 export default function RecreacaoInfantilSP() {
   useLPTracking('recreacao-infantil-sp');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      // aguarda o render dos bairros
+      const t = setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
+      return () => clearTimeout(t);
+    }
+  }, [location.hash]);
 
   const handleWhatsAppClick = () => {
     trackWhatsAppClick('landing_page');
@@ -168,15 +182,23 @@ export default function RecreacaoInfantilSP() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {bairros.map((bairro) => (
-                <span 
-                  key={bairro}
-                  className="bg-background border border-border px-4 py-2 rounded-full text-sm font-medium text-foreground"
-                >
-                  <MapPin className="inline h-4 w-4 mr-1 text-primary" />
-                  {bairro}
-                </span>
-              ))}
+              {bairros.map((bairro) => {
+                const slug = bairro
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/\s+/g, "-");
+                return (
+                  <span
+                    key={bairro}
+                    id={slug}
+                    className="scroll-mt-24 bg-background border border-border px-4 py-2 rounded-full text-sm font-medium text-foreground"
+                  >
+                    <MapPin className="inline h-4 w-4 mr-1 text-primary" />
+                    {bairro}
+                  </span>
+                );
+              })}
             </div>
 
             <p className="text-sm text-muted-foreground">
