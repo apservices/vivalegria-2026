@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { HeadSEO } from "@/components/HeadSEO";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   ShieldCheck, 
   Heart, 
