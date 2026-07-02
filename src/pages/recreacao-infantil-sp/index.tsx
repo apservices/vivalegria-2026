@@ -168,15 +168,23 @@ export default function RecreacaoInfantilSP() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {bairros.map((bairro) => (
-                <span 
-                  key={bairro}
-                  className="bg-background border border-border px-4 py-2 rounded-full text-sm font-medium text-foreground"
-                >
-                  <MapPin className="inline h-4 w-4 mr-1 text-primary" />
-                  {bairro}
-                </span>
-              ))}
+              {bairros.map((bairro) => {
+                const slug = bairro
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/\s+/g, "-");
+                return (
+                  <span
+                    key={bairro}
+                    id={slug}
+                    className="scroll-mt-24 bg-background border border-border px-4 py-2 rounded-full text-sm font-medium text-foreground"
+                  >
+                    <MapPin className="inline h-4 w-4 mr-1 text-primary" />
+                    {bairro}
+                  </span>
+                );
+              })}
             </div>
 
             <p className="text-sm text-muted-foreground">
