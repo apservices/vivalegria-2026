@@ -106,6 +106,7 @@ const App = () => {
             <Toaster />
 
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
 
                 {/* ========== REDIRECTS ========== */}
