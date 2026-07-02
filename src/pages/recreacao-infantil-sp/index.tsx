@@ -53,6 +53,19 @@ const diferenciais = [
 
 export default function RecreacaoInfantilSP() {
   useLPTracking('recreacao-infantil-sp');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      // aguarda o render dos bairros
+      const t = setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
+      return () => clearTimeout(t);
+    }
+  }, [location.hash]);
 
   const handleWhatsAppClick = () => {
     trackWhatsAppClick('landing_page');
