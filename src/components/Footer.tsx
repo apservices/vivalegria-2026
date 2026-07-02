@@ -15,15 +15,15 @@ export default function Footer() {
     { label: "Trabalhe Conosco", href: "/trabalhe-conosco" },
   ];
 
-  const regioes = [
-    "Vila Mariana",
-    "Moema",
-    "Santo Amaro",
-    "Morumbi",
-    "Pinheiros",
-    "Jardins",
-    "ABC Paulista",
-    "+ toda São Paulo e região",
+  const regioes: { label: string; href: string }[] = [
+    { label: "Vila Mariana", href: "/recreacao-infantil-sp#vila-mariana" },
+    { label: "Moema", href: "/recreacao-infantil-sp#moema" },
+    { label: "Santo Amaro", href: "/recreacao-infantil-sp#santo-amaro" },
+    { label: "Morumbi", href: "/recreacao-infantil-sp#morumbi" },
+    { label: "Pinheiros", href: "/recreacao-infantil-sp#pinheiros" },
+    { label: "Jardins", href: "/recreacao-infantil-sp#jardins" },
+    { label: "ABC Paulista", href: "/recreacao-infantil-sp#abc-paulista" },
+    { label: "+ toda São Paulo e região", href: "/recreacao-infantil-sp" },
   ];
 
   const handleWhatsApp = () => {
