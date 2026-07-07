@@ -13,17 +13,21 @@ const Obrigado = () => {
   const [searchParams] = useSearchParams();
   const codigo = searchParams.get("codigo") || "";
   const nome = searchParams.get("nome") || "";
-  
-  const firstName = nome.split(" ")[0] || "Cliente";
+  const tipo = searchParams.get("tipo") || "reserva";
+  const isCadastro = tipo === "cadastro";
 
-  const whatsappMessage = codigo 
+  const firstName = nome.split(" ")[0] || (isCadastro ? "Recreador" : "Cliente");
+
+  const whatsappMessage = isCadastro
+    ? "Olá! Acabei de enviar meu cadastro para trabalhar na Vivalegria."
+    : codigo
     ? `Olá! Acabei de fazer minha reserva. Código: ${codigo}. Gostaria de confirmar os detalhes.`
     : "Olá, acabei de solicitar um orçamento!";
-  
+
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   const handleWhatsAppClick = () => {
-    trackWhatsAppClick('obrigado_page');
+    trackWhatsAppClick("obrigado_page");
   };
 
   const handleCopyCode = () => {
@@ -33,11 +37,18 @@ const Obrigado = () => {
     }
   };
 
+  const headTitle = isCadastro
+    ? "Cadastro Enviado | Vivalegria"
+    : "Reserva Confirmada | Vivalegria";
+  const headDesc = isCadastro
+    ? "Seu cadastro foi enviado com sucesso! Nossa equipe vai avaliar seu perfil e entrar em contato pelo WhatsApp."
+    : "Sua reserva foi registrada com sucesso! Entraremos em contato via WhatsApp para confirmar os detalhes do seu evento.";
+
   return (
     <>
       <HeadSEO
-        title="Reserva Confirmada | Vivalegria"
-        description="Sua reserva foi registrada com sucesso! Entraremos em contato via WhatsApp para confirmar os detalhes do seu evento."
+        title={headTitle}
+        description={headDesc}
         canonical="/obrigado"
         noindex
       />
@@ -49,15 +60,17 @@ const Obrigado = () => {
               animation="pulinho"
               className="w-40 md:w-56 lg:w-64 mx-auto mb-6"
             />
-            
+
             <div className="space-y-4 max-w-2xl mx-auto">
               {/* Título principal */}
               <h1 className="text-2xl md:text-4xl font-bold text-primary">
-                {firstName}, sua reserva foi registrada!
+                {isCadastro
+                  ? `${firstName}, seu cadastro foi enviado!`
+                  : `${firstName}, sua reserva foi registrada!`}
               </h1>
               
               {/* Código do Evento */}
-              {codigo && (
+              {codigo && !isCadastro && (
                 <Card className="bg-viva-yellow/20 border-viva-yellow/40 p-4 md:p-6">
                   <p className="text-sm text-muted-foreground mb-2">Código da sua reserva:</p>
                   <div className="flex items-center justify-center gap-3">
@@ -83,32 +96,60 @@ const Obrigado = () => {
               <div className="flex items-center justify-center gap-2 text-green-600 bg-green-50 py-3 px-4 rounded-lg">
                 <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
                 <span className="text-sm md:text-base font-medium">
-                  Reserva registrada com sucesso!
+                  {isCadastro
+                    ? "Cadastro enviado com sucesso!"
+                    : "Reserva registrada com sucesso!"}
                 </span>
               </div>
 
               {/* Próximos passos */}
               <div className="bg-muted/30 rounded-xl p-4 md:p-6 text-left space-y-3">
                 <h3 className="font-semibold text-foreground text-center mb-4">Próximos Passos:</h3>
-                <div className="flex items-start gap-3">
-                  <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
-                  <p className="text-sm text-muted-foreground">
-                    <strong>WhatsApp:</strong> Nossa equipe entrará em contato para confirmar os detalhes.
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Contrato:</strong> Após confirmação, enviaremos o contrato por e-mail.
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Pagamento:</strong> 50% na reserva, 50% até 7 dias antes do evento.
-                  </p>
-                </div>
+                {isCadastro ? (
+                  <>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Análise:</strong> Nosso time de casting vai avaliar seu perfil em até 5 dias úteis.
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>WhatsApp:</strong> Se seu perfil for aprovado, entramos em contato pelo WhatsApp com os próximos passos.
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Eventos:</strong> Você passa a receber convites de eventos compatíveis com sua disponibilidade e habilidades.
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>WhatsApp:</strong> Nossa equipe entrará em contato para confirmar os detalhes.
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Contrato:</strong> Após confirmação, enviaremos o contrato por e-mail.
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-viva-orange text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Pagamento:</strong> 50% na reserva, 50% até 7 dias antes do evento.
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
+
 
               {/* Seção de Segurança */}
               <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 md:p-6">

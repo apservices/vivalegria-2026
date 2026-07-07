@@ -1,34 +1,11 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import type React from "react";
-import { Heart, Users, Clock, Star, Send, CheckCircle2, ArrowRight } from "lucide-react";
+import { Heart, Users, Clock, Star, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import JsonLd from "@/components/JsonLd";
-import { maskPhone } from "@/utils/inputMasks";
-import { trackFormSubmit } from "@/utils/tracking";
 
 const TrabalheConosco = () => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    nome_completo: "",
-    email: "",
-    telefone: "",
-    cidade: "",
-    experiencia: "",
-    sobre_voce: "",
-  });
-
-  const [disponibilidade, setDisponibilidade] = useState<string[]>([]);
-
   const benefits = [
     {
       icon: Heart,
@@ -51,93 +28,6 @@ const TrabalheConosco = () => {
       description: "Oportunidades de desenvolvimento profissional e treinamentos",
     },
   ];
-
-  const disponibilidadeOptions = [
-    { value: "fins_semana", label: "Finais de semana" },
-    { value: "feriados", label: "Feriados" },
-    { value: "eventos_escolares", label: "Eventos escolares (dias úteis)" },
-    { value: "eventos_corporativos", label: "Eventos corporativos" },
-  ];
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-
-    if (name === "telefone") {
-      setFormData((prev) => ({ ...prev, [name]: maskPhone(value) }));
-      return;
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const toggleDisponibilidade = (value: string) => {
-    setDisponibilidade((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !formData.nome_completo ||
-      !formData.email ||
-      !formData.telefone ||
-      !formData.cidade
-    ) {
-      toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos obrigatórios.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const { error } = await supabase.from("candidaturas").insert({
-        nome_completo: formData.nome_completo,
-        email: formData.email,
-        telefone: formData.telefone,
-        cidade: formData.cidade,
-        experiencia: formData.experiencia || null,
-        disponibilidade: disponibilidade.length > 0 ? disponibilidade : null,
-        sobre_voce: formData.sobre_voce || null,
-      });
-
-      if (error) throw error;
-
-      // Track successful form submission (respects consent)
-      trackFormSubmit('candidatura');
-
-      toast({
-        title: "Candidatura enviada!",
-        description: "Recebemos sua candidatura. Entraremos em contato em breve!",
-      });
-
-      setFormData({
-        nome_completo: "",
-        email: "",
-        telefone: "",
-        cidade: "",
-        experiencia: "",
-        sobre_voce: "",
-      });
-      setDisponibilidade([]);
-    } catch (error) {
-      console.error("Error submitting application:", error);
-      toast({
-        title: "Erro ao enviar",
-        description:
-          "Ocorreu um erro. Tente novamente ou entre em contato pelo WhatsApp.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <>
@@ -259,11 +149,11 @@ const TrabalheConosco = () => {
         <section className="py-16 bg-gradient-to-r from-[#FF731D] to-[#FFD836]">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">
-              Quer fazer parte da equipe?
+              Pronto para fazer parte da equipe?
             </h2>
             <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-              Complete seu cadastro profissional completo e aumente suas chances 
-              de ser selecionado para os melhores eventos!
+              Faça seu cadastro profissional completo — é rápido, dividido em etapas
+              e nos ajuda a te chamar para os eventos certos.
             </p>
             <Button asChild size="lg" variant="secondary" className="rounded-full">
               <Link to="/cadastro-recreador">
@@ -271,147 +161,6 @@ const TrabalheConosco = () => {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </Button>
-          </div>
-        </section>
-
-        {/* Application Form - Quick Version */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-4">
-                Candidatura Rápida
-              </h2>
-              <p className="text-center text-muted-foreground mb-8">
-                Envie uma candidatura rápida e complete o cadastro depois!
-              </p>
-
-              <Card className="p-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="nome_completo">Nome completo *</Label>
-                      <Input
-                        id="nome_completo"
-                        name="nome_completo"
-                        value={formData.nome_completo}
-                        onChange={handleChange}
-                        placeholder="Seu nome completo"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="email">E-mail *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="seu@email.com"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="telefone">Telefone/WhatsApp *</Label>
-                      <Input
-                        id="telefone"
-                        name="telefone"
-                        value={formData.telefone}
-                        onChange={handleChange}
-                        placeholder="(11) 99999-9999"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="cidade">Cidade *</Label>
-                      <Input
-                        id="cidade"
-                        name="cidade"
-                        value={formData.cidade}
-                        onChange={handleChange}
-                        placeholder="São Paulo - SP"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Disponibilidade</Label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {disponibilidadeOptions.map((option) => (
-                        <div
-                          key={option.value}
-                          className="flex items-center space-x-2"
-                        >
-                          <Checkbox
-                            id={option.value}
-                            checked={disponibilidade.includes(option.value)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                toggleDisponibilidade(option.value);
-                              } else {
-                                toggleDisponibilidade(option.value);
-                              }
-                            }}
-                          />
-                          <label
-                            htmlFor={option.value}
-                            className="text-sm cursor-pointer"
-                          >
-                            {option.label}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="experiencia">Experiência com crianças</Label>
-                    <Textarea
-                      id="experiencia"
-                      name="experiencia"
-                      value={formData.experiencia}
-                      onChange={handleChange}
-                      placeholder="Conte sobre sua experiência trabalhando com crianças..."
-                      rows={3}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="sobre_voce">Sobre você</Label>
-                    <Textarea
-                      id="sobre_voce"
-                      name="sobre_voce"
-                      value={formData.sobre_voce}
-                      onChange={handleChange}
-                      placeholder="Por que você quer trabalhar na Vivalegria?"
-                      rows={3}
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full rounded-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      "Enviando..."
-                    ) : (
-                      <>
-                        <Send className="mr-2 w-5 h-5" />
-                        Enviar candidatura
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </Card>
-            </div>
           </div>
         </section>
       </div>
