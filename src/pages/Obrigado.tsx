@@ -27,7 +27,7 @@ const Obrigado = () => {
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   const handleWhatsAppClick = () => {
-    trackWhatsAppClick(isCadastro ? "obrigado_cadastro" : "obrigado_page");
+    trackWhatsAppClick("obrigado_page");
   };
 
   const handleCopyCode = () => {
