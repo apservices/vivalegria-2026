@@ -23,7 +23,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subMonths, isWithinInterval, parseISO, isFuture } from "date-fns";
+import { format, startOfDay, endOfDay, subDays, subMonths, isWithinInterval, parseISO, isFuture } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 interface Stats {
