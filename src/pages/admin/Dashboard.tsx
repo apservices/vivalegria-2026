@@ -89,13 +89,12 @@ const AdminDashboard = () => {
     const now = new Date();
     switch (periodo) {
       case "7dias":
-        return { start: startOfWeek(now, { locale: ptBR }), end: endOfWeek(now, { locale: ptBR }) };
-      case "mes_atual":
-        return { start: startOfMonth(now), end: endOfMonth(now) };
+        return { start: startOfDay(subDays(now, 6)), end: endOfDay(now), label: "nos últimos 7 dias" };
       case "trimestre":
-        return { start: subMonths(now, 3), end: now };
+        return { start: startOfDay(subMonths(now, 3)), end: endOfDay(now), label: "no trimestre" };
+      case "mes_atual":
       default:
-        return { start: startOfMonth(now), end: endOfMonth(now) };
+        return { start: startOfDay(subDays(now, 29)), end: endOfDay(now), label: "nos últimos 30 dias" };
     }
   };
 
@@ -111,58 +110,53 @@ const AdminDashboard = () => {
       const candidaturas = candidaturasResult.data || [];
       const castings = (castingResult.data || []) as any[];
       const range = getDateRange();
-      const now = new Date();
 
-      // Reservas no período
-      const reservasNoPeriodo = reservas.filter((r) => {
-        const eventDate = parseISO(r.data_evento);
-        return isWithinInterval(eventDate, { start: range.start, end: range.end });
-      });
+      const inPeriod = (dateStr: string | null | undefined) => {
+        if (!dateStr) return false;
+        try {
+          return isWithinInterval(parseISO(dateStr), { start: range.start, end: range.end });
+        } catch {
+          return false;
+        }
+      };
 
-      // Reservas na semana
-      const weekStart = startOfWeek(now, { locale: ptBR });
-      const weekEnd = endOfWeek(now, { locale: ptBR });
-      const reservasSemana = reservas.filter((r) => {
-        const eventDate = parseISO(r.data_evento);
-        return isWithinInterval(eventDate, { start: weekStart, end: weekEnd });
-      }).length;
+      // Reservas do período (por data do evento)
+      const reservasNoPeriodo = reservas.filter((r) => inPeriod(r.data_evento));
 
-      // Reservas no mês
-      const monthStart = startOfMonth(now);
-      const monthEnd = endOfMonth(now);
-      const reservasMes = reservas.filter((r) => {
-        const eventDate = parseISO(r.data_evento);
-        return isWithinInterval(eventDate, { start: monthStart, end: monthEnd });
-      }).length;
+      // Status counters — escopados ao período selecionado
+      const pendentesPeriodo = reservasNoPeriodo.filter((r) => r.status === "pendente").length;
+      const confirmadasPeriodo = reservasNoPeriodo.filter((r) => r.status === "confirmado").length;
+      const aprovadasPeriodo = reservasNoPeriodo.filter((r) => r.status === "aprovado").length;
 
-      // Taxa de confirmação
-      const confirmadas = reservas.filter(r => r.status === "confirmado" || r.status === "aprovado").length;
-      const taxaConfirmacao = reservas.length > 0 ? Math.round((confirmadas / reservas.length) * 100) : 0;
+      // Taxa de confirmação escopada ao período
+      const totalPeriodo = reservasNoPeriodo.length;
+      const taxaConfirmacao = totalPeriodo > 0
+        ? Math.round(((confirmadasPeriodo + aprovadasPeriodo) / totalPeriodo) * 100)
+        : 0;
 
-      // Eventos futuros sem casting
-      const reservasFuturas = reservas.filter(r => isFuture(parseISO(r.data_evento)));
-      const reservasComCasting = new Set(castings.map(c => c.reserva_id));
-      const eventosSemCasting = reservasFuturas.filter(r => !reservasComCasting.has(r.id)).length;
+      // Eventos futuros sem casting (visão operacional global — não depende do período)
+      const reservasFuturas = reservas.filter((r) => isFuture(parseISO(r.data_evento)));
+      const reservasComCasting = new Set(castings.map((c) => c.reserva_id));
+      const eventosSemCasting = reservasFuturas.filter((r) => !reservasComCasting.has(r.id)).length;
 
-      // Total de cachês no mês
-      const cachesNoMes = castings.filter((c: any) => {
-        if (!c.reserva?.data_evento) return false;
-        const eventDate = parseISO(c.reserva.data_evento);
-        return isWithinInterval(eventDate, { start: monthStart, end: monthEnd });
-      });
-      const totalCachesMes = cachesNoMes.reduce((sum: number, c: any) => sum + (Number(c.cache) || 0), 0);
+      // Cachês no período
+      const cachesNoPeriodo = castings.filter((c: any) => inPeriod(c.reserva?.data_evento));
+      const totalCachesPeriodo = cachesNoPeriodo.reduce(
+        (sum: number, c: any) => sum + (Number(c.cache) || 0),
+        0
+      );
 
       setStats({
-        reservasPendentes: reservas.filter(r => r.status === "pendente").length,
-        reservasConfirmadas: reservas.filter(r => r.status === "confirmado").length,
-        reservasAprovadas: reservas.filter(r => r.status === "aprovado").length,
-        candidaturasPendentes: candidaturas.filter(c => c.status === "pendente").length,
-        totalReservas: reservas.length,
-        reservasSemana,
-        reservasMes,
+        reservasPendentes: pendentesPeriodo,
+        reservasConfirmadas: confirmadasPeriodo,
+        reservasAprovadas: aprovadasPeriodo,
+        candidaturasPendentes: candidaturas.filter((c) => c.status === "pendente").length,
+        totalReservasPeriodo: totalPeriodo,
+        reservasPeriodo: totalPeriodo,
         taxaConfirmacao,
         eventosSemCasting,
-        totalCachesMes,
+        totalCachesPeriodo,
+        periodoLabel: range.label,
       });
     } catch (error) {
       console.error("Error fetching stats:", error);
