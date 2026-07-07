@@ -31,12 +31,12 @@ interface Stats {
   reservasConfirmadas: number;
   reservasAprovadas: number;
   candidaturasPendentes: number;
-  totalReservas: number;
-  reservasSemana: number;
-  reservasMes: number;
+  totalReservasPeriodo: number;
+  reservasPeriodo: number;
   taxaConfirmacao: number;
   eventosSemCasting: number;
-  totalCachesMes: number;
+  totalCachesPeriodo: number;
+  periodoLabel: string;
 }
 
 interface ProximoEvento {
