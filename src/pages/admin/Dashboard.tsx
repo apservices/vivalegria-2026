@@ -60,12 +60,12 @@ const AdminDashboard = () => {
     reservasConfirmadas: 0,
     reservasAprovadas: 0,
     candidaturasPendentes: 0,
-    totalReservas: 0,
-    reservasSemana: 0,
-    reservasMes: 0,
+    totalReservasPeriodo: 0,
+    reservasPeriodo: 0,
     taxaConfirmacao: 0,
     eventosSemCasting: 0,
-    totalCachesMes: 0,
+    totalCachesPeriodo: 0,
+    periodoLabel: "no mês",
   });
   const [recentReservas, setRecentReservas] = useState<any[]>([]);
   const [proximosEventos, setProximosEventos] = useState<ProximoEvento[]>([]);
