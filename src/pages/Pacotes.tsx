@@ -107,7 +107,9 @@ const Pacotes = () => {
       <section className="py-24 bg-gradient-subtle">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="mb-4">Experiências Especiais</h2>
+            <h1 className="mb-4 text-3xl md:text-4xl font-bold">
+              Pacotes de Recreação Infantil
+            </h1>
             <p className="text-lg text-muted-foreground">
               Serviços premium para tornar sua festa ainda mais incrível
             </p>
