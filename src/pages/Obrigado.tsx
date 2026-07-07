@@ -13,17 +13,21 @@ const Obrigado = () => {
   const [searchParams] = useSearchParams();
   const codigo = searchParams.get("codigo") || "";
   const nome = searchParams.get("nome") || "";
-  
-  const firstName = nome.split(" ")[0] || "Cliente";
+  const tipo = searchParams.get("tipo") || "reserva";
+  const isCadastro = tipo === "cadastro";
 
-  const whatsappMessage = codigo 
+  const firstName = nome.split(" ")[0] || (isCadastro ? "Recreador" : "Cliente");
+
+  const whatsappMessage = isCadastro
+    ? "Olá! Acabei de enviar meu cadastro para trabalhar na Vivalegria."
+    : codigo
     ? `Olá! Acabei de fazer minha reserva. Código: ${codigo}. Gostaria de confirmar os detalhes.`
     : "Olá, acabei de solicitar um orçamento!";
-  
+
   const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
   const handleWhatsAppClick = () => {
-    trackWhatsAppClick('obrigado_page');
+    trackWhatsAppClick(isCadastro ? "obrigado_cadastro" : "obrigado_page");
   };
 
   const handleCopyCode = () => {
@@ -33,11 +37,18 @@ const Obrigado = () => {
     }
   };
 
+  const headTitle = isCadastro
+    ? "Cadastro Enviado | Vivalegria"
+    : "Reserva Confirmada | Vivalegria";
+  const headDesc = isCadastro
+    ? "Seu cadastro foi enviado com sucesso! Nossa equipe vai avaliar seu perfil e entrar em contato pelo WhatsApp."
+    : "Sua reserva foi registrada com sucesso! Entraremos em contato via WhatsApp para confirmar os detalhes do seu evento.";
+
   return (
     <>
       <HeadSEO
-        title="Reserva Confirmada | Vivalegria"
-        description="Sua reserva foi registrada com sucesso! Entraremos em contato via WhatsApp para confirmar os detalhes do seu evento."
+        title={headTitle}
+        description={headDesc}
         canonical="/obrigado"
         noindex
       />
@@ -49,11 +60,13 @@ const Obrigado = () => {
               animation="pulinho"
               className="w-40 md:w-56 lg:w-64 mx-auto mb-6"
             />
-            
+
             <div className="space-y-4 max-w-2xl mx-auto">
               {/* Título principal */}
               <h1 className="text-2xl md:text-4xl font-bold text-primary">
-                {firstName}, sua reserva foi registrada!
+                {isCadastro
+                  ? `${firstName}, seu cadastro foi enviado!`
+                  : `${firstName}, sua reserva foi registrada!`}
               </h1>
               
               {/* Código do Evento */}
