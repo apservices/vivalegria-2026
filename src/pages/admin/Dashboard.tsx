@@ -369,13 +369,14 @@ const AdminDashboard = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <DollarSign className="w-4 h-4" />
-                  Cachês no Mês
+                  Cachês no período
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
-                  R$ {loadingStats ? "..." : stats.totalCachesMes.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                  R$ {loadingStats ? "..." : stats.totalCachesPeriodo.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">{stats.periodoLabel}</p>
               </CardContent>
             </Card>
           </div>
