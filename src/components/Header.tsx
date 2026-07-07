@@ -58,7 +58,8 @@ export default function Header() {
             <button
               className="md:hidden"
               onClick={() => setOpen(!open)}
-              aria-label="Abrir menu"
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={open}
             >
               {open ? <X /> : <Menu />}
             </button>
