@@ -282,6 +282,7 @@ const AdminDashboard = () => {
                 <div className="text-3xl font-bold text-yellow-600">
                   {loadingStats ? "..." : stats.reservasPendentes}
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">{stats.periodoLabel}</p>
               </CardContent>
             </Card>
 
@@ -296,6 +297,7 @@ const AdminDashboard = () => {
                 <div className="text-3xl font-bold text-green-600">
                   {loadingStats ? "..." : `${stats.reservasConfirmadas + stats.reservasAprovadas}`}
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">{stats.periodoLabel}</p>
               </CardContent>
             </Card>
 
@@ -310,6 +312,7 @@ const AdminDashboard = () => {
                 <div className="text-3xl font-bold text-primary">
                   {loadingStats ? "..." : `${stats.taxaConfirmacao}%`}
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">{stats.periodoLabel}</p>
               </CardContent>
             </Card>
 
@@ -317,13 +320,15 @@ const AdminDashboard = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  Reservas no Mês
+                  Reservas no período
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{loadingStats ? "..." : stats.reservasMes}</div>
+                <div className="text-3xl font-bold">{loadingStats ? "..." : stats.reservasPeriodo}</div>
+                <p className="text-xs text-muted-foreground mt-1">{stats.periodoLabel}</p>
               </CardContent>
             </Card>
+
           </div>
         </div>
 
